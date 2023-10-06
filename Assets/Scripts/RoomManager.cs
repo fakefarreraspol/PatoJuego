@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Net;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using System.Text;
 using System.Threading;
@@ -13,33 +12,32 @@ public class RoomManager : MonoBehaviour
     public int port = 1803;
     //Using TCP:
     TcpListener listener;
+    private string serverName = "MyServerName";
     List<TcpClient> connectedClients = new List<TcpClient>();
 
-    public void StartServer()
+    public void onButtonPressed()
+    {
+        StartServer();
+    }
+    private void StartServer()
     {
         listener = new TcpListener(IPAddress.Any, port);
         listener.Start();
-        BeginAcceptClients();
-    }
-
-    void BeginAcceptClients()
-    {
+        Debug.Log("Server started and waiting for clients...");
         listener.BeginAcceptTcpClient(OnClientConnected, null);
-        Debug.Log("client connected");
     }
 
-    void OnClientConnected(IAsyncResult ar)
+    private void OnClientConnected(IAsyncResult ar)
     {
         TcpClient client = listener.EndAcceptTcpClient(ar);
-        connectedClients.Add(client);
 
-        // Read the client's message 
+        // Wait for a message from this client
         NetworkStream stream = client.GetStream();
-        byte[] buffer = new byte[1024]; // buffer size of 1024 as an example
+        byte[] buffer = new byte[1024];
         stream.BeginRead(buffer, 0, buffer.Length, OnDataRead, new Tuple<NetworkStream, byte[]>(stream, buffer));
     }
 
-    void OnDataRead(IAsyncResult ar)
+    private void OnDataRead(IAsyncResult ar)
     {
         var state = (Tuple<NetworkStream, byte[]>)ar.AsyncState;
         NetworkStream stream = state.Item1;
@@ -48,13 +46,8 @@ public class RoomManager : MonoBehaviour
         int bytesRead = stream.EndRead(ar);
         if (bytesRead > 0)
         {
-            string clientMessage = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-            // Handle the client's message as needed, for example, print it
-            Debug.Log("Client Message: " + clientMessage);
-
-            // Respond to client
-            string serverResponse = "Hello from server!";
-            byte[] responseData = Encoding.ASCII.GetBytes(serverResponse);
+            // We're ignoring the actual message from the client here and just sending the server's name
+            byte[] responseData = Encoding.ASCII.GetBytes(serverName);
             stream.Write(responseData, 0, responseData.Length);
         }
     }
