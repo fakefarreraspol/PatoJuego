@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
+using System.IO;
 
 public class Class01 : MonoBehaviour
 {
@@ -23,19 +24,15 @@ public class Class01 : MonoBehaviour
     }
     IEnumerator GetFakefaCurriculum()
     {
-        UnityWebRequest webRequest = UnityWebRequest.Get(fileURL);
-
-        yield return webRequest.SendWebRequest();
-
-        if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
-        {
-            Debug.LogError("Error: " + webRequest.error);
-        }
+        var uwr = new UnityWebRequest(fileURL, UnityWebRequest.kHttpVerbGET);
+        string path = Path.Combine(Application.dataPath, "fakefa.pdf");
+        uwr.downloadHandler = new DownloadHandlerFile(path);
+        yield return uwr.SendWebRequest();
+        if (uwr.result != UnityWebRequest.Result.Success)
+            Debug.LogError(uwr.error);
         else
-        {
-            // Save the downloaded file
-            System.IO.File.WriteAllBytes(Application.dataPath, webRequest.downloadHandler.data);
-            Debug.Log("File downloaded successfully to: " + Application.dataPath);
-        }
+            Debug.Log("File successfully downloaded and saved to " + path);
+        
     }
+    
 }
