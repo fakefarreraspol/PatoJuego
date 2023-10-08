@@ -514,6 +514,7 @@ GameObject:
   m_Component:
   - component: {fileID: 466464008}
   - component: {fileID: 466464007}
+  - component: {fileID: 466464009}
   m_Layer: 0
   m_Name: Server Manager
   m_TagString: Untagged
@@ -528,7 +529,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 466464006}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 911e4bb8e7787c040b5dbc88d90c593d, type: 3}
   m_Name: 
@@ -550,6 +551,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &466464009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 466464006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8caed76260e61374ba739b12c3f6f214, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1550724330
 GameObject:
   m_ObjectHideFlags: 0
