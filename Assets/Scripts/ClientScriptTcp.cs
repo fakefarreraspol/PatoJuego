@@ -27,7 +27,7 @@ public class ClientScriptTcp : MonoBehaviour
 
         try
         {
-            client.Connect(serverIP, 7777); 
+            client.Connect(serverIP, 1803); 
 
             UnityEngine.Debug.Log("Connected to server at " + serverIP);
 
