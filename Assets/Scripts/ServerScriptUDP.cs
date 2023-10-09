@@ -15,18 +15,19 @@ public class ServerScriptUDP : MonoBehaviour
     {
         udpServer = new UdpClient(port);
         udpServer.BeginReceive(new AsyncCallback(ReceiveCallback), null);
-        Debug.Log("Server started, waiting for client...");
+        Debug.Log("Goozy server started, waiting for client...");
     }
 
     void ReceiveCallback(IAsyncResult ar)
     {
         IPEndPoint clientEndPoint = new IPEndPoint(IPAddress.Any, port);
         byte[] data = udpServer.EndReceive(ar, ref clientEndPoint);
-        string message = Encoding.ASCII.GetString(data);
-        Debug.Log("Received message: " + message);
+        string nameRecieved = Encoding.ASCII.GetString(data);
+        string message = "Welcome to Goozy server!";
+        Debug.Log("Goozy server received message: " + nameRecieved);
 
         // Send a response back to the client
-        byte[] response = Encoding.ASCII.GetBytes("Server Acknowledged: " + message);
+        byte[] response = Encoding.ASCII.GetBytes(message);
         udpServer.Send(response, response.Length, clientEndPoint);
 
         // Continue listening for messages
