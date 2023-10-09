@@ -1252,7 +1252,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1680827498}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 416dda2c2a84eff4a8ae3b615027d9bc, type: 3}
   m_Name: 
@@ -1267,12 +1267,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1680827498}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 498e1eeb6b7c0634baec8fb22fe3ae67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ipInputField: {fileID: 704457534}
+  ipInputField: {fileID: 49730820}
   nameInputField: {fileID: 704457534}
   joinGameButton: {fileID: 1599973858}
 --- !u!1 &1705928274

@@ -8,10 +8,58 @@ using System.Collections.Generic;
 public class ServerScriptTcp : MonoBehaviour
 {
 
-    TcpListener listener;
-    List<TcpClient> clients = new List<TcpClient>();
+    //TcpListener listener;
+    //List<TcpClient> clients = new List<TcpClient>();
+    //public int port = 1803;
+    //public string serverName = "Goosy Server";
+
+    //void Start()
+    //{
+    //    StartServer();
+    //}
+
+    //void StartServer()
+    //{
+    //    listener = new TcpListener(IPAddress.Any, port);
+    //    listener.Start();
+    //    while (true)
+    //    {
+    //        TcpClient client = await listener.AcceptTcpClientAsync();
+    //        // Handle client here or spawn a new task to handle the client
+    //    }
+
+    //    Debug.Log("Goozy server started and listening on port " + port);
+    //}
+
+    //void AcceptCallback(IAsyncResult AR)
+    //{
+    //    TcpClient client = listener.EndAcceptTcpClient(AR);
+    //    clients.Add(client);
+
+    //    // Start reading messages from this client in a new thread or async task.
+
+    //    // Respond with server name.
+    //    byte[] buffer = Encoding.ASCII.GetBytes(serverName);
+    //    client.GetStream().Write(buffer, 0, buffer.Length);
+
+    //    // Continue listening for more clients:
+    //    listener.BeginAcceptTcpClient(AcceptCallback, null);
+    //    Debug.Log("Client connected from: " + client.Client.RemoteEndPoint); 
+
+    //}
+
+    //void OnApplicationQuit()
+    //{
+    //    if (listener != null)
+    //    {
+    //        listener.Stop();
+    //    }
+    //}
+
+    Socket socketListener;
+    List<Socket> clients = new List<Socket>();
     public int port = 1803;
-    public string serverName = "MyServerName";
+    public string serverName = "Goosy Server";
 
     void Start()
     {
@@ -20,35 +68,80 @@ public class ServerScriptTcp : MonoBehaviour
 
     void StartServer()
     {
-        listener = new TcpListener(IPAddress.Any, port);
-        listener.Start();
-        listener.BeginAcceptTcpClient(AcceptCallback, null);
-        Debug.Log("Server started and listening on port " + port);
+        // Create an IPV4 TCP socket
+        socketListener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
+        // Bind the socket to the local endpoint (all IP addresses and the specified port)
+        IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Any, port);
+        socketListener.Bind(localEndPoint);
+
+        // Start listening with a backlog of pending connections
+        socketListener.Listen(10);
+
+        Debug.Log("Goozy server started and listening on port " + port);
+
+        BeginAccept();
+    }
+
+    void BeginAccept()
+    {
+        socketListener.BeginAccept(AcceptCallback, null);
     }
 
     void AcceptCallback(IAsyncResult AR)
     {
-        TcpClient client = listener.EndAcceptTcpClient(AR);
+        Socket client = socketListener.EndAccept(AR);
         clients.Add(client);
 
-        // Start reading messages from this client in a new thread or async task.
+        // Start reading from the client socket
+        BeginReceive(client);
 
         // Respond with server name.
         byte[] buffer = Encoding.ASCII.GetBytes(serverName);
-        client.GetStream().Write(buffer, 0, buffer.Length);
+        client.Send(buffer);
 
-        // Continue listening for more clients:
-        listener.BeginAcceptTcpClient(AcceptCallback, null);
-        Debug.Log("Client connected from: " + client.Client.RemoteEndPoint); 
+        Debug.Log("Client connected from: " + client.RemoteEndPoint);
 
+        // Continue listening for more clients
+        BeginAccept();
+    }
+
+    byte[] receiveBuffer = new byte[1024];
+
+    void BeginReceive(Socket client)
+    {
+        client.BeginReceive(receiveBuffer, 0, receiveBuffer.Length, SocketFlags.None, ReceiveCallback, client);
+    }
+
+    void ReceiveCallback(IAsyncResult AR)
+    {
+        Socket client = (Socket)AR.AsyncState;
+        int bytesRead = client.EndReceive(AR);
+
+        if (bytesRead > 0)
+        {
+            string receivedData = Encoding.ASCII.GetString(receiveBuffer, 0, bytesRead);
+            Debug.Log("Received from client: " + receivedData);
+
+            // If you want to keep reading data continuously, start another asynchronous read operation
+            BeginReceive(client);
+        }
     }
 
     void OnApplicationQuit()
     {
-        if (listener != null)
+        foreach (var client in clients)
         {
-            listener.Stop();
+            if (client != null && client.Connected)
+            {
+                client.Shutdown(SocketShutdown.Both);
+                client.Close();
+            }
+        }
+
+        if (socketListener != null)
+        {
+            socketListener.Close();
         }
     }
 }
