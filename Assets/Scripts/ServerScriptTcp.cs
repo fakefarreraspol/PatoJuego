@@ -123,7 +123,7 @@ public class ServerScriptTcp : MonoBehaviour
             string receivedData = Encoding.ASCII.GetString(receiveBuffer, 0, bytesRead);
             Debug.Log("Received from client: " + receivedData);
 
-            // If you want to keep reading data continuously, start another asynchronous read operation
+            // Start another asynchronous read operation to keep reading data continuously
             BeginReceive(client);
         }
     }
