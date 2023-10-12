@@ -25,7 +25,8 @@ public class Chat : MonoBehaviour
 
         //messagePrefab.GetComponentInChildren<TextMeshProUGUI>().text = msg;
         messagePrefab.transform.Find("MsgText").GetComponent<TextMeshProUGUI>().text = msg;
-
+        messagePrefab.transform.Find("MsgText").GetComponent<TextMeshProUGUI>().color = Color.black;
+        messagePrefab.transform.Find("MsgUserName").gameObject.GetComponent<TextMeshProUGUI>().color = Color.cyan;
         Instantiate(messagePrefab, Vector3.zero, Quaternion.identity, content.transform);
     }    
 }
