@@ -11,18 +11,17 @@ public class Client : MonoBehaviour
 {
     public TMP_InputField ipInputField;
     public TMP_InputField nameInputField;
-    public Button joinGameButton;
 
     TcpClient client;
 
     void Start()
     {
-        joinGameButton.onClick.AddListener(ConnectToServer);
+        ConnectToServer();
     }
 
     void ConnectToServer()
     {
-        string serverIP = "";
+        string serverIP = ipInputField.text;
         string playerName = nameInputField.text;
 
         Debug.Log("Attempting to connect to Goozy server at " + serverIP);

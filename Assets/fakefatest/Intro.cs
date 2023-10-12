@@ -24,13 +24,15 @@ public class Intro : MonoBehaviour
     public void Join()
     {
         client.SetActive(true);
+        host.SetActive(false);
+
         if (inputfield.text != string.Empty) FindObjectOfType<UserInfo>().user = new User(inputfield.text);
         else
         {
             FindObjectOfType<UserInfo>().user = new User();
         }
 
-
+        Destroy(host);
         DontDestroyOnLoad(userInfo);
         DontDestroyOnLoad(client);
        // SceneManager.LoadScene("Chat");
@@ -38,15 +40,16 @@ public class Intro : MonoBehaviour
     public void Host()
     {
         host.SetActive(true);
+        client.SetActive(false);
 
         if (inputfield.text != string.Empty) FindObjectOfType<UserInfo>().user = new User(inputfield.text);
         else
         {
             FindObjectOfType<UserInfo>().user = new User();
         }
-        
-        
 
+
+        Destroy(client);
         DontDestroyOnLoad(userInfo);
         DontDestroyOnLoad(host);
         SceneManager.LoadScene("Chat");

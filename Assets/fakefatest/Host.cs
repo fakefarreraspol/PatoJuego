@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Text;
 using System;
 using System.Collections.Generic;
+using TMPro;
 
 public class Host : MonoBehaviour
 {
@@ -11,10 +12,13 @@ public class Host : MonoBehaviour
     List<Socket> clients = new List<Socket>();
     public int port = 1803;
     public string serverName = "Goosy Server";
+    [SerializeField] private TMP_InputField portField;
 
     void Start()
     {
         StartServer();
+        if (portField.text == string.Empty) port = 1803;
+        else port = int.Parse(portField.text);
     }
 
     void StartServer()
