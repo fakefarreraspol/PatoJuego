@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,17 +8,58 @@ using UnityEngine.SceneManagement;
 public class Intro : MonoBehaviour
 {
     public TMP_InputField inputfield;
-    public GameObject managerr;
-    // Start is called before the first frame update
+    public GameObject userInfo;
 
-    public void buttonClicked()
+    public GameObject host;
+    public GameObject client;
+
+
+    public static Action OnServerFinishedLoading;
+    // Start is called before the first frame update
+    private void Start()
     {
-        if(inputfield.text != string.Empty) FindObjectOfType<manager>().user = new User(inputfield.text);
+        host.SetActive(false);
+        client.SetActive(false);
+    }
+    public void Join()
+    {
+        client.SetActive(true);
+        if (inputfield.text != string.Empty) FindObjectOfType<UserInfo>().user = new User(inputfield.text);
         else
         {
-            FindObjectOfType<manager>().user = new User();
+            FindObjectOfType<UserInfo>().user = new User();
         }
-        DontDestroyOnLoad(managerr);
+
+
+        DontDestroyOnLoad(userInfo);
+        DontDestroyOnLoad(client);
+       // SceneManager.LoadScene("Chat");
+    }
+    public void Host()
+    {
+        host.SetActive(true);
+
+        if (inputfield.text != string.Empty) FindObjectOfType<UserInfo>().user = new User(inputfield.text);
+        else
+        {
+            FindObjectOfType<UserInfo>().user = new User();
+        }
+        
+        
+
+        DontDestroyOnLoad(userInfo);
+        DontDestroyOnLoad(host);
+        SceneManager.LoadScene("Chat");
+    }
+
+
+    private void OnEnable()
+    {
+        OnServerFinishedLoading += changeScene;
+    }
+
+    private void changeScene()
+    {
         SceneManager.LoadScene("Chat");
     }
 }

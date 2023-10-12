@@ -16,7 +16,7 @@ public class Chat : MonoBehaviour
 
     private void Awake()
     {
-        userr = FindObjectOfType<manager>().user;
+        userr = FindObjectOfType<UserInfo>().user;
     }
 
     public void SendMessage()
