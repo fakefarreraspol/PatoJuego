@@ -5,6 +5,7 @@ using System.Text;
 using System;
 using System.Collections.Generic;
 using TMPro;
+using System.IO;
 
 public class Host : MonoBehaviour
 {
@@ -73,11 +74,26 @@ public class Host : MonoBehaviour
         Socket client = (Socket)AR.AsyncState;
         int bytesRead = client.EndReceive(AR);
 
+
+        Debug.Log("sigma male");
+
         if (bytesRead > 0)
         {
-            string receivedData = Encoding.ASCII.GetString(receiveBuffer, 0, bytesRead);
-            Debug.Log("Received from client: " + receivedData);
+            Debug.Log("yooooooooo");
+            //string receivedData = Encoding.ASCII.GetString(receiveBuffer, 0, bytesRead);
+            //Debug.Log("Received from client: " + receivedData);
+            
+            
 
+            byte[] data = new byte[1024];
+            
+            string jsonData = Encoding.ASCII.GetString(receiveBuffer, 0, bytesRead);
+
+            Debug.Log("json:   "+ jsonData);
+
+            User deserializedData = JsonUtility.FromJson<User>(jsonData);
+
+            Debug.Log(deserializedData.userName + " has joined");
             // Start another asynchronous read operation to keep reading data continuously
             BeginReceive(client);
         }

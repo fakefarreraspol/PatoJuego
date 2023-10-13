@@ -5,18 +5,23 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Newtonsoft.Json;
 
 
 public class Client : MonoBehaviour
 {
     public TMP_InputField ipInputField;
     public TMP_InputField nameInputField;
+    private User uSeR;
+
 
     TcpClient client;
 
     void Start()
     {
+        uSeR = FindObjectOfType<UserInfo>().user;
         ConnectToServer();
+        
     }
 
     void ConnectToServer()
@@ -56,9 +61,17 @@ public class Client : MonoBehaviour
         NetworkStream stream = client.GetStream();
         if (stream.CanWrite)
         {
-            byte[] clientMessageAsByteArray = Encoding.ASCII.GetBytes(message);
-            stream.Write(clientMessageAsByteArray, 0, clientMessageAsByteArray.Length);
-            Debug.Log("Player name sent to server");
+            
+            string serializedData = JsonUtility.ToJson(uSeR);
+            byte[] jsonData = Encoding.ASCII.GetBytes(serializedData);
+            stream.Write(jsonData, 0, jsonData.Length);
+
+            //stream.Write(clientMessageAsByteArray, 0, clientMessageAsByteArray.Length);
+            User test = JsonUtility.FromJson<User>(serializedData);
+
+            Debug.Log("Player name sent to server" + test.userName);
+
+            
             Intro.OnServerFinishedLoading();
         }
         else

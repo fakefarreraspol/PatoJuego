@@ -23,14 +23,17 @@ public class Intro : MonoBehaviour
     }
     public void Join()
     {
-        client.SetActive(true);
-        host.SetActive(false);
+        
 
         if (inputfield.text != string.Empty) FindObjectOfType<UserInfo>().user = new User(inputfield.text);
         else
         {
             FindObjectOfType<UserInfo>().user = new User();
         }
+
+        client.SetActive(true);
+        host.SetActive(false);
+
 
         Destroy(host);
         DontDestroyOnLoad(userInfo);
