@@ -29,6 +29,12 @@ public class User
         this.userAvatar = userAvatar;
         this.usernameColor = Random.ColorHSV();
     }
+    public User(string userName, Sprite userAvatar, Color c)
+    {
+        this.userName = userName;
+        this.userAvatar = userAvatar;
+        this.usernameColor = c;
+    }
 
     public void ChangeUser(string userName, Sprite userAvatar)
     {

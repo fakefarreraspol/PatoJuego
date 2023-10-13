@@ -91,10 +91,13 @@ public class Host : MonoBehaviour
 
             Debug.Log("json:   "+ jsonData);
 
-            User deserializedData = JsonUtility.FromJson<User>(jsonData);
+            //User deserializedData = JsonUtility.FromJson<User>(jsonData);
+            MessageToSend deserializedData = JsonUtility.FromJson<MessageToSend>(jsonData);
 
-            Debug.Log(deserializedData.userName + " has joined");
+            Chat.OnMessageReceived(deserializedData);
+            //Debug.Log(deserializedData.userName + " has joined");
             // Start another asynchronous read operation to keep reading data continuously
+            //GameObject.CreatePrimitive(PrimitiveType.Sphere);
             BeginReceive(client);
         }
     }

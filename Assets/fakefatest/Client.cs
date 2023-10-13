@@ -6,7 +6,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Newtonsoft.Json;
-
+using JetBrains.Annotations;
+using Mono.Cecil;
 
 public class Client : MonoBehaviour
 {
@@ -64,7 +65,7 @@ public class Client : MonoBehaviour
             
             string serializedData = JsonUtility.ToJson(uSeR);
             byte[] jsonData = Encoding.ASCII.GetBytes(serializedData);
-            stream.Write(jsonData, 0, jsonData.Length);
+            //stream.Write(jsonData, 0, jsonData.Length);
 
             //stream.Write(clientMessageAsByteArray, 0, clientMessageAsByteArray.Length);
             User test = JsonUtility.FromJson<User>(serializedData);
@@ -72,6 +73,36 @@ public class Client : MonoBehaviour
             Debug.Log("Player name sent to server" + test.userName);
 
             
+            Intro.OnServerFinishedLoading();
+        }
+        else
+        {
+            Debug.LogError("Cannot write to the stream.");
+        }
+
+        
+    }
+    public void SendMessage(string info)
+    {
+        if (client == null || !client.Connected)
+        {
+            Debug.LogError("Not connected to server");
+            return;
+        }
+        Debug.Log("info   "+info);
+        NetworkStream stream = client.GetStream();
+        if (stream.CanWrite)
+        {
+            MessageToSend tst = JsonUtility.FromJson<MessageToSend>(info);
+
+            Debug.Log(tst.message);
+
+            byte[] jsonData = Encoding.ASCII.GetBytes(info);
+            stream.Write(jsonData, 0, jsonData.Length);
+
+
+            Debug.Log("Message sent!"+ tst.message);
+
             Intro.OnServerFinishedLoading();
         }
         else
