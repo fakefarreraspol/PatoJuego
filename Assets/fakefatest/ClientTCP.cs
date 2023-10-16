@@ -10,24 +10,15 @@ using System;
 //using JetBrains.Annotations;
 //using Mono.Cecil;
 
-public class ClientTCP : MonoBehaviour
+public class ClientTCP : Client
 {
     public TMP_InputField ipInputField;
     public TMP_InputField nameInputField;
     private User uSeR;
 
-    public static Action<string> OnSendMessage;
 
     TcpClient client;
 
-    private void OnEnable()
-    {
-        OnSendMessage += SendMessage;
-    }
-    private void DisEnable()
-    {
-        OnSendMessage -= SendMessage;
-    }
 
     void Start()
     {
@@ -93,7 +84,7 @@ public class ClientTCP : MonoBehaviour
 
         
     }
-    public void SendMessage(string info)
+    public override void SendChatMessage(string info)
     {
         if (client == null || !client.Connected)
         {

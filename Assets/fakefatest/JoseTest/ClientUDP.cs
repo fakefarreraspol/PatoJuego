@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class ClientUDP : MonoBehaviour
+public class ClientUDP : Client
 {
     public TMP_InputField nameInputField;
     public TMP_InputField ipInputField;
@@ -26,17 +26,17 @@ public class ClientUDP : MonoBehaviour
         user = FindObjectOfType<UserInfo>().user;
         MessageToSend jguse = new MessageToSend(user, "soygay");
         string serializedDatajosegay = JsonUtility.ToJson(jguse);
-        SendMessageToServer(serializedDatajosegay);
+        SendChatMessage(serializedDatajosegay);
+        Intro.OnServerFinishedLoading();
     }
 
-    public void SendMessageToServer(string josemaricon)
+    public override void SendChatMessage(string josemaricon) 
     {
         string ip = ipInputField.text;
         string name = nameInputField.text;
         byte[] data = Encoding.ASCII.GetBytes(josemaricon);
         udpClient.Send(data, data.Length, ip, port);
 
-        Intro.OnServerFinishedLoading();
 
         // Also listen for a response
         udpClient.BeginReceive(new AsyncCallback(ReceiveCallback), null);

@@ -67,5 +67,6 @@ public class Intro : MonoBehaviour
     private void changeScene()
     {
         SceneManager.LoadScene("Chat");
+        OnServerFinishedLoading -= changeScene;
     }
 }
