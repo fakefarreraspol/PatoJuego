@@ -90,7 +90,7 @@ public class Chat : MonoBehaviour
     private void SendMessageTCP(MessageToSend msg)
     {
         string serializedData = JsonUtility.ToJson(msg);
-        Client.OnSendMessage(serializedData);
+        ClientTCP.OnSendMessage(serializedData);
     }
 
     private void SendMessageUDP(MessageToSend msg)
