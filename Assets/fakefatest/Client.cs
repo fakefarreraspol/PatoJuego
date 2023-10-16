@@ -6,8 +6,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Newtonsoft.Json;
-using JetBrains.Annotations;
-using Mono.Cecil;
+using System;
+//using JetBrains.Annotations;
+//using Mono.Cecil;
 
 public class Client : MonoBehaviour
 {
@@ -15,8 +16,18 @@ public class Client : MonoBehaviour
     public TMP_InputField nameInputField;
     private User uSeR;
 
+    public static Action<string> OnSendMessage;
 
     TcpClient client;
+
+    private void OnEnable()
+    {
+        OnSendMessage += SendMessage;
+    }
+    private void DisEnable()
+    {
+        OnSendMessage -= SendMessage;
+    }
 
     void Start()
     {
@@ -103,7 +114,7 @@ public class Client : MonoBehaviour
 
             Debug.Log("Message sent!"+ tst.message);
 
-            Intro.OnServerFinishedLoading();
+            //Intro.OnServerFinishedLoading();
         }
         else
         {

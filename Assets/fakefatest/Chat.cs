@@ -60,7 +60,7 @@ public class Chat : MonoBehaviour
         if(userr == null) { userr = new User(); }
         MessageToSend msg = new MessageToSend(userr, inputField.text);
         SendMessageTCP(msg);
-        //DisplayMessage(msg);
+        DisplayMessage(msg);
         inputField.text = string.Empty;
     }
 
@@ -89,7 +89,7 @@ public class Chat : MonoBehaviour
     private void SendMessageTCP(MessageToSend msg)
     {
         string serializedData = JsonUtility.ToJson(msg);
-        FindObjectOfType<Client>().SendMessage(serializedData);
+        Client.OnSendMessage(serializedData);
     }
 
 
