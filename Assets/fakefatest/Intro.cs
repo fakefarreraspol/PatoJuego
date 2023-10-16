@@ -7,25 +7,25 @@ using UnityEngine.SceneManagement;
 
 public class Intro : MonoBehaviour
 {
-    public TMP_InputField inputfield;
+    public TMP_InputField nameTextInput;
     public GameObject userInfo;
 
     public GameObject host;
     public GameObject client;
-
+    private TMP_Dropdown dropdown;
 
     public static Action OnServerFinishedLoading;
     // Start is called before the first frame update
     private void Start()
     {
+        dropdown = FindObjectOfType<TMP_Dropdown>();
         host.SetActive(false);
         client.SetActive(false);
     }
     public void Join()
     {
         
-
-        if (inputfield.text != string.Empty) FindObjectOfType<UserInfo>().user = new User(inputfield.text);
+        if (nameTextInput.text != string.Empty) FindObjectOfType<UserInfo>().user = new User(nameTextInput.text);
         else
         {
             FindObjectOfType<UserInfo>().user = new User();
@@ -33,6 +33,14 @@ public class Intro : MonoBehaviour
 
         client.SetActive(true);
         host.SetActive(false);
+
+
+        if (dropdown.value == 0)
+        {
+            client.GetComponent<ClientTCP>().enabled = true;
+        }
+        else client.GetComponent<ClientUDP>().enabled = true;
+
 
 
         Destroy(host);
@@ -45,11 +53,18 @@ public class Intro : MonoBehaviour
         host.SetActive(true);
         client.SetActive(false);
 
-        if (inputfield.text != string.Empty) FindObjectOfType<UserInfo>().user = new User(inputfield.text);
+        if (nameTextInput.text != string.Empty) FindObjectOfType<UserInfo>().user = new User(nameTextInput.text);
         else
         {
             FindObjectOfType<UserInfo>().user = new User();
         }
+
+
+        if (dropdown.value == 0)
+        {
+            host.GetComponent<HostTCP>().enabled = true;
+        }
+        else host.GetComponent<ServerUDP>().enabled = true;
 
 
         Destroy(client);

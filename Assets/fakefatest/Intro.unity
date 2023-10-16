@@ -1753,7 +1753,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1302459206}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f3da552a3ba3cd439cb12004e94d1da, type: 3}
   m_Name: 
@@ -3015,7 +3015,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1877511654}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ee649ef436c17de47954043ff446bfa9, type: 3}
   m_Name: 
@@ -3298,7 +3298,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff4eaea2363c4a2499f9029158160e53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputfield: {fileID: 1806350762}
+  nameTextInput: {fileID: 1806350762}
   userInfo: {fileID: 1578821533}
   host: {fileID: 1877511654}
   client: {fileID: 1302459206}
