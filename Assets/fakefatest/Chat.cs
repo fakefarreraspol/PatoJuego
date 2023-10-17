@@ -12,6 +12,7 @@ public class Chat : MonoBehaviour
     [SerializeField] private GameObject content;
     [SerializeField] private TMP_InputField inputField;
     private User userr;
+    private AudioSource notificationSource;
 
     public static Action<string, string, Image, Color> OnMessageSend;
     public static Action<MessageToSend> OnMessageReceived;
@@ -23,15 +24,15 @@ public class Chat : MonoBehaviour
     private void Start()
     {
         InvokeRepeating(nameof(Messaging), 2, 1);
+        notificationSource = GetComponent<AudioSource>();
     }
 
     public void Messaging()
     {
         if (messageQueue.Count > 0) 
-        {
-            
+        {            
             DisplayMessage(messageQueue.Dequeue());
-         
+            notificationSource.Play();
         }
         
         
@@ -60,8 +61,15 @@ public class Chat : MonoBehaviour
         if(userr == null) { userr = new User(); }
         MessageToSend msg = new MessageToSend(userr, inputField.text);
         //SendMessageTCP(msg);
-        SendChatMessage(msg);
         DisplayMessage(msg);
+        
+        if(GameObject.Find("Server") != null) SendServerMessage(msg);
+        else SendChatMessage(msg);
+         
+
+
+
+
         inputField.text = string.Empty;
     }
 
@@ -75,7 +83,7 @@ public class Chat : MonoBehaviour
 
         Debug.Log(msg.username);
 
-
+        
         //messagePrefab.GetComponentInChildren<TextMeshProUGUI>().text = msg;
         messagePrefab.transform.Find("MsgText").GetComponent<TextMeshProUGUI>().text = msg.message;
         messagePrefab.transform.Find("MsgText").GetComponent<TextMeshProUGUI>().color = Color.black;
@@ -83,6 +91,9 @@ public class Chat : MonoBehaviour
         messagePrefab.transform.Find("MsgUserName").GetComponent<TextMeshProUGUI>().text = msg.username;
         messagePrefab.transform.Find("MsgUserName").gameObject.GetComponent<TextMeshProUGUI>().color = msg.color;
         Instantiate(messagePrefab, Vector3.zero, Quaternion.identity, content.transform);
+
+
+        
     }
 
 
@@ -93,7 +104,13 @@ public class Chat : MonoBehaviour
         Client.OnSendMessage(serializedData);
     }
 
-  
+    private void SendServerMessage(MessageToSend msg)
+    {
+        string serializedData = JsonUtility.ToJson(msg);
+        Host.OnSendServerMessage(serializedData);
+    }
+
+
 
 
 

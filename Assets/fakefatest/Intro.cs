@@ -66,7 +66,6 @@ public class Intro : MonoBehaviour
         }
         else host.GetComponent<ServerUDP>().enabled = true;
 
-
         Destroy(client);
         DontDestroyOnLoad(userInfo);
         DontDestroyOnLoad(host);

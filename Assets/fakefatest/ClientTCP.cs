@@ -27,6 +27,20 @@ public class ClientTCP : Client
         
     }
 
+    //private void Update()
+    //{
+    //    NetworkStream stream = client.GetStream();
+
+    //    byte[] data = new byte[1024];
+    //    int bytesRead = stream.Read(data, 0, data.Length);
+
+    //    if (bytesRead > 0)
+    //    {
+    //        string message = Encoding.UTF8.GetString(data, 0, bytesRead);
+    //        Console.WriteLine("Received message from the server: " + message);
+    //    }
+    //}
+
     void ConnectToServer()
     {
         string serverIP = ipInputField.text;

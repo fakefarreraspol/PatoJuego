@@ -6,7 +6,7 @@ using System.Net;
 using System.Text;
 using UnityEngine;
 
-public class ServerUDP : MonoBehaviour
+public class ServerUDP : Host
 {
     private UdpClient udpServer;
     private int port = 1803;

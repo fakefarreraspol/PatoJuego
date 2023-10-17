@@ -7,8 +7,8 @@ using System.Collections.Generic;
 using TMPro;
 using System.IO;
 
-public class HostTCP : MonoBehaviour
-{
+public class HostTCP : Host
+{ 
     Socket socketListener;
     List<Socket> clients = new List<Socket>();
     public int port = 1803;
