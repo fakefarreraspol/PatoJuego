@@ -99,6 +99,7 @@ public class ClientTCP : Client
             string receivedMessage = Encoding.ASCII.GetString(buffer, 0, bytesRead);
             Debug.Log("Received from server: " + receivedMessage);
 
+
             // After processing the received message, begin receiving again.
             BeginReceive();
         }
