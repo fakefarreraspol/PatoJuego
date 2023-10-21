@@ -10,6 +10,7 @@ public class ServerUDP : Host
 {
     private UdpClient udpServer;
     private int port = 1803;
+    private List<IPEndPoint> clients = new List<IPEndPoint>();
 
     void Start()
     {
@@ -23,6 +24,11 @@ public class ServerUDP : Host
         IPEndPoint clientEndPoint = new IPEndPoint(IPAddress.Any, port);
         byte[] data = udpServer.EndReceive(ar, ref clientEndPoint);
         string nameRecieved = Encoding.ASCII.GetString(data);
+        if (!clients.Contains(clientEndPoint))
+        {
+            clients.Add(clientEndPoint);
+        }
+
         string message = "Welcome to Goozy server!";
         Debug.Log("Goozy server received message: " + nameRecieved);
 
@@ -34,15 +40,32 @@ public class ServerUDP : Host
 
         Debug.Log("json:   " + jsonData);
 
-        MessageToSend deserializedData = JsonUtility.FromJson<MessageToSend>(jsonData);
-        Chat.OnMessageReceived(deserializedData);
+        // Send the received message to all the clients
+        SendServerMessage(jsonData);
+        // Process received message...
+        DisplayOnChat(jsonData);
 
         // Continue listening for messages
         udpServer.BeginReceive(new AsyncCallback(ReceiveCallback), null);
     }
 
+    protected void SendServerMessage(string message, IPEndPoint targetClient = null)
+    {
+        byte[] data = Encoding.ASCII.GetBytes(message);
+
+        // Otherwise, broadcast to all connected clients.
+        foreach (var client in clients)
+        {
+            udpServer.Send(data, data.Length, client);
+        }
+    }
+
     void OnDestroy()
     {
-        udpServer.Close();
+        if (udpServer != null)
+        {
+            udpServer.Close();
+            udpServer = null;
+        }
     }
 }

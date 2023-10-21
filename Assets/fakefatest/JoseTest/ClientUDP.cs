@@ -24,22 +24,25 @@ public class ClientUDP : Client
         udpClient = new UdpClient();
         //.onClick.AddListener(SendMessageToServer());
         user = FindObjectOfType<UserInfo>().user;
-        MessageToSend jguse = new MessageToSend(user, "soygay");
+        MessageToSend jguse = new MessageToSend(user, "Welcome to Goozy Server");
         string serializedDatajosegay = JsonUtility.ToJson(jguse);
         SendChatMessage(serializedDatajosegay);
         Intro.OnServerFinishedLoading();
     }
 
-    public override void SendChatMessage(string josemaricon) 
+    public override void SendChatMessage(string message) 
     {
-        string ip = ipInputField.text;
-        string name = nameInputField.text;
-        byte[] data = Encoding.ASCII.GetBytes(josemaricon);
-        udpClient.Send(data, data.Length, ip, port);
-
-
-        // Also listen for a response
-        udpClient.BeginReceive(new AsyncCallback(ReceiveCallback), null);
+        try
+        {
+            string ip = ipInputField.text;
+            byte[] data = Encoding.ASCII.GetBytes(message);
+            udpClient.Send(data, data.Length, ip, port);
+            udpClient.BeginReceive(new AsyncCallback(ReceiveCallback), null);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error sending message: {e.Message}");
+        }
     }
 
     void ReceiveCallback(IAsyncResult ar)
@@ -48,10 +51,28 @@ public class ClientUDP : Client
         byte[] data = udpClient.EndReceive(ar, ref serverEndPoint);
         string message = Encoding.ASCII.GetString(data);
         Debug.Log("Received response from Goozy server: " + message);
+        if (IsValidJson(message))
+        {
+            MessageToSend deserializedData = JsonUtility.FromJson<MessageToSend>(message);
+            Chat.OnMessageReceived(deserializedData);
+        }
+        BeginReceive();
+    }
+
+    void BeginReceive()
+    {
+        if (udpClient != null)
+        {
+            udpClient.BeginReceive(new AsyncCallback(ReceiveCallback), null);
+        }
     }
 
     void OnDestroy()
     {
-        udpClient.Close();
+        if (udpClient != null)
+        {
+            udpClient.Close();
+            udpClient = null;
+        }
     }
 }
