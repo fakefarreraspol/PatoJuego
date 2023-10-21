@@ -99,6 +99,14 @@ public class ClientTCP : Client
             string receivedMessage = Encoding.ASCII.GetString(buffer, 0, bytesRead);
             Debug.Log("Received from server: " + receivedMessage);
 
+            if(IsValidJson(receivedMessage))
+            {
+                MessageToSend deserializedData = JsonUtility.FromJson<MessageToSend>(receivedMessage);
+                Chat.OnMessageReceived(deserializedData);
+            }
+            
+            
+
 
             // After processing the received message, begin receiving again.
             BeginReceive();
