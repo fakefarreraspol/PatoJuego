@@ -87,8 +87,10 @@ public class HostTCP : Host
             Debug.Log("json:   "+ jsonData);
 
             // Process received message...
+            SendServerMessage(jsonData);
             MessageToSend deserializedData = JsonUtility.FromJson<MessageToSend>(receivedMessage);
             Chat.OnMessageReceived(deserializedData);
+            
 
             // Send a response back to the client
             string responseMessage = "Message received!";
