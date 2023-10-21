@@ -86,11 +86,10 @@ public class HostTCP : Host
 
             Debug.Log("json:   "+ jsonData);
 
-            // Process received message...
+            // Send the received message to all the clients
             SendServerMessage(jsonData);
-            MessageToSend deserializedData = JsonUtility.FromJson<MessageToSend>(receivedMessage);
-            Chat.OnMessageReceived(deserializedData);
-            
+            // Process received message...
+            DisplayOnChat(jsonData);
 
             // Send a response back to the client
             string responseMessage = "Message received!";
@@ -119,7 +118,7 @@ public class HostTCP : Host
         }
     }
 
-    public override void SendServerMessage(string message)
+    protected override void SendServerMessage(string message)
     {
         foreach (Socket client in clients)
         {

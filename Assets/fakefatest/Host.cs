@@ -15,8 +15,16 @@ public class Host : MonoBehaviour
         OnSendServerMessage -= SendServerMessage;
     }
     // Start is called before the first frame update
-    public virtual void SendServerMessage(string msg)
+    protected virtual void SendServerMessage(string msg)
     {
         Debug.Log("Server Message Sent!!!!!!");
+    }
+
+    protected void DisplayOnChat(string text)
+    {
+        //Deserialize json
+        MessageToSend deserializedData = JsonUtility.FromJson<MessageToSend>(text);
+        //Call the chat displaying function
+        Chat.OnMessageReceived(deserializedData);
     }
 }

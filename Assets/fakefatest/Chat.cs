@@ -23,16 +23,20 @@ public class Chat : MonoBehaviour
 
     private void Start()
     {
-        InvokeRepeating(nameof(Messaging), 2, 1);
+        InvokeRepeating(nameof(Messaging), 2, 0.2f);
         notificationSource = GetComponent<AudioSource>();
     }
 
     public void Messaging()
     {
-        if (messageQueue.Count > 0) 
-        {            
-            DisplayMessage(messageQueue.Dequeue());
-            notificationSource.Play();
+        if (messageQueue.Count > 0)
+        {
+            MessageToSend incomingMessage = messageQueue.Dequeue();
+            if (incomingMessage.username != userr.userName)
+            {
+                notificationSource.Play();
+                DisplayMessage(incomingMessage);
+            }
         }
     }
 
@@ -59,9 +63,12 @@ public class Chat : MonoBehaviour
         if(userr == null) { userr = new User(); }
         MessageToSend msg = new MessageToSend(userr, inputField.text);
         //SendMessageTCP(msg);
+
         DisplayMessage(msg);
-        
-        if(GameObject.Find("Server") != null) SendServerMessage(msg);
+        if (GameObject.Find("Server") != null)
+        {
+            SendServerMessage(msg);
+        }
         else SendChatMessage(msg);
 
         inputField.text = string.Empty;
