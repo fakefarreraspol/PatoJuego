@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text;
 using UnityEngine;
+using TMPro;
 
 public class ServerUDP : Host
 {
@@ -12,11 +13,26 @@ public class ServerUDP : Host
     private int port = 1803;
     private List<IPEndPoint> clients = new List<IPEndPoint>();
 
+    [SerializeField] private TMP_InputField portField;
+
     void Start()
     {
+        if (portField.text == string.Empty) port = 1803;
+        else port = int.Parse(portField.text);
+
+        StartServer();
+    }
+
+    void StartServer()
+    {
         udpServer = new UdpClient(port);
-        udpServer.BeginReceive(new AsyncCallback(ReceiveCallback), null);
-        //Debug.Log("Goozy server started, waiting for client...");
+        BeginReceive();
+        //Debug.Log("Goozy server started and waiting for client...");
+    }
+
+    void BeginReceive()
+    {
+        udpServer.BeginReceive(ReceiveCallback, null);
     }
 
     void ReceiveCallback(IAsyncResult ar)
@@ -24,6 +40,7 @@ public class ServerUDP : Host
         IPEndPoint clientEndPoint = new IPEndPoint(IPAddress.Any, port);
         byte[] data = udpServer.EndReceive(ar, ref clientEndPoint);
         string nameRecieved = Encoding.ASCII.GetString(data);
+
         if (!clients.Contains(clientEndPoint))
         {
             clients.Add(clientEndPoint);
@@ -53,7 +70,7 @@ public class ServerUDP : Host
     {
         byte[] data = Encoding.ASCII.GetBytes(message);
 
-        // Otherwise, broadcast to all connected clients.
+        // Broadcast to all connected clients.
         foreach (var client in clients)
         {
             udpServer.Send(data, data.Length, client);
