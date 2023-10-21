@@ -11,8 +11,10 @@ public class HostTCP : Host
 { 
     Socket socketListener;
     List<Socket> clients = new List<Socket>();
+
     public int port = 1803;
     public string serverName = "Goosy Server";
+
     [SerializeField] private TMP_InputField portField;
 
     void Start()
@@ -33,8 +35,7 @@ public class HostTCP : Host
 
         // Start listening with a backlog of pending connections
         socketListener.Listen(10);
-
-        Debug.Log("Goozy server started and listening on port " + port);
+        //Debug.Log("Goozy server started and listening on port " + port);
 
         BeginAccept();
     }
@@ -55,8 +56,7 @@ public class HostTCP : Host
         // Respond with server name.
         byte[] buffer = Encoding.ASCII.GetBytes(serverName);
         client.Send(buffer);
-
-        Debug.Log("Client connected from: " + client.RemoteEndPoint);
+        //Debug.Log("Client connected from: " + client.RemoteEndPoint);
 
         // Continue listening for more clients
         BeginAccept();
@@ -76,15 +76,14 @@ public class HostTCP : Host
 
         if (bytesRead > 0)
         {
-            Debug.Log("Host recieving callbacks");
             string receivedMessage = Encoding.ASCII.GetString(receiveBuffer, 0, bytesRead);
-            Debug.Log("Received from client: " + receivedMessage);
+            //Debug.Log("Received from client: " + receivedMessage);
 
             byte[] data = new byte[1024];
             
             string jsonData = Encoding.ASCII.GetString(receiveBuffer, 0, bytesRead);
 
-            Debug.Log("json:   "+ jsonData);
+            //Debug.Log("json:   "+ jsonData);
 
             // Send the received message to all the clients
             SendServerMessage(jsonData);
@@ -101,7 +100,25 @@ public class HostTCP : Host
         }
     }
 
-    void OnApplicationQuit()
+
+    protected override void SendServerMessage(string message)
+    {
+        foreach (Socket client in clients)
+        {
+            if (client != null && client.Connected)
+            {
+                byte[] messageData = Encoding.ASCII.GetBytes(message);
+                client.Send(messageData);
+            }
+        }
+    }
+
+    void OnDestroy()
+    {
+        CloseAllSockets();
+    }
+
+    void CloseAllSockets()
     {
         foreach (var client in clients)
         {
@@ -118,15 +135,8 @@ public class HostTCP : Host
         }
     }
 
-    protected override void SendServerMessage(string message)
+    void OnApplicationQuit()
     {
-        foreach (Socket client in clients)
-        {
-            if (client != null && client.Connected)
-            {
-                byte[] messageData = Encoding.ASCII.GetBytes(message);
-                client.Send(messageData);
-            }
-        }
+        CloseAllSockets();
     }
 }

@@ -22,6 +22,7 @@ public class Intro : MonoBehaviour
         host.SetActive(false);
         client.SetActive(false);
     }
+
     public void Join()
     {
         
@@ -34,20 +35,17 @@ public class Intro : MonoBehaviour
         client.SetActive(true);
         host.SetActive(false);
 
-
         if (dropdown.value == 0)
         {
             client.GetComponent<ClientTCP>().enabled = true;
         }
         else client.GetComponent<ClientUDP>().enabled = true;
 
-
-
         Destroy(host);
         DontDestroyOnLoad(userInfo);
         DontDestroyOnLoad(client);
-       // SceneManager.LoadScene("Chat");
     }
+
     public void Host()
     {
         host.SetActive(true);

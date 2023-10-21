@@ -16,7 +16,7 @@ public class ServerUDP : Host
     {
         udpServer = new UdpClient(port);
         udpServer.BeginReceive(new AsyncCallback(ReceiveCallback), null);
-        Debug.Log("Goozy server started, waiting for client...");
+        //Debug.Log("Goozy server started, waiting for client...");
     }
 
     void ReceiveCallback(IAsyncResult ar)
@@ -30,7 +30,7 @@ public class ServerUDP : Host
         }
 
         string message = "Welcome to Goozy server!";
-        Debug.Log("Goozy server received message: " + nameRecieved);
+        //Debug.Log("Goozy server received message: " + nameRecieved);
 
         // Send a response back to the client
         byte[] response = Encoding.ASCII.GetBytes(message);
@@ -38,7 +38,7 @@ public class ServerUDP : Host
 
         string jsonData = Encoding.ASCII.GetString(data);
 
-        Debug.Log("json:   " + jsonData);
+       //Debug.Log("json:   " + jsonData);
 
         // Send the received message to all the clients
         SendServerMessage(jsonData);

@@ -29,15 +29,14 @@ public class ClientTCP : Client
         string serverIP = ipInputField.text;
         string playerName = nameInputField.text;
 
-        Debug.Log("Attempting to connect to Goozy server at " + serverIP);
+        //Debug.Log("Attempting to connect to Goozy server at " + serverIP);
 
         client = new TcpClient();
 
         try
         {
             client.Connect(serverIP, 1803);
-
-            UnityEngine.Debug.Log("Connected to server at " + serverIP);
+            //UnityEngine.Debug.Log("Connected to server at " + serverIP);
 
             // After successfully connecting start sending and receiving messages.
 
@@ -64,12 +63,10 @@ public class ClientTCP : Client
 
             string serializedData = JsonUtility.ToJson(uSeR);
             byte[] jsonData = Encoding.ASCII.GetBytes(serializedData);
-            //stream.Write(jsonData, 0, jsonData.Length);
-
-            //stream.Write(clientMessageAsByteArray, 0, clientMessageAsByteArray.Length);
+           
             User test = JsonUtility.FromJson<User>(serializedData);
 
-            Debug.Log("Player name sent to server" + test.userName);
+            //Debug.Log("Player name sent to server" + test.userName);
 
 
             Intro.OnServerFinishedLoading();
@@ -96,7 +93,7 @@ public class ClientTCP : Client
         if (bytesRead > 0)
         {
             string receivedMessage = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-            Debug.Log("Received from server: " + receivedMessage);
+            //Debug.Log("Received from server: " + receivedMessage);
 
             if (IsValidJson(receivedMessage))
             {
@@ -121,19 +118,17 @@ public class ClientTCP : Client
             return;
         }
 
-        Debug.Log("info   " + info);
+        //Debug.Log("info   " + info);
         NetworkStream stream = client.GetStream();
 
         if (stream.CanWrite)
         {
             MessageToSend tst = JsonUtility.FromJson<MessageToSend>(info);
 
-            Debug.Log(tst.message);
-
             byte[] jsonData = Encoding.ASCII.GetBytes(info);
             stream.Write(jsonData, 0, jsonData.Length);
 
-            Debug.Log("Message sent!" + tst.message);
+            //Debug.Log("Message sent!" + tst.message);
 
         }
         else

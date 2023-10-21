@@ -62,7 +62,6 @@ public class Chat : MonoBehaviour
     {
         if(userr == null) { userr = new User(); }
         MessageToSend msg = new MessageToSend(userr, inputField.text);
-        //SendMessageTCP(msg);
 
         DisplayMessage(msg);
         if (GameObject.Find("Server") != null)
@@ -79,12 +78,9 @@ public class Chat : MonoBehaviour
     {
         if(msg.message == string.Empty) { return; }
         
-        Debug.Log("message printing: "+
-            msg.message);
+       // Debug.Log("message printing: " + msg.message);
+       // Debug.Log(msg.username);
 
-        Debug.Log(msg.username);
-
-        //messagePrefab.GetComponentInChildren<TextMeshProUGUI>().text = msg;
         messagePrefab.transform.Find("MsgText").GetComponent<TextMeshProUGUI>().text = msg.message;
         messagePrefab.transform.Find("MsgText").GetComponent<TextMeshProUGUI>().color = Color.black;
 

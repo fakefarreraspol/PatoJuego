@@ -22,8 +22,8 @@ public class ClientUDP : Client
     void Start()
     {
         udpClient = new UdpClient();
-        //.onClick.AddListener(SendMessageToServer());
         user = FindObjectOfType<UserInfo>().user;
+
         MessageToSend jguse = new MessageToSend(user, "Welcome to Goozy Server");
         string serializedDatajosegay = JsonUtility.ToJson(jguse);
         SendChatMessage(serializedDatajosegay);
@@ -50,12 +50,14 @@ public class ClientUDP : Client
         IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Any, port);
         byte[] data = udpClient.EndReceive(ar, ref serverEndPoint);
         string message = Encoding.ASCII.GetString(data);
-        Debug.Log("Received response from Goozy server: " + message);
+
+        //Debug.Log("Received response from Goozy server: " + message);
         if (IsValidJson(message))
         {
             MessageToSend deserializedData = JsonUtility.FromJson<MessageToSend>(message);
             Chat.OnMessageReceived(deserializedData);
         }
+
         BeginReceive();
     }
 

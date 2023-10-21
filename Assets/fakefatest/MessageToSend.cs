@@ -14,6 +14,5 @@ public class MessageToSend
         this.message = message;
         this.color = user.usernameColor;
     }
-
     
 }

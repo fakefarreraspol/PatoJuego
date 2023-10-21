@@ -17,7 +17,6 @@ public class Host : MonoBehaviour
     // Start is called before the first frame update
     protected virtual void SendServerMessage(string msg)
     {
-        Debug.Log("Server Message Sent!!!!!!");
     }
 
     protected void DisplayOnChat(string text)
