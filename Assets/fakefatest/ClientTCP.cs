@@ -15,31 +15,15 @@ public class ClientTCP : Client
     public TMP_InputField ipInputField;
     public TMP_InputField nameInputField;
     private User uSeR;
-
+    byte[] buffer = new byte[1024];
 
     TcpClient client;
-
 
     void Start()
     {
         uSeR = FindObjectOfType<UserInfo>().user;
         ConnectToServer();
-        
     }
-
-    //private void Update()
-    //{
-    //    NetworkStream stream = client.GetStream();
-
-    //    byte[] data = new byte[1024];
-    //    int bytesRead = stream.Read(data, 0, data.Length);
-
-    //    if (bytesRead > 0)
-    //    {
-    //        string message = Encoding.UTF8.GetString(data, 0, bytesRead);
-    //        Console.WriteLine("Received message from the server: " + message);
-    //    }
-    //}
 
     void ConnectToServer()
     {
@@ -96,8 +80,34 @@ public class ClientTCP : Client
             Debug.LogError("Cannot write to the stream.");
         }
 
-        
+        BeginReceive();
     }
+
+    void BeginReceive()
+    {
+        NetworkStream stream = client.GetStream();
+        stream.BeginRead(buffer, 0, buffer.Length, ReceiveCallback, stream);
+    }
+
+    void ReceiveCallback(IAsyncResult AR)
+    {
+        NetworkStream stream = (NetworkStream)AR.AsyncState;
+        int bytesRead = stream.EndRead(AR);
+
+        if (bytesRead > 0)
+        {
+            string receivedMessage = Encoding.ASCII.GetString(buffer, 0, bytesRead);
+            Debug.Log("Received from server: " + receivedMessage);
+
+            // After processing the received message, begin receiving again.
+            BeginReceive();
+        }
+        else
+        {
+            Debug.LogError("Connection closed.");
+        }
+    }
+
     public override void SendChatMessage(string info)
     {
         if (client == null || !client.Connected)

@@ -74,16 +74,11 @@ public class HostTCP : Host
         Socket client = (Socket)AR.AsyncState;
         int bytesRead = client.EndReceive(AR);
 
-
-        Debug.Log("sigma male");
-
         if (bytesRead > 0)
         {
-            Debug.Log("yooooooooo");
-            //string receivedData = Encoding.ASCII.GetString(receiveBuffer, 0, bytesRead);
-            //Debug.Log("Received from client: " + receivedData);
-            
-            
+            Debug.Log("Host recieving callbacks");
+            string receivedMessage = Encoding.ASCII.GetString(receiveBuffer, 0, bytesRead);
+            Debug.Log("Received from client: " + receivedMessage);
 
             byte[] data = new byte[1024];
             
@@ -91,13 +86,16 @@ public class HostTCP : Host
 
             Debug.Log("json:   "+ jsonData);
 
-            //User deserializedData = JsonUtility.FromJson<User>(jsonData);
-            MessageToSend deserializedData = JsonUtility.FromJson<MessageToSend>(jsonData);
-
+            // Process received message...
+            MessageToSend deserializedData = JsonUtility.FromJson<MessageToSend>(receivedMessage);
             Chat.OnMessageReceived(deserializedData);
-            //Debug.Log(deserializedData.userName + " has joined");
-            // Start another asynchronous read operation to keep reading data continuously
-            //GameObject.CreatePrimitive(PrimitiveType.Sphere);
+
+            // Send a response back to the client
+            string responseMessage = "Message received!";
+            byte[] responseData = Encoding.ASCII.GetBytes(responseMessage);
+            client.Send(responseData);
+
+            // Start listening again
             BeginReceive(client);
         }
     }
@@ -116,6 +114,18 @@ public class HostTCP : Host
         if (socketListener != null)
         {
             socketListener.Close();
+        }
+    }
+
+    public override void SendServerMessage(string message)
+    {
+        foreach (Socket client in clients)
+        {
+            if (client != null && client.Connected)
+            {
+                byte[] messageData = Encoding.ASCII.GetBytes(message);
+                client.Send(messageData);
+            }
         }
     }
 }

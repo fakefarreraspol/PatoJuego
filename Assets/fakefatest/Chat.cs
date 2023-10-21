@@ -34,8 +34,6 @@ public class Chat : MonoBehaviour
             DisplayMessage(messageQueue.Dequeue());
             notificationSource.Play();
         }
-        
-        
     }
 
     private void OnEnable()
@@ -65,10 +63,6 @@ public class Chat : MonoBehaviour
         
         if(GameObject.Find("Server") != null) SendServerMessage(msg);
         else SendChatMessage(msg);
-         
-
-
-
 
         inputField.text = string.Empty;
     }
@@ -83,7 +77,6 @@ public class Chat : MonoBehaviour
 
         Debug.Log(msg.username);
 
-        
         //messagePrefab.GetComponentInChildren<TextMeshProUGUI>().text = msg;
         messagePrefab.transform.Find("MsgText").GetComponent<TextMeshProUGUI>().text = msg.message;
         messagePrefab.transform.Find("MsgText").GetComponent<TextMeshProUGUI>().color = Color.black;
@@ -91,12 +84,7 @@ public class Chat : MonoBehaviour
         messagePrefab.transform.Find("MsgUserName").GetComponent<TextMeshProUGUI>().text = msg.username;
         messagePrefab.transform.Find("MsgUserName").gameObject.GetComponent<TextMeshProUGUI>().color = msg.color;
         Instantiate(messagePrefab, Vector3.zero, Quaternion.identity, content.transform);
-
-
-        
     }
-
-
 
     private void SendChatMessage(MessageToSend msg)
     {
@@ -109,13 +97,4 @@ public class Chat : MonoBehaviour
         string serializedData = JsonUtility.ToJson(msg);
         Host.OnSendServerMessage(serializedData);
     }
-
-
-
-
-
-
-
-
-
 }

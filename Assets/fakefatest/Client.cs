@@ -15,6 +15,5 @@ public class Client : MonoBehaviour
         OnSendMessage -= SendChatMessage;
     }
 
-
     public virtual void SendChatMessage(string message) { }
 }

@@ -15,7 +15,7 @@ public class Host : MonoBehaviour
         OnSendServerMessage -= SendServerMessage;
     }
     // Start is called before the first frame update
-    private void SendServerMessage(string msg)
+    public virtual void SendServerMessage(string msg)
     {
         Debug.Log("Server Message Sent!!!!!!");
     }
