@@ -7,8 +7,7 @@ using UnityEngine.UI;
 using TMPro;
 using Newtonsoft.Json;
 using System;
-//using JetBrains.Annotations;
-//using Mono.Cecil;
+
 
 public class ClientTCP : Client
 {
@@ -62,7 +61,7 @@ public class ClientTCP : Client
         NetworkStream stream = client.GetStream();
         if (stream.CanWrite)
         {
-            
+
             string serializedData = JsonUtility.ToJson(uSeR);
             byte[] jsonData = Encoding.ASCII.GetBytes(serializedData);
             //stream.Write(jsonData, 0, jsonData.Length);
@@ -72,7 +71,7 @@ public class ClientTCP : Client
 
             Debug.Log("Player name sent to server" + test.userName);
 
-            
+
             Intro.OnServerFinishedLoading();
         }
         else
@@ -99,14 +98,11 @@ public class ClientTCP : Client
             string receivedMessage = Encoding.ASCII.GetString(buffer, 0, bytesRead);
             Debug.Log("Received from server: " + receivedMessage);
 
-            if(IsValidJson(receivedMessage))
+            if (IsValidJson(receivedMessage))
             {
                 MessageToSend deserializedData = JsonUtility.FromJson<MessageToSend>(receivedMessage);
                 Chat.OnMessageReceived(deserializedData);
             }
-            
-            
-
 
             // After processing the received message, begin receiving again.
             BeginReceive();
@@ -124,8 +120,10 @@ public class ClientTCP : Client
             Debug.LogError("Not connected to server");
             return;
         }
-        Debug.Log("info   "+info);
+
+        Debug.Log("info   " + info);
         NetworkStream stream = client.GetStream();
+
         if (stream.CanWrite)
         {
             MessageToSend tst = JsonUtility.FromJson<MessageToSend>(info);
@@ -135,14 +133,26 @@ public class ClientTCP : Client
             byte[] jsonData = Encoding.ASCII.GetBytes(info);
             stream.Write(jsonData, 0, jsonData.Length);
 
+            Debug.Log("Message sent!" + tst.message);
 
-            Debug.Log("Message sent!"+ tst.message);
-
-            //Intro.OnServerFinishedLoading();
         }
         else
         {
             Debug.LogError("Cannot write to the stream.");
+        }
+    }
+
+    void OnDestroy()
+    {
+        CloseConnection();
+    }
+
+    void CloseConnection()
+    {
+        if (client != null && client.Connected)
+        {
+            client.Close();
+            client = null;
         }
     }
 }
