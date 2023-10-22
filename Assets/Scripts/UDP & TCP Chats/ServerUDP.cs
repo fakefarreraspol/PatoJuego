@@ -66,7 +66,7 @@ public class ServerUDP : Host
         udpServer.BeginReceive(new AsyncCallback(ReceiveCallback), null);
     }
 
-    protected void SendServerMessage(string message, IPEndPoint targetClient = null)
+    protected override void SendServerMessage(string message)
     {
         byte[] data = Encoding.ASCII.GetBytes(message);
 
