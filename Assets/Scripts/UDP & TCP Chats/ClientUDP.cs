@@ -29,7 +29,13 @@ public class ClientUDP : Client
         //SendChatMessage(serializedData);
         Intro.OnServerFinishedLoading();
     }
-
+    void BeginReceive()
+    {
+        if (udpClient != null)
+        {
+            udpClient.BeginReceive(new AsyncCallback(ReceiveCallback), null);
+        }
+    }
     public override void SendChatMessage(string message) 
     {
         try
@@ -52,6 +58,7 @@ public class ClientUDP : Client
         string message = Encoding.ASCII.GetString(data);
 
         Debug.Log("Received response from Goozy server: " + message);
+        //Only deserialize if the message is a json
         if (IsValidJson(message))
         {
             MessageToSend deserializedData = JsonUtility.FromJson<MessageToSend>(message);
@@ -61,15 +68,6 @@ public class ClientUDP : Client
         BeginReceive();
 
     }
-
-    void BeginReceive()
-    {
-        if (udpClient != null)
-        {
-            udpClient.BeginReceive(new AsyncCallback(ReceiveCallback), null);
-        }
-    }
-
     void OnDestroy()
     {
         if (udpClient != null)

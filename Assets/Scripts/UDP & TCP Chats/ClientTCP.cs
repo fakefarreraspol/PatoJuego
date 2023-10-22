@@ -39,7 +39,6 @@ public class ClientTCP : Client
             //UnityEngine.Debug.Log("Connected to server at " + serverIP);
 
             // After successfully connecting start sending and receiving messages.
-
             SendData(playerName);
 
         }

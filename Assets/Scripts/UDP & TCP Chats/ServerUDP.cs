@@ -46,21 +46,10 @@ public class ServerUDP : Host
             clients.Add(clientEndPoint);
         }
 
-        string message = "Welcome to Goozy server!";
-        //Debug.Log("Goozy server received message: " + nameRecieved);
-
-        // Send a response back to the client
-        byte[] response = Encoding.ASCII.GetBytes(message);
-        udpServer.Send(response, response.Length, clientEndPoint);
-
-        string jsonData = Encoding.ASCII.GetString(data);
-
-       //Debug.Log("json:   " + jsonData);
-
         // Send the received message to all the clients
-        SendServerMessage(jsonData);
+        SendServerMessage(nameRecieved);
         // Process received message...
-        DisplayOnChat(jsonData);
+        DisplayOnChat(nameRecieved);
 
         // Continue listening for messages
         udpServer.BeginReceive(new AsyncCallback(ReceiveCallback), null);
