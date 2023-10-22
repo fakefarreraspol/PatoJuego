@@ -86,4 +86,14 @@ public class Intro : MonoBehaviour
         SceneManager.LoadScene("Chat");
         OnServerFinishedLoading -= ChangeScene;
     }
+
+
+    public void ResetScene()
+    {
+        Destroy(GameObject.Find("UserInfo"));
+        Destroy(GameObject.Find("Client"));
+        Destroy(GameObject.Find("Server"));
+        SceneManager.LoadScene("Intro");
+
+    }
 }

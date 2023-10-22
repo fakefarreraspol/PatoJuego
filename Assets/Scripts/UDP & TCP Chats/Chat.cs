@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Chat : MonoBehaviour
@@ -107,5 +108,18 @@ public class Chat : MonoBehaviour
     {
         string serializedData = JsonUtility.ToJson(msg);
         Host.OnSendServerMessage(serializedData);
+    }
+
+
+
+
+
+
+    public void ResetGame()
+    {
+        Destroy(GameObject.Find("UserInfo"));
+        Destroy(GameObject.Find("Client"));
+        Destroy(GameObject.Find("Server"));
+        SceneManager.LoadScene("Intro");
     }
 }
