@@ -23,10 +23,8 @@ public class ClientUDP : Client
     {
         udpClient = new UdpClient();
         user = FindObjectOfType<UserInfo>().user;
-
-        //MessageToSend jguse = new MessageToSend(user, "Welcome to Goozy Server");
-        //string serializedData = JsonUtility.ToJson(jguse);
-        //SendChatMessage(serializedData);
+        
+        //Go to chat scene
         Intro.OnServerFinishedLoading();
     }
     void BeginReceive()

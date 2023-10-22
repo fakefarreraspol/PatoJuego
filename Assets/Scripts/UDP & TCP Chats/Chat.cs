@@ -27,6 +27,7 @@ public class Chat : MonoBehaviour
         notificationSource = GetComponent<AudioSource>();
     }
 
+    //Check if there are messages inside de queue and display them onscreen
     public void Messaging()
     {
         if (messageQueue.Count > 0)
@@ -48,6 +49,8 @@ public class Chat : MonoBehaviour
     {
         OnMessageReceived -= EnqueueMessage;
     }
+
+    //Take a received message and enqueue it
     public void EnqueueMessage(MessageToSend message)
     {
         messageQueue.Enqueue(message);
@@ -58,22 +61,27 @@ public class Chat : MonoBehaviour
         userr = FindObjectOfType<UserInfo>().user;
     }
 
+    //Function called when the send button is clicked
     public void SendMessage()
     {
+        //Check if the user is null and create a new one if it is
         if(userr == null) { userr = new User(); }
+        //Create a message with the text the user introduced in the text field
         MessageToSend msg = new MessageToSend(userr, inputField.text);
 
         DisplayMessage(msg);
+        //Call different sending function depending if the user is a host or a client
         if (GameObject.Find("Server") != null)
         {
             SendServerMessage(msg);
         }
         else SendChatMessage(msg);
 
+        //set the text field empty again
         inputField.text = string.Empty;
     }
 
-
+    //Displays a message using a prefab and the MessageToSend class
     private void DisplayMessage(MessageToSend msg)
     {
         if(msg.message == string.Empty) { return; }

@@ -14,7 +14,8 @@ public class Host : MonoBehaviour
     {
         OnSendServerMessage -= SendServerMessage;
     }
-    // Start is called before the first frame update
+
+    //Function called by chat which is overrided by the TCP or UDP script
     protected virtual void SendServerMessage(string msg)
     {
     }

@@ -103,6 +103,7 @@ public class HostTCP : Host
 
     protected override void SendServerMessage(string message)
     {
+        //Send the message to every client connected
         foreach (Socket client in clients)
         {
             if (client != null && client.Connected)

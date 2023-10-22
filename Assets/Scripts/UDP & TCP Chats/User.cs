@@ -36,10 +36,4 @@ public class User
         this.usernameColor = c;
     }
 
-    public void ChangeUser(string userName, Sprite userAvatar)
-    {
-        this.userName = userName;
-        this.userAvatar = userAvatar;
-
-    }
 }

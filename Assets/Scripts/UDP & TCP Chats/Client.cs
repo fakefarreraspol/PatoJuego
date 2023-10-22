@@ -10,14 +10,15 @@ public class Client : MonoBehaviour
     {
         OnSendMessage += SendChatMessage;
     }
-    private void DisEnable()
+    private void OnDisable()
     {
         OnSendMessage -= SendChatMessage;
     }
 
+    //Function called by chat which is overrided by the TCP or UDP script
     public virtual void SendChatMessage(string message) { }
 
-
+    //Function that checks if a string is a json and returns true or false
     protected bool IsValidJson(string jsonString)
     {
         try

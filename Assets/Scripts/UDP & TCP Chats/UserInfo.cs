@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class UserInfo : MonoBehaviour
 {
+    //Countainer of User
     public User user;
 
-    public void Update()
-    {
-        //Debug.Log(user);
-    }
 }
