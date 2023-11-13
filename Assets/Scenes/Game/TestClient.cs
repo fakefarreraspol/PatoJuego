@@ -11,70 +11,47 @@ using TMPro;
 
 public class TestClient : MonoBehaviour
 {
-    //public TMP_InputField nameInputField;
-    //public TMP_InputField ipInputField;
-    //public Button joinGameButton;
-
     private UdpClient udpClient;
-    private int port = 1803;
-
-    //private User user;
+    private string serverIP = "127.0.0.1"; // Change this to the IP address of your server
+    private int serverPort = 8080;
 
     void Start()
     {
-        udpClient = new UdpClient();
-        //user = FindObjectOfType<UserInfo>().user;
-        
-        //Go to chat scene
-        //Intro.OnServerFinishedLoading();
-    }
-    void BeginReceive()
-    {
-        if (udpClient != null)
-        {
-            udpClient.BeginReceive(new AsyncCallback(ReceiveCallback), null);
-        }
+        InitializeClient();
     }
 
-    private void Update()
+    private void InitializeClient()
     {
-        Transform player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-        SendDataToServer(player.position.x.ToString());
-        Debug.Log("Data Sent! " + player.position.x.ToString());
+        udpClient = new UdpClient();
     }
-    public void SendDataToServer(string message)
+
+    void Update()
+    {
+        // Example: Sending the position of an object (transform.position) to the server
+        Vector3 currentPosition = transform.position;
+        string message = currentPosition.x.ToString();
+
+        SendData(message);
+    }
+
+    private void SendData(string message)
     {
         try
         {
-            string ip = "192.168.2.23";
-            byte[] data = Encoding.ASCII.GetBytes(message);
-            udpClient.Send(data, data.Length, ip, port);
-            udpClient.BeginReceive(new AsyncCallback(ReceiveCallback), null);
+            byte[] data = Encoding.UTF8.GetBytes(message);
+            udpClient.Send(data, data.Length, serverIP, serverPort);
         }
         catch (Exception e)
         {
-            Debug.LogError($"Error sending message: {e.Message}");
+            Debug.LogError("Error sending data: " + e.Message);
         }
     }
 
-    void ReceiveCallback(IAsyncResult ar)
-    {
-        IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Any, port);
-        byte[] data = udpClient.EndReceive(ar, ref serverEndPoint);
-        string message = Encoding.ASCII.GetString(data);
-
-        Debug.Log("Received response from Goozy server: " + message);
-        //Only deserialize if the message is a json
-
-        
-
-    }
-    void OnDestroy()
+    void OnApplicationQuit()
     {
         if (udpClient != null)
         {
             udpClient.Close();
-            udpClient = null;
         }
     }
 }

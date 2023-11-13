@@ -10,60 +10,64 @@ using UnityEngine;
 public class TestServer : MonoBehaviour
 {
     private UdpClient udpServer;
-    private int port = 1803;
-    private List<IPEndPoint> clients = new List<IPEndPoint>();
+    private int port = 8080;
 
-    //[SerializeField] private TMP_InputField portField;
+
+    private Vector3 rValue;
+    [SerializeField] private GameObject malomalisimo;
 
     void Start()
     {
-        //if (portField.text == string.Empty) port = 1803;
-        //else port = int.Parse(portField.text);
-
-        StartServer();
+        InitializeServer();
     }
 
-    void StartServer()
+    private void InitializeServer()
     {
         udpServer = new UdpClient(port);
-        BeginReceive();
-        //Debug.Log("Goozy server started and waiting for client...");
-    }
+        Debug.Log("Server is listening on port " + port);
 
-    void BeginReceive()
-    {
+        // Start receiving data asynchronously
         udpServer.BeginReceive(ReceiveCallback, null);
     }
 
-    void ReceiveCallback(IAsyncResult ar)
+    private void ReceiveCallback(IAsyncResult result)
     {
-        IPEndPoint clientEndPoint = new IPEndPoint(IPAddress.Any, port);
-        byte[] data = udpServer.EndReceive(ar, ref clientEndPoint);
-        string nameRecieved = Encoding.ASCII.GetString(data);
-
-        if (!clients.Contains(clientEndPoint))
+        try
         {
-            clients.Add(clientEndPoint);
+            IPEndPoint remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
+            byte[] data = udpServer.EndReceive(result, ref remoteEndPoint);
+
+            if (data.Length > 0)
+            {
+                string message = Encoding.UTF8.GetString(data);
+                Debug.Log("Received from " + remoteEndPoint + ": " + message);
+
+                float w= float.Parse(message);
+                rValue = new Vector3(w, 0, 0);
+
+                Debug.Log("rrr, " + rValue.ToString());
+            }
+
+            // Continue listening for more data
+            udpServer.BeginReceive(ReceiveCallback, null);
         }
-
-        Debug.Log(nameRecieved);
-
-
-        Transform pibeMalo = GameObject.FindGameObjectWithTag("pibemalo").GetComponent<Transform>();
-        pibeMalo.position = new Vector3(float.Parse(nameRecieved), 0, 0);
-        BeginReceive();
-        // Continue listening for messages
-        udpServer.BeginReceive(new AsyncCallback(ReceiveCallback), null);
+        catch (Exception e)
+        {
+            Debug.LogError("Error receiving data: " + e.Message);
+        }
     }
 
-    
+    private void FixedUpdate()
+    {
 
-    void OnDestroy()
+        malomalisimo.transform.position = new Vector3(rValue.x, malomalisimo.transform.position.y, malomalisimo.transform.position.z);
+    }
+
+    void OnApplicationQuit()
     {
         if (udpServer != null)
         {
             udpServer.Close();
-            udpServer = null;
         }
     }
 }
