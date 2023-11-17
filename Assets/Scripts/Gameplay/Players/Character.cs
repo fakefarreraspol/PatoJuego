@@ -55,6 +55,7 @@ public class Character : MonoBehaviour
     {
         Vector2 velocity = new Vector2(moveVector.x * speed, 0);
         characterRb.velocity = velocity;
+        PlayerAnimations.OnSpriteChanged(velocity);
     }
 
     private void OnMovementPerformed(InputAction.CallbackContext value)

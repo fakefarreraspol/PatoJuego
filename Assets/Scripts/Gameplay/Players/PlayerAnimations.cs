@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
 using System;
+using UnityEditor.Experimental.GraphView;
 
 public class PlayerAnimations : MonoBehaviour
 {
@@ -32,25 +33,17 @@ public class PlayerAnimations : MonoBehaviour
 
     private void ChangeAnimation(Vector2 dir)
     {
-
-        if (dir != Vector2.zero)
-        {
-            if (dir.y < 0 && dir.x == 0) animator.SetTrigger("walkDown"); 
-            else if (dir.y > 0) animator.SetTrigger("walkUp"); 
-            else animator.SetTrigger("walkH");
-            
-        }
-
-
-
         if (dir != Vector2.zero)
         {
             animator.SetBool("isMoving", true);
         }
         else animator.SetBool("isMoving", false);
 
-
-
+        if (dir.y > 0)
+        {
+            animator.SetBool("Jump", true);
+        }
+        else animator.SetBool("Jump", false);
     }
 
     private void ChangeSpriteDirection(Vector2 dir)
