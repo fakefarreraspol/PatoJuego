@@ -124,6 +124,8 @@ public class fakeTestServer : MonoBehaviour
     {
         // Check for client timeouts
         CheckClientTimeouts();
+
+        SendServerMessage("sussy baka");
     }
 
     private void CheckClientTimeouts()
@@ -139,6 +141,30 @@ public class fakeTestServer : MonoBehaviour
             }
         }
     }
+
+
+    protected void SendServerMessage(string message)
+    {
+        byte[] data = Encoding.ASCII.GetBytes(message);
+
+        // Broadcast to all connected clients.
+        foreach (var client in connectedClients.Keys)
+        {
+            
+
+            try
+            {
+                byte[] messageData = Encoding.UTF8.GetBytes(message);
+                udpServer.Send(messageData, messageData.Length, client);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Error broadcasting message to client " + client + ": " + e.Message);
+            }
+        }
+    }
+
+
 
     void OnApplicationQuit()
     {

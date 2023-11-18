@@ -61,7 +61,7 @@ public class Character : MonoBehaviour
     private void OnMovementPerformed(InputAction.CallbackContext value)
     {
         moveVector = value.ReadValue<Vector2>();
-        Debug.Log(moveVector);
+        //Debug.Log(moveVector);
         //PlayerAnimations.OnSpriteChanged(moveVector);
     }
 
@@ -73,11 +73,11 @@ public class Character : MonoBehaviour
 
     private void OnJumpPerformed(InputAction.CallbackContext value)
     {
-        Debug.Log(value.ToString());
+        //Debug.Log(value.ToString());
     }
 
     private void OnJumpCancelled(InputAction.CallbackContext value)
     {
-        Debug.Log(value.ToString());
+        //Debug.Log(value.ToString());
     }
 }
