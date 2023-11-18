@@ -8,7 +8,6 @@ using TMPro;
 using UnityEngine;
 using System.Linq;
 
-
 public class TestServer : MonoBehaviour
 {
     private UdpClient udpServer;
@@ -52,7 +51,7 @@ public class TestServer : MonoBehaviour
                 PlayerActionData playerActionData = SerializationManager.Instance.DeserializeObject<PlayerActionData>(data);
 
                 // Schedule the processing on the main thread
-                UnityMainThreadDispatcher.Instance.Enqueue(() => UpdateGameState(playerActionData));
+                UnityMainThreadDispatcher.Instance().Enqueue(() => UpdateGameState(playerActionData));
             }
 
             // Continue listening for more data
@@ -76,6 +75,7 @@ public class TestServer : MonoBehaviour
             }
         }
     }
+
     private void UpdateGameState(PlayerActionData playerActionData)
     {
         // Example: Update the game state based on player action data
