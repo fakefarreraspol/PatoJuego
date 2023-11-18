@@ -8,6 +8,7 @@ using TMPro;
 using UnityEngine;
 using System.Linq;
 
+
 public class TestServer : MonoBehaviour
 {
     private UdpClient udpServer;
@@ -16,7 +17,7 @@ public class TestServer : MonoBehaviour
     private Dictionary<IPEndPoint, DateTime> lastReceivedTime = new Dictionary<IPEndPoint, DateTime>();
     private TimeSpan timeoutThreshold = TimeSpan.FromSeconds(5); // Adjust as needed
 
-    void Start()
+    private void Start()
     {
         InitializeServer();
     }
@@ -47,11 +48,11 @@ public class TestServer : MonoBehaviour
 
             if (data.Length > 0)
             {
-                string message = Encoding.UTF8.GetString(data);
-                Debug.Log("Received from " + remoteEndPoint + " (" + GetClientName(remoteEndPoint) + "): " + message);
+                // Deserialize the received data
+                PlayerActionData playerActionData = SerializationManager.Instance.DeserializeObject<PlayerActionData>(data);
 
-                // Update last received time for the client
-                lastReceivedTime[remoteEndPoint] = DateTime.Now;
+                // Schedule the processing on the main thread
+                UnityMainThreadDispatcher.Instance.Enqueue(() => UpdateGameState(playerActionData));
             }
 
             // Continue listening for more data
@@ -74,6 +75,11 @@ public class TestServer : MonoBehaviour
                 Debug.LogError("Error receiving data: " + e.Message);
             }
         }
+    }
+    private void UpdateGameState(PlayerActionData playerActionData)
+    {
+        // Example: Update the game state based on player action data
+        // Update player position, handle other actions, etc.
     }
 
     private void HandleClientDisconnect(IPEndPoint clientEndPoint)

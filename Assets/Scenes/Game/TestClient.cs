@@ -29,16 +29,21 @@ public class TestClient : MonoBehaviour
     {
         // Example: Sending the position of an object (transform.position) to the server
         Vector3 currentPosition = transform.position;
-        string message = currentPosition.x.ToString();
 
-        SendData(message);
+        // Instantiate PlayerActionData with the currentPosition
+        PlayerActionData playerActionData = new PlayerActionData(currentPosition);
+
+        // Serialize PlayerActionData to a byte array
+        byte[] serializedData = SerializationManager.Instance.SerializeObject(playerActionData);
+
+        // Send the serialized data
+        SendData(serializedData);
     }
 
-    private void SendData(string message)
+    private void SendData(byte[] data)
     {
         try
         {
-            byte[] data = Encoding.UTF8.GetBytes(message);
             udpClient.Send(data, data.Length, serverIP, serverPort);
         }
         catch (Exception e)
