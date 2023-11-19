@@ -23,6 +23,15 @@ public class Character : MonoBehaviour
     private Rigidbody2D characterRb;
     private Vector2 moveVector = Vector2.zero;
 
+
+
+    // Variables
+    private bool canJump = true;
+    private bool isJumping = false;
+    private bool jumped = false;
+    [SerializeField] protected float jumpForce = 1000.0f; 
+
+
     private void Awake()
     {
         characterRb = GetComponent<Rigidbody2D>();
@@ -36,7 +45,7 @@ public class Character : MonoBehaviour
         userInput.Player.Move.canceled += OnMovementStopped;
 
         userInput.Player.Jump.performed += OnJumpPerformed;
-        userInput.Player.Jump.performed += OnJumpCancelled;
+        userInput.Player.Jump.canceled += OnJumpCancelled;
     }
     private void OnDisable()
     {
@@ -46,7 +55,7 @@ public class Character : MonoBehaviour
         userInput.Player.Move.canceled -= OnMovementStopped;
 
         userInput.Player.Jump.performed -= OnJumpPerformed;
-        userInput.Player.Jump.performed -= OnJumpCancelled;
+        userInput.Player.Jump.canceled -= OnJumpCancelled;
     }
     
     
@@ -56,6 +65,13 @@ public class Character : MonoBehaviour
         Vector2 velocity = new Vector2(moveVector.x * speed, 0);
         characterRb.velocity = velocity;
         PlayerAnimations.OnSpriteChanged(velocity);
+
+        if (canJump && jumped)
+        {
+            Debug.Log("Jumped!!");
+            characterRb.AddForce(new Vector2(0, jumpForce));
+            canJump = false;
+        }
     }
 
     private void OnMovementPerformed(InputAction.CallbackContext value)
@@ -73,11 +89,12 @@ public class Character : MonoBehaviour
 
     private void OnJumpPerformed(InputAction.CallbackContext value)
     {
-        //Debug.Log(value.ToString());
+        jumped = true;
+        Debug.Log(value.ToString());
     }
 
     private void OnJumpCancelled(InputAction.CallbackContext value)
     {
-        //Debug.Log(value.ToString());
+        jumped = false;
     }
 }
