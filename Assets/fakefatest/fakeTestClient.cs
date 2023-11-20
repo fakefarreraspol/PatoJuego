@@ -12,6 +12,13 @@ public class fakeTestClient : MonoBehaviour
     private string serverIP = "127.0.0.1"; // Change this to the IP address of your server
     private int serverPort = 8080;
 
+
+    [SerializeField] private Character chRef;
+
+    private void Awake()
+    {
+        chRef = FindObjectOfType<Character>();
+    }
     void Start()
     {
         InitializeClient();
@@ -46,11 +53,11 @@ public class fakeTestClient : MonoBehaviour
 
     void Update()
     {
-        // Example: Sending the position of an object (transform.position) to the server
-        Vector3 currentPosition = transform.position;
-        string message = currentPosition.x + "," + currentPosition.y + "," + currentPosition.z;
+        fakePlayerData pDatasa = new fakePlayerData(transform.position, chRef.GetPlayerDir(), chRef.DidPlayerShoot());
+        string message = JsonUtility.ToJson(pDatasa);
 
         SendData(message);
+        Debug.Log(message);
     }
 
     private void SendData(string message)

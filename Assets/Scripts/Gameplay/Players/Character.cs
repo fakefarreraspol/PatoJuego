@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,9 +15,18 @@ public class Character : MonoBehaviour
 
     private Vector2 moveVector = Vector2.zero;
 
-    // Variables
+
+    private bool shoot = false;
+
+
     private bool canJump = true;
     private bool jumped = false;
+
+
+
+
+
+    
 
     private void Awake()
     {
@@ -33,6 +43,8 @@ public class Character : MonoBehaviour
 
         userInput.Player.Jump.performed += OnJumpPerformed;
         userInput.Player.Jump.canceled += OnJumpCancelled;
+
+        
     }
 
     private void OnDisable()
@@ -92,4 +104,22 @@ public class Character : MonoBehaviour
         jumped = false;
         canJump = true;
     }
+
+    public Vector2 GetPlayerDir()
+    {
+        return moveVector;
+    }
+    public bool DidPlayerShoot()
+    {
+        return shoot;
+    }
+
 }
+
+
+
+
+
+    
+
+
