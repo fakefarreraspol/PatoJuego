@@ -16,9 +16,14 @@ public class fakeTestServer : MonoBehaviour
     private Dictionary<IPEndPoint, bool> isDisconnected = new Dictionary<IPEndPoint, bool>();
     private TimeSpan timeoutThreshold = TimeSpan.FromSeconds(5); // Adjust as needed
 
+
+
+    fakeDeserealizer fakeDeserealizer;
     void Start()
     {
         InitializeServer();
+
+        fakeDeserealizer = new fakeDeserealizer();
     }
 
     private void InitializeServer()
@@ -63,8 +68,8 @@ public class fakeTestServer : MonoBehaviour
             if (data.Length > 0)
             {
                 string message = Encoding.UTF8.GetString(data);
-                Debug.Log("Received from " + remoteEndPoint + " (" + GetClientName(remoteEndPoint) + "): " + message);
-
+                //Debug.Log("Received from " + remoteEndPoint + " (" + GetClientName(remoteEndPoint) + "): " + message);
+                fakeDeserealizer.Deserealize(message);
                 // Update last received time for the client
                 lastReceivedTime[remoteEndPoint] = DateTime.Now;
             }
