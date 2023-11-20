@@ -11,22 +11,28 @@ public class Character : MonoBehaviour
 
     [SerializeField] private int health;
     private float speed = 20;
-    [SerializeField] private float jumpForce = 3000.0f;
+    [SerializeField] private float jumpForce = 100.0f;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private float jumpCooldown = 1.0f; // Adjust the cooldown duration as needed
+    private float jumpCooldownTimer = 0.0f;
+    public float groundCheckRadius = 0.2f;
 
+    private int damage;
+    private float rateOfFire;
+    private float cooldown;
+
+    protected bool isPlayerAttacking = false;
+    protected bool canPlayerAttack = true;
+    // Update is called once per frame
+    protected Vector2 attackVector = Vector2.zero;
     private Vector2 moveVector = Vector2.zero;
-
 
     private bool shoot = false;
 
-
     private bool canJump = true;
+    private bool isJumping = false;
     private bool jumped = false;
-
-
-
-
-
-    
 
     private void Awake()
     {
@@ -62,21 +68,79 @@ public class Character : MonoBehaviour
     {
         MoveCharacter();
         HandleJump();
+        CheckGrounded();
+
+        // Update the jump cooldown timer
+        if (!canJump)
+        {
+            jumpCooldownTimer -= Time.fixedDeltaTime;
+            if (jumpCooldownTimer <= 0.0f)
+            {
+                canJump = true;
+                jumpCooldownTimer = 0.0f;
+            }
+        }
     }
 
     private void MoveCharacter()
     {
         Vector2 velocity = new Vector2(moveVector.x * speed, characterRb.velocity.y);
         characterRb.velocity = velocity;
+        PlayerAnimations.OnSpriteChanged(velocity);
+
     }
 
+    private bool IsGrounded()
+    {
+        // Draw a debug ray to visualize the ground check
+        Debug.DrawRay(transform.position, Vector2.down * groundCheckRadius, Color.red);
+
+        // Perform the actual ground check using Physics2D.Raycast
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, groundCheckRadius, groundLayer);
+
+        // Return true if the ray hits something (ground)
+        return hit.collider != null;
+    }
+
+    private void CheckGrounded()
+    {
+        if (IsGrounded())
+        {
+            canJump = true;
+            isJumping = false;
+        }
+    }
     private void HandleJump()
     {
         if (canJump && jumped)
         {
             Debug.Log("Jumped!!");
-            characterRb.AddForce(new Vector2(0, jumpForce));
+            Vector2 jumpVelocity = new Vector2(0, jumpForce);
+            characterRb.AddForce(jumpVelocity);
+
+            // Update the character's state
             canJump = false;
+            jumped = false;
+            isJumping = true;
+
+            // Pass the jumpVelocity to OnSpriteChanged
+            PlayerAnimations.OnSpriteChanged(jumpVelocity);
+            // Start the jump cooldown timer
+            jumpCooldownTimer = jumpCooldown;
+        }
+    }
+
+    private void OnJumpPerformed(InputAction.CallbackContext value)
+    {
+        if (canJump)
+        {
+            jumped = true;
+            canJump = false;
+            isJumping = false;
+            Debug.Log(value.ToString());
+
+            // Start the jump cooldown timer
+            jumpCooldownTimer = jumpCooldown;
         }
     }
 
@@ -89,14 +153,6 @@ public class Character : MonoBehaviour
     private void OnMovementStopped(InputAction.CallbackContext value)
     {
         moveVector = Vector2.zero;
-    }
-
-    private void OnJumpPerformed(InputAction.CallbackContext value)
-    {
-        if (canJump)
-        {
-            jumped = true;
-        }
     }
 
     private void OnJumpCancelled(InputAction.CallbackContext value)
@@ -115,11 +171,4 @@ public class Character : MonoBehaviour
     }
 
 }
-
-
-
-
-
-    
-
 

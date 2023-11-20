@@ -32,13 +32,13 @@ public class PlayerAnimations : MonoBehaviour
 
     private void ChangeAnimation(Vector2 dir)
     {
-        if (dir != Vector2.zero)
+        if (dir.x != 0)
         {
             animator.SetBool("isMoving", true);
         }
         else animator.SetBool("isMoving", false);
 
-        if (dir.y > 0)
+        if (dir.y != 0)
         {
             animator.SetBool("Jump", true);
         }
