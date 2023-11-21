@@ -57,7 +57,7 @@ public class fakeTestClient : MonoBehaviour
         string message = JsonUtility.ToJson(pDatasa);
 
         SendData(message);
-        Debug.Log(message);
+        //Debug.Log(message);
     }
 
     private void SendData(string message)

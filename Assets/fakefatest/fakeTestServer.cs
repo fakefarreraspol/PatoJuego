@@ -11,7 +11,7 @@ public class fakeTestServer : MonoBehaviour
 {
     private UdpClient udpServer;
     private int port = 8080;
-    private Dictionary<IPEndPoint, string> connectedClients = new Dictionary<IPEndPoint, string>();
+    private Dictionary<IPEndPoint, ClientInfo> connectedClients = new Dictionary<IPEndPoint, ClientInfo>();
     private Dictionary<IPEndPoint, DateTime> lastReceivedTime = new Dictionary<IPEndPoint, DateTime>();
     private Dictionary<IPEndPoint, bool> isDisconnected = new Dictionary<IPEndPoint, bool>();
     private TimeSpan timeoutThreshold = TimeSpan.FromSeconds(5); // Adjust as needed
@@ -19,6 +19,14 @@ public class fakeTestServer : MonoBehaviour
 
 
     fakeDeserealizer fakeDeserealizer;
+
+
+    private int nextClientId = 1;
+
+    private class ClientInfo
+    {
+        public int Id { get; set; }
+    }
     void Start()
     {
         InitializeServer();
@@ -100,37 +108,32 @@ public class fakeTestServer : MonoBehaviour
     {
         Debug.Log("New client joined: " + clientEndPoint);
         // Add the new client to the dictionaries
-        connectedClients.Add(clientEndPoint, "Client" + connectedClients.Count);
+
+        int clientId = nextClientId++;
+        connectedClients.Add(clientEndPoint, new ClientInfo { Id = clientId});
         lastReceivedTime.Add(clientEndPoint, DateTime.Now);
         isDisconnected.Add(clientEndPoint, false);
+
+        string welcomeMessage = $"Welcome! Your ID is {clientId}";
+        SendServerMessage(welcomeMessage, clientEndPoint);
     }
 
     private void HandleClientDisconnect(IPEndPoint clientEndPoint)
     {
-        Debug.Log("Client " + GetClientName(clientEndPoint) + " has disconnected.");
+        Debug.Log("Client (ID: " + connectedClients[clientEndPoint].Id + " has disconnected.");
         connectedClients.Remove(clientEndPoint);
         lastReceivedTime.Remove(clientEndPoint);
         isDisconnected[clientEndPoint] = true;
     }
 
-    private string GetClientName(IPEndPoint clientEndPoint)
-    {
-        if (connectedClients.ContainsKey(clientEndPoint))
-        {
-            return connectedClients[clientEndPoint];
-        }
-        else
-        {
-            return "Unknown Client";
-        }
-    }
+    
 
     void Update()
     {
         // Check for client timeouts
         CheckClientTimeouts();
 
-        SendServerMessage("sussy baka");
+        SendServerMessage("Hola guapo", GetEndPointById(1));
     }
 
     private void CheckClientTimeouts()
@@ -148,28 +151,47 @@ public class fakeTestServer : MonoBehaviour
     }
 
 
-    protected void SendServerMessage(string message)
+    protected void SendServerMessage(string message, IPEndPoint IPpoint)
     {
         byte[] data = Encoding.ASCII.GetBytes(message);
 
         // Broadcast to all connected clients.
-        foreach (var client in connectedClients.Keys)
-        {
-            
+        //foreach (var client in connectedClients.Keys)
+        //{
 
-            try
-            {
-                byte[] messageData = Encoding.UTF8.GetBytes(message);
-                udpServer.Send(messageData, messageData.Length, client);
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("Error broadcasting message to client " + client + ": " + e.Message);
-            }
+
+        //    try
+        //    {
+        //        byte[] messageData = Encoding.UTF8.GetBytes(message);
+        //        udpServer.Send(messageData, messageData.Length, client);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Debug.LogError("Error broadcasting message to client " + client + ": " + e.Message);
+        //    }
+        //}
+        try
+        {
+            byte[] messageData = Encoding.UTF8.GetBytes(message);
+            udpServer.Send(messageData, messageData.Length, IPpoint);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Error broadcasting message to client " + IPpoint + ": " + e.Message);
         }
     }
 
-
+    private IPEndPoint GetEndPointById(int clientId)
+    {
+        foreach (var kvp in connectedClients)
+        {
+            if (kvp.Value.Id == clientId)
+            {
+                return kvp.Key;
+            }
+        }
+        return null; // Client not found
+    }
 
     void OnApplicationQuit()
     {
