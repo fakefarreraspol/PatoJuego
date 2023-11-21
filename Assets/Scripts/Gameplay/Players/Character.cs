@@ -3,27 +3,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.Rendering.DebugUI;
 
 public class Character : MonoBehaviour
 {
     private Controller userInput;
     private Rigidbody2D characterRb;
 
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private Transform shootPoint;
+
     [SerializeField] private int health;
     private float speed = 20;
     [SerializeField] private float jumpForce = 100.0f;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private float jumpCooldown = 1.0f; // Adjust the cooldown duration as needed
+    [SerializeField] private float jumpCooldown = 1.0f;
+    [SerializeField] private float shootCooldown = 0.5f;
+
     private float jumpCooldownTimer = 0.0f;
     public float groundCheckRadius = 0.2f;
 
-    private int damage;
-    private float rateOfFire;
-    private float cooldown;
+    private float shootCooldownTimer = 0.0f;
+    private bool canShoot = true;
+    protected bool isShooting = false;
+    public Vector2 playerDir = Vector2.zero;
 
-    protected bool isPlayerAttacking = false;
-    protected bool canPlayerAttack = true;
+    //private int damage;
+    //private float rateOfFire;
+    //private float cooldown;
+
     // Update is called once per frame
     protected Vector2 attackVector = Vector2.zero;
     private Vector2 moveVector = Vector2.zero;
@@ -50,7 +59,7 @@ public class Character : MonoBehaviour
         userInput.Player.Jump.performed += OnJumpPerformed;
         userInput.Player.Jump.canceled += OnJumpCancelled;
 
-        
+        userInput.Player.Shoot.performed += OnShoot;
     }
 
     private void OnDisable()
@@ -62,6 +71,8 @@ public class Character : MonoBehaviour
 
         userInput.Player.Jump.performed -= OnJumpPerformed;
         userInput.Player.Jump.canceled -= OnJumpCancelled;
+
+        userInput.Player.Shoot.performed -= OnShoot;
     }
 
     private void FixedUpdate()
@@ -69,6 +80,8 @@ public class Character : MonoBehaviour
         MoveCharacter();
         HandleJump();
         CheckGrounded();
+        HandleShootingCooldown();
+        HandleShooting();
 
         // Update the jump cooldown timer
         if (!canJump)
@@ -81,7 +94,6 @@ public class Character : MonoBehaviour
             }
         }
     }
-
     private void MoveCharacter()
     {
         Vector2 velocity = new Vector2(moveVector.x * speed, characterRb.velocity.y);
@@ -144,10 +156,55 @@ public class Character : MonoBehaviour
         }
     }
 
+    private void HandleShootingCooldown()
+    {
+        if (!canShoot)
+        {
+            shootCooldownTimer -= Time.fixedDeltaTime;
+            if (shootCooldownTimer <= 0.0f)
+            {
+                canShoot = true;
+                shootCooldownTimer = 0.0f;
+            }
+        }
+    }
+
+    private void HandleShooting()
+    {
+        if (canShoot && shoot)
+        {
+            Debug.Log("Shot!");
+
+            GameObject bullet = Instantiate(bulletPrefab, shootPoint.position, shootPoint.rotation);
+            bullet.GetComponent<Bullet2D>().dir = playerDir;
+            canShoot = false;
+            shootCooldownTimer = shootCooldown;
+            shoot = false; // Reset the shooting flag
+            isShooting = true;
+        }
+    }
+
+    // Input System callback for shooting
+    public void OnShoot(InputAction.CallbackContext value)
+    {
+        Debug.Log(value.ToString());
+        if (canShoot)
+        {
+            shoot = true;
+            canShoot = false;
+            isShooting = false;
+            Debug.Log(value.ToString());
+
+            // Start the jump cooldown timer
+            shootCooldownTimer = shootCooldown;
+        }
+    }
+
     private void OnMovementPerformed(InputAction.CallbackContext value)
     {
         moveVector = value.ReadValue<Vector2>();
         // Debug.Log(moveVector);
+        playerDir = value.ReadValue<Vector2>().normalized;
     }
 
     private void OnMovementStopped(InputAction.CallbackContext value)
