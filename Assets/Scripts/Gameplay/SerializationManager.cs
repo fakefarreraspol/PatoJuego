@@ -7,58 +7,33 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public class SerializationManager : MonoBehaviour
 {
-    // Singleton pattern for easy access throughout the project
-    private static SerializationManager instance;
-
-    public static SerializationManager Instance
+    private bool IsValidJson(string jsonString)
     {
-        get
+        try
         {
-            if (instance == null)
-            {
-                instance = FindObjectOfType<SerializationManager>();
-                if (instance == null)
-                {
-                    GameObject managerObject = new GameObject("SerializationManager");
-                    instance = managerObject.AddComponent<SerializationManager>();
-                }
-            }
-            return instance;
+            JsonUtility.FromJsonOverwrite(jsonString, new object());
+            return true;
+        }
+        catch (System.Exception)
+        {
+            return false;
         }
     }
 
-    // Serialize an object to a byte array
-    public byte[] SerializeObject(object obj)
+
+    public void Deserealize(string Json)
     {
-        BinaryFormatter formatter = new BinaryFormatter();
-        using (MemoryStream stream = new MemoryStream())
+        if (IsValidJson(Json))
         {
-            formatter.Serialize(stream, obj);
-            return stream.ToArray();
+            PlayerData(Json);
         }
     }
 
-    // Deserialize a byte array to an object
-    public T DeserializeObject<T>(byte[] data)
+    public PlayerActionData PlayerData(string JSon)
     {
-        BinaryFormatter formatter = new BinaryFormatter();
-        using (MemoryStream stream = new MemoryStream(data))
-        {
-            return (T)formatter.Deserialize(stream);
-        }
-    }
+        PlayerActionData pData = JsonUtility.FromJson<PlayerActionData>(JSon);
+        Debug.Log(pData.playerTransform);
+        return pData;
 
-    // Example: Serialize a UserInfo object
-    public byte[] SaveUserInfo(UserInfo userInfo)
-    {
-        byte[] serializedData = SerializeObject(userInfo);
-        // Save or send the serializedData as needed
-        return serializedData;
-    }
-
-    // Example: Deserialize a UserInfo object
-    public UserInfo LoadUserInfo(byte[] savedData)
-    {
-        return DeserializeObject<UserInfo>(savedData);
     }
 }
