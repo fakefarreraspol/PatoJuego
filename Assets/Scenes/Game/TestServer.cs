@@ -12,13 +12,27 @@ public class TestServer : MonoBehaviour
 {
     private UdpClient udpServer;
     private int port = 8080;
-    private Dictionary<IPEndPoint, string> connectedClients = new Dictionary<IPEndPoint, string>();
+    private Dictionary<IPEndPoint, ClientInfo> connectedClients = new Dictionary<IPEndPoint, ClientInfo>();
     private Dictionary<IPEndPoint, DateTime> lastReceivedTime = new Dictionary<IPEndPoint, DateTime>();
+    private Dictionary<IPEndPoint, bool> isDisconnected = new Dictionary<IPEndPoint, bool>();
     private TimeSpan timeoutThreshold = TimeSpan.FromSeconds(5); // Adjust as needed
 
-    private void Start()
+
+
+    SerializationManager serializationManager;
+
+
+    private int nextClientId = 1;
+
+    private class ClientInfo
+    {
+        public int Id { get; set; }
+    }
+    void Start()
     {
         InitializeServer();
+
+        serializationManager = new SerializationManager();
     }
 
     private void InitializeServer()
@@ -45,13 +59,28 @@ public class TestServer : MonoBehaviour
                 return;
             }
 
+            // If the client is disconnected, ignore the received data
+            if (isDisconnected.ContainsKey(remoteEndPoint) && isDisconnected[remoteEndPoint])
+            {
+                return;
+            }
+
+            // If the client is not in the connectedClients dictionary, it's a new client
+            if (!connectedClients.ContainsKey(remoteEndPoint))
+            {
+                if (!isDisconnected.ContainsKey(remoteEndPoint) || !isDisconnected[remoteEndPoint])
+                {
+                    HandleNewClient(remoteEndPoint);
+                }
+            }
+
             if (data.Length > 0)
             {
-                // Deserialize the received data
-                PlayerActionData playerActionData = SerializationManager.Instance.DeserializeObject<PlayerActionData>(data);
-
-                // Schedule the processing on the main thread
-                UnityMainThreadDispatcher.Instance().Enqueue(() => UpdateGameState(playerActionData));
+                string message = Encoding.UTF8.GetString(data);
+                //Debug.Log("Received from " + remoteEndPoint + " (" + GetClientName(remoteEndPoint) + "): " + message);
+                serializationManager.Deserealize(message);
+                // Update last received time for the client
+                lastReceivedTime[remoteEndPoint] = DateTime.Now;
             }
 
             // Continue listening for more data
@@ -76,38 +105,37 @@ public class TestServer : MonoBehaviour
         }
     }
 
-    private void UpdateGameState(PlayerActionData playerActionData)
+
+    private void HandleNewClient(IPEndPoint clientEndPoint)
     {
-        // Example: Update the game state based on player action data
-        // Update player position, handle other actions, etc.
+        Debug.Log("New client joined: " + clientEndPoint);
+        // Add the new client to the dictionaries
+
+        int clientId = nextClientId++;
+        connectedClients.Add(clientEndPoint, new ClientInfo { Id = clientId });
+        lastReceivedTime.Add(clientEndPoint, DateTime.Now);
+        isDisconnected.Add(clientEndPoint, false);
+
+        string welcomeMessage = $"Welcome! Your ID is {clientId}";
+        SendServerMessage(welcomeMessage, clientEndPoint);
     }
 
     private void HandleClientDisconnect(IPEndPoint clientEndPoint)
     {
-        Debug.Log("Client " + GetClientName(clientEndPoint) + " has disconnected.");
+        Debug.Log("Client (ID: " + connectedClients[clientEndPoint].Id + " has disconnected.");
         connectedClients.Remove(clientEndPoint);
         lastReceivedTime.Remove(clientEndPoint);
+        isDisconnected[clientEndPoint] = true;
     }
 
-    private string GetClientName(IPEndPoint clientEndPoint)
-    {
-        if (connectedClients.ContainsKey(clientEndPoint))
-        {
-            return connectedClients[clientEndPoint];
-        }
-        else
-        {
-            string clientName = "Client" + connectedClients.Count;
-            connectedClients.Add(clientEndPoint, clientName);
-            lastReceivedTime.Add(clientEndPoint, DateTime.Now);
-            return clientName;
-        }
-    }
+
 
     void Update()
     {
         // Check for client timeouts
         CheckClientTimeouts();
+
+        SendServerMessage("Hola guapo", GetEndPointById(1));
     }
 
     private void CheckClientTimeouts()
@@ -116,12 +144,58 @@ public class TestServer : MonoBehaviour
 
         foreach (var kvp in lastReceivedTime.ToList())
         {
-            if (currentTime - kvp.Value > timeoutThreshold)
+            if (!isDisconnected[kvp.Key] && currentTime - kvp.Value > timeoutThreshold)
             {
                 // The client has not sent data for a while, consider it disconnected
                 HandleClientDisconnect(kvp.Key);
             }
         }
+    }
+
+
+    protected void SendServerMessage(string message, IPEndPoint IPpoint)
+    {
+        byte[] data = Encoding.ASCII.GetBytes(message);
+
+        // Broadcast to all connected clients.
+        //foreach (var client in connectedClients.Keys)
+        //{
+
+
+        //    try
+        //    {
+        //        byte[] messageData = Encoding.UTF8.GetBytes(message);
+        //        udpServer.Send(messageData, messageData.Length, client);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Debug.LogError("Error broadcasting message to client " + client + ": " + e.Message);
+        //    }
+        //}
+        if (IPpoint != null)
+        {
+            try
+            {
+                byte[] messageData = Encoding.UTF8.GetBytes(message);
+                udpServer.Send(messageData, messageData.Length, IPpoint);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Error broadcasting message to client " + IPpoint + ": " + e.Message);
+            }
+        }
+    }
+
+    private IPEndPoint GetEndPointById(int clientId)
+    {
+        foreach (var kvp in connectedClients)
+        {
+            if (kvp.Value.Id == clientId)
+            {
+                return kvp.Key;
+            }
+        }
+        return null; // Client not found
     }
 
     void OnApplicationQuit()

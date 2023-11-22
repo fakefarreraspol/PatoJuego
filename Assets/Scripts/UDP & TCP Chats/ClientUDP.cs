@@ -10,23 +10,22 @@ using TMPro;
 
 public class ClientUDP : Client
 {
-    public TMP_InputField nameInputField;
-    public TMP_InputField ipInputField;
-    public Button joinGameButton;
-
     private UdpClient udpClient;
-    private int port = 1803;
+    private string serverIP = "127.0.0.1"; // Change this to the IP address of your server
+    private int serverPort = 8080;
 
-    private User user;
 
+    [SerializeField] private Character chRef;
+
+    private void Awake()
+    {
+        chRef = FindObjectOfType<Character>();
+    }
     void Start()
     {
-        udpClient = new UdpClient();
-        user = FindObjectOfType<UserInfo>().user;
-        
-        //Go to chat scene
-        Intro.OnServerFinishedLoading();
+        InitializeClient();
     }
+
     void BeginReceive()
     {
         if (udpClient != null)
@@ -34,44 +33,53 @@ public class ClientUDP : Client
             udpClient.BeginReceive(new AsyncCallback(ReceiveCallback), null);
         }
     }
-    public override void SendChatMessage(string message) 
-    {
-        try
-        {
-            string ip = ipInputField.text;
-            byte[] data = Encoding.ASCII.GetBytes(message);
-            udpClient.Send(data, data.Length, ip, port);
-            udpClient.BeginReceive(new AsyncCallback(ReceiveCallback), null);
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"Error sending message: {e.Message}");
-        }
-    }
-
     void ReceiveCallback(IAsyncResult ar)
     {
-        IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Any, port);
+        IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Any, serverPort);
         byte[] data = udpClient.EndReceive(ar, ref serverEndPoint);
         string message = Encoding.ASCII.GetString(data);
 
         Debug.Log("Received response from Goozy server: " + message);
         //Only deserialize if the message is a json
-        if (IsValidJson(message))
-        {
-            MessageToSend deserializedData = JsonUtility.FromJson<MessageToSend>(message);
-            Chat.OnMessageReceived(deserializedData);
-        }
+
 
         BeginReceive();
 
     }
-    void OnDestroy()
+
+    private void InitializeClient()
+    {
+        udpClient = new UdpClient();
+        udpClient.BeginReceive(new AsyncCallback(ReceiveCallback), null);
+    }
+
+    void Update()
+    {
+        PlayerActionData pDatasa = new PlayerActionData(transform.position, chRef.GetPlayerDir(), chRef.DidPlayerShoot());
+        string message = JsonUtility.ToJson(pDatasa);
+
+        SendData(message);
+        //Debug.Log(message);
+    }
+
+    private void SendData(string message)
+    {
+        try
+        {
+            byte[] data = Encoding.UTF8.GetBytes(message);
+            udpClient.Send(data, data.Length, serverIP, serverPort);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Error sending data: " + e.Message);
+        }
+    }
+
+    void OnApplicationQuit()
     {
         if (udpClient != null)
         {
             udpClient.Close();
-            udpClient = null;
         }
     }
 }

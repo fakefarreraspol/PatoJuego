@@ -2,22 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
 public class PlayerActionData
 {
-    public float x;
-    public float y;
-    public float z;
-
-    public PlayerActionData(Vector3 vector)
+    public string userId;
+    public Vector3 playerTransform;
+    public Vector2 playerDirection;
+    public bool bulletShot = false;
+    public PlayerActionData()
     {
-        x = vector.x;
-        y = vector.y;
-        z = vector.z;
+    }
+    public PlayerActionData(Vector3 pTrans, Vector2 pDir, bool isbShot)
+    {
+        playerTransform = pTrans;
+        playerDirection = pDir;
+        bulletShot = isbShot;
     }
 
-    public Vector3 ToVector3()
-    {
-        return new Vector3(x, y, z);
-    }
 }
