@@ -12,7 +12,8 @@ public class fakeTestClient : MonoBehaviour
     private string serverIP = "127.0.0.1"; // Change this to the IP address of your server
     private int serverPort = 8080;
 
-
+    fakeDeserealizer fakeDeserealizer;
+    
     [SerializeField] private Character chRef;
 
     private void Awake()
@@ -21,6 +22,7 @@ public class fakeTestClient : MonoBehaviour
     }
     void Start()
     {
+        fakeDeserealizer = FindObjectOfType<fakeDeserealizer>();
         InitializeClient();
     }
 
@@ -39,7 +41,7 @@ public class fakeTestClient : MonoBehaviour
 
         Debug.Log("Received response from Goozy server: " + message);
         //Only deserialize if the message is a json
-
+        fakeDeserealizer.Deserealize(message);
 
         BeginReceive();
 

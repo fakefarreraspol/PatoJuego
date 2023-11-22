@@ -19,7 +19,7 @@ public class fakeTestServer : MonoBehaviour
     string serverIP = "25.63.64.104";
 
     fakeDeserealizer fakeDeserealizer;
-
+    [SerializeField] private Character chRef;
 
     private int nextClientId = 1;
 
@@ -30,7 +30,7 @@ public class fakeTestServer : MonoBehaviour
     void Start()
     {
         InitializeServer();
-
+        chRef = FindObjectOfType<Character>();
         fakeDeserealizer = FindObjectOfType<fakeDeserealizer>();
     }
 
@@ -133,7 +133,18 @@ public class fakeTestServer : MonoBehaviour
         // Check for client timeouts
         CheckClientTimeouts();
 
-        SendServerMessage("Hola guapo", GetEndPointById(1));
+        //SendServerMessage("Hola guapo", GetEndPointById(1));
+
+        fakePlayerData pDatasa = new fakePlayerData(transform.position, chRef.GetPlayerDir(), chRef.DidPlayerShoot());
+        string message = JsonUtility.ToJson(pDatasa);
+        
+        foreach (var client in connectedClients.Keys)
+        {
+            SendServerMessage(message, client);
+        }
+
+        
+
     }
 
     private void CheckClientTimeouts()
