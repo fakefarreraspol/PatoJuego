@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class fakeDeserealizer : MonoBehaviour
 {
+    private fakeCharacterRemote obj;
+    private Queue<fakePlayerData> deserealize = new Queue<fakePlayerData>();
+    private void Start()
+    {
+        obj = FindObjectOfType<fakeCharacterRemote>();
+    }
     private bool IsValidJson(string jsonString)
     {
         try
@@ -16,13 +22,30 @@ public class fakeDeserealizer : MonoBehaviour
             return false;
         }
     }
+    private void EnqueueMessage(fakePlayerData fData)
+    {
+        deserealize.Enqueue(fData);
+    }
+    private void Update()
+    {
+        
 
+        if (deserealize.Count > 0)
+        {
+            fakePlayerData fChar = deserealize.Dequeue();
+            FindObjectOfType<fakeCharacterRemote>().UpdateRemoteCharacterPos(fChar);
+        }
+        
+        
+    }
 
     public void Deserealize(string Json)
     {
         if(IsValidJson(Json))
         {
-            PlayerData(Json);
+            //obj.GetComponent<fakeCharacterRemote>().UpdateRemoteCharacterPos(PlayerData(Json));
+            //Debug.Log(FindObjectOfType<fakeCharacterRemote>().transform.ToString());
+            EnqueueMessage(PlayerData(Json));
         }
     }
 

@@ -16,7 +16,7 @@ public class fakeTestServer : MonoBehaviour
     private Dictionary<IPEndPoint, bool> isDisconnected = new Dictionary<IPEndPoint, bool>();
     private TimeSpan timeoutThreshold = TimeSpan.FromSeconds(5); // Adjust as needed
 
-
+    string serverIP = "25.63.64.104";
 
     fakeDeserealizer fakeDeserealizer;
 
@@ -31,12 +31,12 @@ public class fakeTestServer : MonoBehaviour
     {
         InitializeServer();
 
-        fakeDeserealizer = new fakeDeserealizer();
+        fakeDeserealizer = FindObjectOfType<fakeDeserealizer>();
     }
 
     private void InitializeServer()
     {
-        udpServer = new UdpClient(port);
+        udpServer = new UdpClient(new IPEndPoint(IPAddress.Any, port));
         Debug.Log("Server is listening on port " + port);
 
         // Start receiving data asynchronously
