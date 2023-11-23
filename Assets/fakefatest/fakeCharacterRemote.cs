@@ -15,6 +15,10 @@ public class fakeCharacterRemote : MonoBehaviour
     }
     public void UpdateRemoteCharacterPos(fakePlayerData playerData)
     {
+        if(playerData.Health <= 0)
+        {
+            Destroy(gameObject); return;
+        }
         transform.position = playerData.playerTransform;
         if (playerData.bulletShot)
         {
