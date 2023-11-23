@@ -11,7 +11,8 @@ public class fakeCharacterRemote : MonoBehaviour
         transform.position = playerData.playerTransform;
         if (playerData.bulletShot)
         {
-            Instantiate(bullet, transform.position, Quaternion.identity);
+            GameObject bull = Instantiate(bullet, transform.position, Quaternion.identity);
+            bull.GetComponent<Bullet2D>().dir = playerData.playerDirection;
         }
     }
 }

@@ -14,7 +14,7 @@ public class fakeTestServer : MonoBehaviour
     private Dictionary<IPEndPoint, ClientInfo> connectedClients = new Dictionary<IPEndPoint, ClientInfo>();
     private Dictionary<IPEndPoint, DateTime> lastReceivedTime = new Dictionary<IPEndPoint, DateTime>();
     private Dictionary<IPEndPoint, bool> isDisconnected = new Dictionary<IPEndPoint, bool>();
-    private TimeSpan timeoutThreshold = TimeSpan.FromSeconds(5); // Adjust as needed
+    private TimeSpan timeoutThreshold = TimeSpan.FromSeconds(50); // Adjust as needed
 
     string serverIP = "25.63.64.104";
 
@@ -135,13 +135,7 @@ public class fakeTestServer : MonoBehaviour
 
         //SendServerMessage("Hola guapo", GetEndPointById(1));
 
-        fakePlayerData pDatasa = new fakePlayerData(transform.position, chRef.GetPlayerDir(), chRef.DidPlayerShoot());
-        string message = JsonUtility.ToJson(pDatasa);
         
-        foreach (var client in connectedClients.Keys)
-        {
-            SendServerMessage(message, client);
-        }
 
         
 
@@ -192,6 +186,13 @@ public class fakeTestServer : MonoBehaviour
         }
     }
 
+    public void SendMessageToAllClients(string message)
+    {
+        foreach (var client in connectedClients.Keys)
+        {
+            SendServerMessage(message, client);
+        }
+    }
     private IPEndPoint GetEndPointById(int clientId)
     {
         foreach (var kvp in connectedClients)

@@ -84,7 +84,7 @@ public class Character : MonoBehaviour
         HandleShootingCooldown();
         HandleShooting();
 
-        Debug.Log(playerDir);
+        //Debug.Log(playerDir);
         // Update the jump cooldown timer
         if (!canJump)
         {
@@ -144,20 +144,6 @@ public class Character : MonoBehaviour
         }
     }
 
-    private void OnJumpPerformed(InputAction.CallbackContext value)
-    {
-        if (canJump)
-        {
-            jumped = true;
-            canJump = false;
-            isJumping = false;
-            Debug.Log(value.ToString());
-
-            // Start the jump cooldown timer
-            jumpCooldownTimer = jumpCooldown;
-        }
-    }
-
     private void HandleShootingCooldown()
     {
         if (!canShoot)
@@ -185,7 +171,20 @@ public class Character : MonoBehaviour
             isShooting = true;
         }
     }
+    private void OnJumpPerformed(InputAction.CallbackContext value)
+    {
+        if (canJump)
+        {
+            jumped = true;
+            canJump = false;
+            isJumping = false;
+            Debug.Log(value.ToString());
 
+            // Start the jump cooldown timer
+            jumpCooldownTimer = jumpCooldown;
+        }
+        OnActionPerformed();
+    }
     // Input System callback for shooting
     public void OnShoot(InputAction.CallbackContext value)
     {
@@ -199,6 +198,8 @@ public class Character : MonoBehaviour
 
             // Start the jump cooldown timer
             shootCooldownTimer = shootCooldown;
+
+            OnActionPerformed();
         }
     }
 
@@ -207,6 +208,7 @@ public class Character : MonoBehaviour
         moveVector = value.ReadValue<Vector2>();
         // Debug.Log(moveVector);
         playerDir = value.ReadValue<Vector2>().normalized;
+        OnActionPerformed();
     }
 
     private void OnMovementStopped(InputAction.CallbackContext value)
@@ -222,11 +224,26 @@ public class Character : MonoBehaviour
 
     public Vector2 GetPlayerDir()
     {
-        return moveVector;
+        return playerDir;
     }
     public bool DidPlayerShoot()
     {
         return shoot;
+    }
+
+
+    private void OnActionPerformed()
+    {
+        fakePlayerData pDatasa = new fakePlayerData(transform.position, GetPlayerDir(), DidPlayerShoot());
+        string message = JsonUtility.ToJson(pDatasa);
+        if(GetComponent<fakeTestClient>()!=null)
+        {
+            GetComponent<fakeTestClient>().SendData(message);
+        }
+        if(GetComponent<fakeTestServer>()!=null)
+        {
+            GetComponent<fakeTestServer>().SendMessageToAllClients(message);
+        }
     }
 
 }

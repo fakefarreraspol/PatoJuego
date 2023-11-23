@@ -54,7 +54,7 @@ public class fakeTestClient : MonoBehaviour
     }
 
 
-    private void SendData(string message)
+    public void SendData(string message)
     {
         try
         {

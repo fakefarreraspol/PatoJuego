@@ -7,7 +7,7 @@ public class fakePlayerData
     public int userId;
     public Vector3 playerTransform;
     public Vector2 playerDirection;
-
+   
     public bool bulletShot = false;
 
 

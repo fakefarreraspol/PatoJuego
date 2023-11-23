@@ -200,7 +200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c5d143a29e54de4eb545070a0bf533f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 0}
+  bullet: {fileID: 7788694702056113507, guid: 34554001d0343924c88a0f403aa50b4e, type: 3}
 --- !u!95 &412134280
 Animator:
   serializedVersion: 5
