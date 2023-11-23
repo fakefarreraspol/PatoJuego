@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class fakePlayerData 
 {
-    public string userId;
+    public int userId;
     public Vector3 playerTransform;
     public Vector2 playerDirection;
 

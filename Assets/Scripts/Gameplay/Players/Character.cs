@@ -27,7 +27,7 @@ public class Character : MonoBehaviour
     private float shootCooldownTimer = 0.0f;
     private bool canShoot = true;
     protected bool isShooting = false;
-    public Vector2 playerDir = Vector2.zero;
+    public Vector2 playerDir = Vector2.right;
 
     //private int damage;
     //private float rateOfFire;
@@ -47,7 +47,8 @@ public class Character : MonoBehaviour
     {
         characterRb = GetComponent<Rigidbody2D>();
         userInput = new Controller();
-    }
+        playerDir = Vector2.right;
+}
 
     private void OnEnable()
     {
@@ -83,6 +84,7 @@ public class Character : MonoBehaviour
         HandleShootingCooldown();
         HandleShooting();
 
+        Debug.Log(playerDir);
         // Update the jump cooldown timer
         if (!canJump)
         {

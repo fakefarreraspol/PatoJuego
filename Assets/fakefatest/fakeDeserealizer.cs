@@ -52,7 +52,7 @@ public class fakeDeserealizer : MonoBehaviour
     public fakePlayerData PlayerData(string JSon)
     {
         fakePlayerData pData = JsonUtility.FromJson<fakePlayerData>(JSon);
-        Debug.Log(pData.playerTransform);
+        Debug.Log(JSon);
         return pData;
 
     }

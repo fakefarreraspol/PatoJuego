@@ -9,7 +9,7 @@ using UnityEngine;
 public class fakeTestClient : MonoBehaviour
 {
     private UdpClient udpClient;
-    private string serverIP = "25.63.64.104"; // Change this to the IP address of your server
+    private string serverIP = "127.0.0.1"; // Change this to the IP address of your server
     private int serverPort = 8080;
 
     fakeDeserealizer fakeDeserealizer;
@@ -53,14 +53,6 @@ public class fakeTestClient : MonoBehaviour
         udpClient.BeginReceive(new AsyncCallback(ReceiveCallback), null);
     }
 
-    void Update()
-    {
-        fakePlayerData pDatasa = new fakePlayerData(transform.position, chRef.GetPlayerDir(), chRef.DidPlayerShoot());
-        string message = JsonUtility.ToJson(pDatasa);
-
-        SendData(message);
-        //Debug.Log(message);
-    }
 
     private void SendData(string message)
     {
