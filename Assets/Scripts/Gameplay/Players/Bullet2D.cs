@@ -25,6 +25,11 @@ public class Bullet2D : MonoBehaviour
         if(collision.gameObject.tag == "Player")
         {
             FindObjectOfType<Character>().TakeDamageCharacter(20);
+            Destroy(gameObject);
+        }
+        if (collision.gameObject.tag == "malomalisimo")
+        {
+            Destroy(gameObject);
         }
     }
 }
