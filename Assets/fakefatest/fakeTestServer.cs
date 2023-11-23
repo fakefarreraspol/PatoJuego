@@ -204,7 +204,21 @@ public class fakeTestServer : MonoBehaviour
         }
         return null; // Client not found
     }
+    public List<int> GetConnectedClientIPs()
+    {
+        List<int> clientIPs = new List<int>();
 
+        foreach (var endPoint in connectedClients)
+        {
+            clientIPs.Add(endPoint.Value.Id);
+        }
+
+        return clientIPs;
+    }
+    public int GetConnectedClientsCount()
+    {
+        return connectedClients.Count;
+    }
     void OnApplicationQuit()
     {
         if (udpServer != null)

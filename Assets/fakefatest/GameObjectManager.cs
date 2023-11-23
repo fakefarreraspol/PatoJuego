@@ -12,6 +12,7 @@ public class GameObjectManager : MonoBehaviour
         if (!gameObjectDictionary.ContainsKey(id))
         {
             gameObjectDictionary.Add(id, gameObject);
+            Debug.Log("GameObject with id: " + id + (" added!"));
         }
         else
         {

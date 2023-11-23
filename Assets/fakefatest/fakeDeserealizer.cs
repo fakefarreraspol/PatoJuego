@@ -46,6 +46,7 @@ public class fakeDeserealizer : MonoBehaviour
             //obj.GetComponent<fakeCharacterRemote>().UpdateRemoteCharacterPos(PlayerData(Json));
             //Debug.Log(FindObjectOfType<fakeCharacterRemote>().transform.ToString());
             EnqueueMessage(PlayerData(Json));
+            //PlayerData(Json);
         }
     }
 
