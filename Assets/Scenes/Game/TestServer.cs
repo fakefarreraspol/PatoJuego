@@ -15,12 +15,12 @@ public class TestServer : MonoBehaviour
     private Dictionary<IPEndPoint, ClientInfo> connectedClients = new Dictionary<IPEndPoint, ClientInfo>();
     private Dictionary<IPEndPoint, DateTime> lastReceivedTime = new Dictionary<IPEndPoint, DateTime>();
     private Dictionary<IPEndPoint, bool> isDisconnected = new Dictionary<IPEndPoint, bool>();
-    private TimeSpan timeoutThreshold = TimeSpan.FromSeconds(5); // Adjust as needed
+    private TimeSpan timeoutThreshold = TimeSpan.FromSeconds(40); // Adjust as needed
 
+    string serverIP = "127.0.0.1";
 
-
-    SerializationManager serializationManager;
-
+     SerializationManager serializationManager;
+    [SerializeField] private Character chRef;
 
     private int nextClientId = 1;
 
@@ -31,13 +31,13 @@ public class TestServer : MonoBehaviour
     void Start()
     {
         InitializeServer();
-
-        serializationManager = new SerializationManager();
+        chRef = FindObjectOfType<Character>();
+        serializationManager = FindObjectOfType<SerializationManager>();
     }
 
     private void InitializeServer()
     {
-        udpServer = new UdpClient(port);
+        udpServer = new UdpClient(new IPEndPoint(IPAddress.Any, port));
         Debug.Log("Server is listening on port " + port);
 
         // Start receiving data asynchronously
@@ -128,14 +128,20 @@ public class TestServer : MonoBehaviour
         isDisconnected[clientEndPoint] = true;
     }
 
-
-
     void Update()
     {
         // Check for client timeouts
         CheckClientTimeouts();
 
-        SendServerMessage("Hola guapo", GetEndPointById(1));
+        //SendServerMessage("Hola guapo", GetEndPointById(1));
+
+        PlayerActionData pDatasa = new PlayerActionData(transform.position, chRef.GetPlayerDir(), chRef.DidPlayerShoot());
+        string message = JsonUtility.ToJson(pDatasa);
+
+        foreach (var client in connectedClients.Keys)
+        {
+            SendServerMessage(message, client);
+        }
     }
 
     private void CheckClientTimeouts()

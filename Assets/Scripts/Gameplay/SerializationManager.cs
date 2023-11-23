@@ -7,6 +7,13 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public class SerializationManager : MonoBehaviour
 {
+    private RemoteCharacter obj;
+    private Queue<PlayerActionData> deserealization = new Queue<PlayerActionData>();
+    private void Start()
+    {
+        obj = FindObjectOfType<RemoteCharacter>();
+    }
+
     private bool IsValidJson(string jsonString)
     {
         try
@@ -20,12 +27,24 @@ public class SerializationManager : MonoBehaviour
         }
     }
 
+    private void EnqueueMessage(PlayerActionData data)
+    {
+        deserealization.Enqueue(data);
+    }
+    private void Update()
+    {
+        if (deserealization.Count > 0)
+        {
+            PlayerActionData Char = deserealization.Dequeue();
+            FindObjectOfType<RemoteCharacter>().UpdateRemoteCharacterPos(Char);
+        }
+    }
 
     public void Deserealize(string Json)
     {
         if (IsValidJson(Json))
         {
-            PlayerData(Json);
+            EnqueueMessage(PlayerData(Json));
         }
     }
 

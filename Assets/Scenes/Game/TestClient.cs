@@ -15,7 +15,7 @@ public class TestClient : MonoBehaviour
     private string serverIP = "127.0.0.1"; // Change this to the IP address of your server
     private int serverPort = 8080;
 
-
+    SerializationManager serializationManager;
     [SerializeField] private Character chRef;
 
     private void Awake()
@@ -24,6 +24,7 @@ public class TestClient : MonoBehaviour
     }
     void Start()
     {
+        serializationManager = FindObjectOfType<SerializationManager>();
         InitializeClient();
     }
 
@@ -42,7 +43,7 @@ public class TestClient : MonoBehaviour
 
         Debug.Log("Received response from Goozy server: " + message);
         //Only deserialize if the message is a json
-
+        serializationManager.Deserealize(message);
 
         BeginReceive();
 
