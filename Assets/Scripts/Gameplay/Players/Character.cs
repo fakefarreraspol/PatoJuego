@@ -13,7 +13,7 @@ public class Character : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform shootPoint;
 
-    [SerializeField] private int health;
+    
     private float speed = 20;
     [SerializeField] private float jumpForce = 100.0f;
     [SerializeField] private Transform groundCheck;
@@ -43,12 +43,18 @@ public class Character : MonoBehaviour
     private bool isJumping = false;
     private bool jumped = false;
 
+
+    private int characterHP;
     private void Awake()
     {
         characterRb = GetComponent<Rigidbody2D>();
         userInput = new Controller();
         playerDir = Vector2.right;
-}
+    }
+    private void Start()
+    {
+        characterHP = 100;
+    }
 
     private void OnEnable()
     {
@@ -78,6 +84,7 @@ public class Character : MonoBehaviour
 
     private void FixedUpdate()
     {
+        HandleHealth();
         MoveCharacter();
         HandleJump();
         CheckGrounded();
@@ -94,6 +101,14 @@ public class Character : MonoBehaviour
                 canJump = true;
                 jumpCooldownTimer = 0.0f;
             }
+        }
+    }
+    private void HandleHealth()
+    {
+        if (characterHP <= 0)
+        {
+            OnActionPerformed();
+            Destroy(gameObject);
         }
     }
     private void MoveCharacter()
@@ -234,7 +249,7 @@ public class Character : MonoBehaviour
 
     private void OnActionPerformed()
     {
-        fakePlayerData pDatasa = new fakePlayerData(transform.position, GetPlayerDir(), DidPlayerShoot());
+        fakePlayerData pDatasa = new fakePlayerData(transform.position, GetPlayerDir(), DidPlayerShoot(), characterHP);
         string message = JsonUtility.ToJson(pDatasa);
         if(GetComponent<fakeTestClient>()!=null)
         {
@@ -246,5 +261,11 @@ public class Character : MonoBehaviour
         }
     }
 
+
+    public void TakeDamageCharacter(int dmg)
+    {
+        characterHP -= dmg;
+        OnActionPerformed();
+    }
 }
 

@@ -22,5 +22,9 @@ public class Bullet2D : MonoBehaviour
             // Destroy the bullet when it hits the ground
             Destroy(gameObject);
         }
+        if(collision.gameObject.tag == "Player")
+        {
+            FindObjectOfType<Character>().TakeDamageCharacter(20);
+        }
     }
 }

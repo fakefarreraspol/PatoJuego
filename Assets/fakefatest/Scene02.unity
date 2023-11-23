@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 412134279}
   m_Layer: 0
   m_Name: Character (1)
-  m_TagString: Untagged
+  m_TagString: malomalisimo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -200,7 +200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c5d143a29e54de4eb545070a0bf533f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 7788694702056113507, guid: 34554001d0343924c88a0f403aa50b4e, type: 3}
+  bullet: {fileID: 7788694702056113507, guid: 22f62eb5d4c62524c9b47eb9c1282412, type: 3}
 --- !u!95 &412134280
 Animator:
   serializedVersion: 5
@@ -2072,9 +2072,9 @@ GameObject:
   - component: {fileID: 1704184574}
   - component: {fileID: 1704184575}
   - component: {fileID: 1704184576}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Character
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
