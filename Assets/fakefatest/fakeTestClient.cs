@@ -9,8 +9,8 @@ using UnityEngine;
 public class fakeTestClient : MonoBehaviour
 {
     private UdpClient udpClient;
-    //private string serverIP = "127.0.0.1"; // Change this to the IP address of your server
-    private string serverIP = "25.63.64.104";
+    private string serverIP; // Change this to the IP address of your server
+    //private string serverIP = "25.63.64.104";
     private int serverPort = 8080;
 
     fakeDeserealizer fakeDeserealizer;
@@ -24,8 +24,23 @@ public class fakeTestClient : MonoBehaviour
     void Start()
     {
         fakeDeserealizer = FindObjectOfType<fakeDeserealizer>();
+        ConnectToServer();
         InitializeClient();
+        //serverIP = FindObjectOfType<fakeDatos>().ip;
+       
+    }
+
+    private void ConnectToServer()
+    {
         serverIP = FindObjectOfType<fakeDatos>().ip;
+        if (serverIP == null)
+        {
+            Debug.LogError("IP is null ");
+        }
+        else
+        {
+            Debug.LogError("IP is: " + serverIP);
+        }
     }
 
     void BeginReceive()
@@ -62,6 +77,7 @@ public class fakeTestClient : MonoBehaviour
         try
         {
             byte[] data = Encoding.ASCII.GetBytes(message);
+            if(serverIP != null)
             udpClient.Send(data, data.Length, serverIP, serverPort);
         }
         catch (Exception e)
