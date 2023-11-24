@@ -52,10 +52,12 @@ public class GameObjectManager : MonoBehaviour
     {
         if (gameObjectDictionary.ContainsKey(id))
         {
+            Debug.Log("LISTED");
             return true;
         }
         else
         {
+            Debug.Log("NOT LISTED");
             return false;
         }
     }

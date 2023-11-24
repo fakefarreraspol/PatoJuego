@@ -15,11 +15,11 @@ public class fakeTestClient : MonoBehaviour
 
     fakeDeserealizer fakeDeserealizer;
     
-    [SerializeField] private Character chRef;
+    
 
     private void Awake()
     {
-        chRef = FindObjectOfType<Character>();
+        
     }
     void Start()
     {
@@ -61,7 +61,7 @@ public class fakeTestClient : MonoBehaviour
     {
         try
         {
-            byte[] data = Encoding.UTF8.GetBytes(message);
+            byte[] data = Encoding.ASCII.GetBytes(message);
             udpClient.Send(data, data.Length, serverIP, serverPort);
         }
         catch (Exception e)

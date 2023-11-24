@@ -229,12 +229,14 @@ public class Character : MonoBehaviour
     private void OnMovementStopped(InputAction.CallbackContext value)
     {
         moveVector = Vector2.zero;
+        OnActionPerformed();
     }
 
     private void OnJumpCancelled(InputAction.CallbackContext value)
     {
         jumped = false;
         canJump = true;
+        OnActionPerformed();
     }
 
     public Vector2 GetPlayerDir()
@@ -249,17 +251,18 @@ public class Character : MonoBehaviour
 
     private void OnActionPerformed()
     {
-        
-        if(GetComponent<fakeTestClient>()!=null)
+        Debug.Log("actionperformed");
+        if(FindObjectOfType<fakeTestClient>()!=null)
         {
             fakePlayerData pDatasa = new fakePlayerData(transform.position, GetPlayerDir(), DidPlayerShoot(), characterHP, FindObjectOfType<fakefaID>().IDDDDDDDD);
             string message = JsonUtility.ToJson(pDatasa);
-            GetComponent<fakeTestClient>().SendData(message);
+            FindObjectOfType<fakeTestClient>().SendData(message);
         }
-        if(GetComponent<fakeTestServer>() != null)
+        if(FindObjectOfType<fakeTestServer>() != null)
         {
             fakePlayerData pDatasa = new fakePlayerData(transform.position, GetPlayerDir(), DidPlayerShoot(), characterHP, 0);
             string message = JsonUtility.ToJson(pDatasa);
+            Debug.Log(message);
             FindObjectOfType<fakeTestServer>().SendMessageToAllClients(message);
         }
     }

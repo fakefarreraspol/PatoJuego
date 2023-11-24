@@ -10,6 +10,7 @@ public class fakeNewIntro : MonoBehaviour
     public TMP_InputField IPInput;
 
     public TMP_InputField PortInput;
+
     // Start is called before the first frame update
     public void onIntroButtonPressed()
     {
@@ -25,6 +26,7 @@ public class fakeNewIntro : MonoBehaviour
         DontDestroyOnLoad(empty);
         FindObjectOfType<fakeGameManager>().gState = fakeGameManager.GameState.Lobby;
         DontDestroyOnLoad(FindObjectOfType<fakeGameManager>().gameObject);
+        DontDestroyOnLoad(FindObjectOfType<fakeDeserealizer>().gameObject);
         SceneManager.LoadScene("Lobby");
     }
     public void onIntroButtonPressed2()
@@ -41,6 +43,7 @@ public class fakeNewIntro : MonoBehaviour
         DontDestroyOnLoad(empty);
         FindObjectOfType<fakeGameManager>().gState = fakeGameManager.GameState.Lobby;
         DontDestroyOnLoad(FindObjectOfType<fakeGameManager>().gameObject);
+        DontDestroyOnLoad(FindObjectOfType<fakeDeserealizer>().gameObject);
         SceneManager.LoadScene("Lobby");
     }
 }

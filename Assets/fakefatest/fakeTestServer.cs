@@ -18,8 +18,8 @@ public class fakeTestServer : MonoBehaviour
 
     string serverIP = "25.63.64.104";
 
-    fakeDeserealizer fakeDeserealizer;
-    [SerializeField] private Character chRef;
+    public fakeDeserealizer fakeDeserealizer;
+    
 
     private int nextClientId = 1;
 
@@ -30,7 +30,6 @@ public class fakeTestServer : MonoBehaviour
     void Start()
     {
         InitializeServer();
-        chRef = FindObjectOfType<Character>();
         fakeDeserealizer = FindObjectOfType<fakeDeserealizer>();
     }
 
@@ -52,11 +51,11 @@ public class fakeTestServer : MonoBehaviour
             byte[] data = udpServer.EndReceive(result, ref remoteEndPoint);
 
             // Check if data is null, which may indicate a disconnection
-            if (data == null)
-            {
-                HandleClientDisconnect(remoteEndPoint);
-                return;
-            }
+            //if (data == null)
+            //{
+            //    HandleClientDisconnect(remoteEndPoint);
+            //    return;
+            //}
 
             // If the client is disconnected, ignore the received data
             if (isDisconnected.ContainsKey(remoteEndPoint) && isDisconnected[remoteEndPoint])
@@ -75,11 +74,15 @@ public class fakeTestServer : MonoBehaviour
 
             if (data.Length > 0)
             {
-                string message = Encoding.UTF8.GetString(data);
+                
+                string message = Encoding.ASCII.GetString(data);
                 //Debug.Log("Received from " + remoteEndPoint + " (" + GetClientName(remoteEndPoint) + "): " + message);
+                
                 fakeDeserealizer.Deserealize(message);
                 // Update last received time for the client
+                
                 lastReceivedTime[remoteEndPoint] = DateTime.Now;
+                
             }
 
             // Continue listening for more data
@@ -116,6 +119,7 @@ public class fakeTestServer : MonoBehaviour
 
         string welcomeMessage = $"Welcome! Your ID is {clientId}";
         SendServerMessage(clientId.ToString(), clientEndPoint);
+
 
         fakePlayerData srvrUser = new fakePlayerData(Vector3.zero, Vector2.right, false, 100, 0, true);
         string serverUSer = JsonUtility.ToJson(srvrUser);

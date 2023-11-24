@@ -67,7 +67,7 @@ public class fakeDeserealizer : MonoBehaviour
         }
         
 
-        if (deserealize.Count > 0)
+        if (deserealize.Count > 0 && FindObjectOfType<fakeGameManager>().gState == fakeGameManager.GameState.InGame)
         {
             fakePlayerData fChar = deserealize.Dequeue();
             
@@ -79,7 +79,7 @@ public class fakeDeserealizer : MonoBehaviour
                 {
                     FindObjectOfType<fakeSpawner>().PlsSpawnPlayer(fChar.userId);
                 }
-                goManager.GetGameObject(fChar.userId).GetComponent<fakeCharacterRemote>().UpdateRemoteCharacterPos(fChar);
+                FindObjectOfType<GameObjectManager>().GetGameObject(fChar.userId).GetComponent<fakeCharacterRemote>().UpdateRemoteCharacterPos(fChar);
             }
 
         }

@@ -20,32 +20,59 @@ public class fakeSpawner : MonoBehaviour
     {
         onNewUser -= PlsQueueSpawnPlayer;
     }
-    
-    //public void Update()
-    //{
-    //    if (Input.GetKeyUp(KeyCode.F))
-    //    {
-    //        fakeTestServer srvr = FindObjectOfType<fakeTestServer>();
-    //        SpawnPlayers(srvr.GetConnectedClientIPs()[0], srvr.GetConnectedClientsCount());
-    //    }
-    //}
-    public void SpawnPlayers(int pCount, int ip)
+    public void Start()
+    {
+        //Debug.Log(FindObjectOfType<fakeTestServer>().GetConnectedClientIPs().Count);
+        //if (FindObjectOfType<fakeGameManager>().gState == fakeGameManager.GameState.InGame)
+        //{
+        //    fakeTestServer srvr = FindObjectOfType<fakeTestServer>();
+        //    for(int i = 0; i < srvr.GetConnectedClientIPs().Count;  i++)
+        //    {
+        //        if(srvr.GetConnectedClientIPs()[i] != FindObjectOfType<fakefaID>().IDDDDDDDD) PlsSpawnPlayer(srvr.GetConnectedClientIPs()[i]);
+        //    }
+        //}
+    }
+    public void Update()
+    {
+        
+        //if (newUsers.Count > 0)
+        //{
+        //    int ipNewUser = newUsers.Dequeue();
+        //    PlsSpawnPlayer(ipNewUser);
+        //}
+    }
+    public void SpawnPlayers(List<int> Listip)
     {
         //Instantiate(mainCharacter, spawnPoints[0]);
-        for (int i = 1; i <= pCount; i++)
+        for (int i = 0; i < Listip.Count; i++)
         {
-            GameObject newUser = Instantiate(remoteCharacter, spawnPoints[i].position, Quaternion.identity);
-            FindObjectOfType<GameObjectManager>().AddGameObject(ip, newUser);
+            if (i != FindObjectOfType<fakefaID>().IDDDDDDDD)
+            {
+                Debug.Log(Listip[i]);
+                
+                GameObject newUser = Instantiate(remoteCharacter, spawnPoints[i].position, Quaternion.identity);
+                FindObjectOfType<GameObjectManager>().AddGameObject(Listip[i], newUser);
+            }
         }
     }
     public void PlsSpawnPlayer(int id)
     {
         if (!FindObjectOfType<GameObjectManager>().CheckIfItsAlreadyListed(id))
         {
+            if (id != FindObjectOfType<fakefaID>().IDDDDDDDD)
+            {
 
-
-            GameObject newuser = Instantiate(remoteCharacter, spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)].position, Quaternion.identity);
-            FindObjectOfType<GameObjectManager>().AddGameObject(id, newuser);
+                if (spawnPoints is { Length: > 0 })
+                {
+                    GameObject newuser = Instantiate(remoteCharacter, spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)].position, Quaternion.identity);
+                    FindObjectOfType<GameObjectManager>().AddGameObject(id, newuser);
+                }
+                else
+                {
+                    GameObject newuser = Instantiate(remoteCharacter, Vector2.zero, Quaternion.identity);
+                    FindObjectOfType<GameObjectManager>().AddGameObject(id, newuser);
+                }
+            }
         }
         
     }
@@ -53,14 +80,5 @@ public class fakeSpawner : MonoBehaviour
     {
         newUsers.Enqueue(id);
     }
-    private void Update()
-    {
-        if(newUsers.Count > 0)
-        {
-            int ipNewUser = newUsers.Dequeue();
-            PlsSpawnPlayer(ipNewUser);
-        }
-        
-
-    }
+    
 }

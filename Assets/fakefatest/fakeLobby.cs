@@ -9,6 +9,7 @@ public class fakeLobby : MonoBehaviour
     
     void Update()
     {
+        DontDestroyOnLoad(FindObjectOfType<fakefaID>().gameObject);
         if (Input.GetKey(KeyCode.L))
         {
             if (FindObjectOfType<fakeTestServer>() != null)
@@ -20,8 +21,9 @@ public class fakeLobby : MonoBehaviour
 
         if(FindObjectOfType<fakeGameManager>().gState == fakeGameManager.GameState.InGame)
         {
+            
             if (FindObjectOfType<fakeTestServer>() != null) SceneManager.LoadScene("Scene 01");
-            else SceneManager.LoadScene("Scene 02");
+            else SceneManager.LoadScene("Scene02");
         }
     }
 }
