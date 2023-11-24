@@ -9,7 +9,8 @@ using UnityEngine;
 public class fakeTestClient : MonoBehaviour
 {
     private UdpClient udpClient;
-    private string serverIP = "127.0.0.1"; // Change this to the IP address of your server
+    //private string serverIP = "127.0.0.1"; // Change this to the IP address of your server
+    private string serverIP = "25.63.64.104";
     private int serverPort = 8080;
 
     fakeDeserealizer fakeDeserealizer;
