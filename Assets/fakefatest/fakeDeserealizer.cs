@@ -66,7 +66,7 @@ public class fakeDeserealizer : MonoBehaviour
         {
             fakePlayerData fChar = deserealize.Dequeue();
             
-            if (fChar.userId != FindObjectOfType<fakefaID>().IDDDDDDDD && fChar.newUser) FindObjectOfType<fakeSpawner>().PlsSpawnPlayer(fChar.userId);
+            if ((fChar.userId != FindObjectOfType<fakefaID>().IDDDDDDDD) && (fChar.newUser == true)) FindObjectOfType<fakeSpawner>().PlsSpawnPlayer(fChar.userId);
 
             if (fChar.userId != FindObjectOfType<fakefaID>().IDDDDDDDD)
                 goManager.GetGameObject(fChar.userId).GetComponent<fakeCharacterRemote>().UpdateRemoteCharacterPos(fChar);

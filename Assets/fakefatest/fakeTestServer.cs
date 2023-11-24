@@ -124,6 +124,9 @@ public class fakeTestServer : MonoBehaviour
         fakePlayerData userNEw = new fakePlayerData(Vector3.zero, Vector2.right, false, 100, clientId);
         string usernewww = JsonUtility.ToJson(userNEw);
         SendMessageToAllClients(usernewww);
+
+
+        fakeSpawner.onNewUser(clientId);
     }
 
     private void HandleClientDisconnect(IPEndPoint clientEndPoint)
