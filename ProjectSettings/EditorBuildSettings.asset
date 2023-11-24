@@ -5,16 +5,16 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/fakefatest/Scene02.unity
     guid: b2e1b6d8d5b1ea245b0f0795f89eff40
   - enabled: 1
     path: Assets/fakefatest/Scene 01.unity
     guid: 23487622f578e5e4eb75b3b5cb6ecd45
-  - enabled: 0
-    path: Assets/Scenes/Game/Server02.unity
-    guid: 4f55ec58dfc9e444bb872ad8c0c44a67
-  - enabled: 0
-    path: Assets/Scenes/Game/Scene02.unity
-    guid: 478b3e29bd1920c4f811591909be49a7
+  - enabled: 1
+    path: Assets/fakefatest/Lobby.unity
+    guid: 14837bed826d24a499bf59ef8ad21b66
+  - enabled: 1
+    path: Assets/fakefatest/Intro.unity
+    guid: f973d4a8bb81c6346a7de394326f123d
   m_configObjects: {}

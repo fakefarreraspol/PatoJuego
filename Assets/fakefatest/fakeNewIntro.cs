@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
+
 public class fakeNewIntro : MonoBehaviour
 {
     public TMP_InputField nameTextInput;
@@ -9,14 +11,36 @@ public class fakeNewIntro : MonoBehaviour
 
     public TMP_InputField PortInput;
     // Start is called before the first frame update
-    void Start()
+    public void onIntroButtonPressed()
     {
-        
-    }
+        fakeDatos fake = FindObjectOfType<fakeDatos>();
+        if (PortInput.text == "") fake.port = 8080;
+        else fake.port = int.Parse(PortInput.text);
 
-    // Update is called once per frame
-    void Update()
+        fake.ip = IPInput.text;
+
+        DontDestroyOnLoad(FindAnyObjectByType<fakeDatos>().gameObject);
+        GameObject empty = new GameObject("Empty01");
+        empty.AddComponent<fakeTestClient>();
+        DontDestroyOnLoad(empty);
+        FindObjectOfType<fakeGameManager>().gState = fakeGameManager.GameState.Lobby;
+        DontDestroyOnLoad(FindObjectOfType<fakeGameManager>().gameObject);
+        SceneManager.LoadScene("Lobby");
+    }
+    public void onIntroButtonPressed2()
     {
-        
+        fakeDatos fake = FindObjectOfType<fakeDatos>();
+        if (PortInput.text == "") fake.port = 8080;
+        else fake.port = int.Parse(PortInput.text);
+
+        fake.ip = IPInput.text;
+
+        DontDestroyOnLoad(FindAnyObjectByType<fakeDatos>().gameObject);
+        GameObject empty = new GameObject("Empty02");
+        empty.AddComponent<fakeTestServer>();
+        DontDestroyOnLoad(empty);
+        FindObjectOfType<fakeGameManager>().gState = fakeGameManager.GameState.Lobby;
+        DontDestroyOnLoad(FindObjectOfType<fakeGameManager>().gameObject);
+        SceneManager.LoadScene("Lobby");
     }
 }
