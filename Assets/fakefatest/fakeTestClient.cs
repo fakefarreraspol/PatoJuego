@@ -25,6 +25,7 @@ public class fakeTestClient : MonoBehaviour
     {
         fakeDeserealizer = FindObjectOfType<fakeDeserealizer>();
         InitializeClient();
+        serverIP = FindObjectOfType<fakeDatos>().ip;
     }
 
     void BeginReceive()

@@ -36,8 +36,8 @@ public class fakeTestServer : MonoBehaviour
 
     private void InitializeServer()
     {
-        udpServer = new UdpClient(new IPEndPoint(IPAddress.Any, port));
-        Debug.Log("Server is listening on port " + port);
+        udpServer = new UdpClient(new IPEndPoint(IPAddress.Any, FindObjectOfType<fakeDatos>().port));
+        Debug.Log("Server is listening on port " + FindObjectOfType<fakeDatos>().port));
 
         // Start receiving data asynchronously
         udpServer.BeginReceive(ReceiveCallback, null);
