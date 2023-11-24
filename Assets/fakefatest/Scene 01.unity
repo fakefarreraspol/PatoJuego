@@ -316,7 +316,7 @@ GameObject:
   - component: {fileID: 959074817}
   - component: {fileID: 959074816}
   - component: {fileID: 959074818}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2242,9 +2242,9 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 0.5
   m_AngularDrag: 0.05
-  m_GravityScale: 40
+  m_GravityScale: 20
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -2254,7 +2254,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!212 &1704184570
 SpriteRenderer:
@@ -2338,14 +2338,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 7788694702056113507, guid: 34554001d0343924c88a0f403aa50b4e, type: 3}
   shootPoint: {fileID: 164753177}
-  jumpForce: 100
-  groundCheck: {fileID: 0}
+  jumpForce: 2000
+  groundCheck: {fileID: 959074815}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
-  jumpCooldown: 1
+    m_Bits: 8
+  jumpCooldown: 5
   shootCooldown: 0.5
-  groundCheckRadius: 0.2
+  groundCheckRadius: 1
   playerDir: {x: 0, y: 0}
 --- !u!95 &1704184574
 Animator:
