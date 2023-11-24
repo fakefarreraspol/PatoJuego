@@ -51,7 +51,7 @@ public class fakeTestClient : MonoBehaviour
     {
         udpClient = new UdpClient();
         udpClient.BeginReceive(new AsyncCallback(ReceiveCallback), null);
-        SendData("holaquepasa");
+        SendData("0");
     }
 
 
