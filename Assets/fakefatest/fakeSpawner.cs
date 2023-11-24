@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class fakeSpawner : MonoBehaviour
 {
-    // Start is called before the first frame update
     [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private GameObject mainCharacter;
     [SerializeField] private GameObject remoteCharacter;
@@ -20,30 +19,9 @@ public class fakeSpawner : MonoBehaviour
     {
         onNewUser -= PlsQueueSpawnPlayer;
     }
-    public void Start()
-    {
-        //Debug.Log(FindObjectOfType<fakeTestServer>().GetConnectedClientIPs().Count);
-        //if (FindObjectOfType<fakeGameManager>().gState == fakeGameManager.GameState.InGame)
-        //{
-        //    fakeTestServer srvr = FindObjectOfType<fakeTestServer>();
-        //    for(int i = 0; i < srvr.GetConnectedClientIPs().Count;  i++)
-        //    {
-        //        if(srvr.GetConnectedClientIPs()[i] != FindObjectOfType<fakefaID>().IDDDDDDDD) PlsSpawnPlayer(srvr.GetConnectedClientIPs()[i]);
-        //    }
-        //}
-    }
-    public void Update()
-    {
-        
-        //if (newUsers.Count > 0)
-        //{
-        //    int ipNewUser = newUsers.Dequeue();
-        //    PlsSpawnPlayer(ipNewUser);
-        //}
-    }
     public void SpawnPlayers(List<int> Listip)
     {
-        //Instantiate(mainCharacter, spawnPoints[0]);
+        
         for (int i = 0; i < Listip.Count; i++)
         {
             if (i != FindObjectOfType<fakefaID>().IDDDDDDDD)

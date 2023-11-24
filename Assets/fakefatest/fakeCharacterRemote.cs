@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class fakeCharacterRemote : MonoBehaviour
 {
-    // Start is called before the first frame update
     [SerializeField] private GameObject bullet;
 
     private SpriteRenderer sprRenderer;

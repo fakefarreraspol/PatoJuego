@@ -45,24 +45,19 @@ public class fakeDeserealizer : MonoBehaviour
             string msg = messages.Dequeue();
             if (IsValidJson(msg))
             {
-                //obj.GetComponent<fakeCharacterRemote>().UpdateRemoteCharacterPos(PlayerData(Json));
-                //Debug.Log(FindObjectOfType<fakeCharacterRemote>().transform.ToString());
                 if (FindObjectOfType<fakeTestServer>() != null)
                 {
                     FindObjectOfType<fakeTestServer>().SendMessageToAllClients(msg);
                 }
                 
                 EnqueuePlayerDataMessage(PlayerData(msg));
-                
-                //PlayerData(Json);
+
             }
             else
             {
                 int newNum = int.Parse(msg);
                 if (newNum == 112) { FindObjectOfType<fakeGameManager>().gState = fakeGameManager.GameState.InGame; }
                 else numID = newNum;
-
-
             }
         }
         
@@ -83,18 +78,13 @@ public class fakeDeserealizer : MonoBehaviour
             }
 
         }
-
-       
-
         if (FindObjectOfType<fakefaID>() != null) FindObjectOfType<fakefaID>().changeID(numID);
     }
 
     public void Deserealize(string Json)
     {
-        
         Debug.Log(Json);
         messages.Enqueue(Json);
-
     }
 
     public fakePlayerData PlayerData(string JSon)
@@ -104,7 +94,5 @@ public class fakeDeserealizer : MonoBehaviour
         return pData;
 
     }
-    
 
-    
 }

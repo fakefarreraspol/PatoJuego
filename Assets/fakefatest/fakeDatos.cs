@@ -9,8 +9,4 @@ public class fakeDatos : MonoBehaviour
     public string ip;
     public string NameW;
 
-
-
-    
-
 }

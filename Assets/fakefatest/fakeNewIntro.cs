@@ -8,10 +8,8 @@ public class fakeNewIntro : MonoBehaviour
 {
     public TMP_InputField nameTextInput;
     public TMP_InputField IPInput;
-
     public TMP_InputField PortInput;
 
-    // Start is called before the first frame update
     public void onIntroButtonPressed()
     {
         fakeDatos fake = FindObjectOfType<fakeDatos>();

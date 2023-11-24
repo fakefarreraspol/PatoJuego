@@ -5,8 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class fakeLobby : MonoBehaviour
 {
-    // Start is called before the first frame update
-    
     void Update()
     {
         DontDestroyOnLoad(FindObjectOfType<fakefaID>().gameObject);

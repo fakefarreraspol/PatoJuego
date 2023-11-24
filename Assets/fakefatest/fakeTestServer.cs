@@ -50,13 +50,6 @@ public class fakeTestServer : MonoBehaviour
         {
             byte[] data = udpServer.EndReceive(result, ref remoteEndPoint);
 
-            // Check if data is null, which may indicate a disconnection
-            //if (data == null)
-            //{
-            //    HandleClientDisconnect(remoteEndPoint);
-            //    return;
-            //}
-
             // If the client is disconnected, ignore the received data
             if (isDisconnected.ContainsKey(remoteEndPoint) && isDisconnected[remoteEndPoint])
             {
@@ -74,17 +67,13 @@ public class fakeTestServer : MonoBehaviour
 
             if (data.Length > 0)
             {
-                
                 string message = Encoding.ASCII.GetString(data);
-                //Debug.Log("Received from " + remoteEndPoint + " (" + GetClientName(remoteEndPoint) + "): " + message);
                 
                 fakeDeserealizer.Deserealize(message);
-                // Update last received time for the client
-                
+
                 lastReceivedTime[remoteEndPoint] = DateTime.Now;
                 
             }
-
             // Continue listening for more data
             udpServer.BeginReceive(ReceiveCallback, null);
         }
@@ -125,9 +114,6 @@ public class fakeTestServer : MonoBehaviour
         string serverUSer = JsonUtility.ToJson(srvrUser);
         SendServerMessage(serverUSer, clientEndPoint);
 
-        //fakePlayerData userNEw = new fakePlayerData(Vector3.zero, Vector2.right, false, 100, clientId);
-        //string usernewww = JsonUtility.ToJson(userNEw);
-        //SendMessageToAllClients(usernewww);
         foreach (var clienttst in connectedClients.Keys)
         {
             fakePlayerData userNEw = new fakePlayerData(Vector3.zero, Vector2.right, false, 100, connectedClients[clienttst].Id);
@@ -152,13 +138,6 @@ public class fakeTestServer : MonoBehaviour
     {
         // Check for client timeouts
         CheckClientTimeouts();
-
-        //SendServerMessage("Hola guapo", GetEndPointById(1));
-
-        
-
-        
-
     }
 
     private void CheckClientTimeouts()
@@ -179,22 +158,6 @@ public class fakeTestServer : MonoBehaviour
     protected void SendServerMessage(string message, IPEndPoint IPpoint)
     {
         byte[] data = Encoding.ASCII.GetBytes(message);
-
-        // Broadcast to all connected clients.
-        //foreach (var client in connectedClients.Keys)
-        //{
-
-
-        //    try
-        //    {
-        //        byte[] messageData = Encoding.UTF8.GetBytes(message);
-        //        udpServer.Send(messageData, messageData.Length, client);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Debug.LogError("Error broadcasting message to client " + client + ": " + e.Message);
-        //    }
-        //}
         try
         {
             byte[] messageData = Encoding.UTF8.GetBytes(message);

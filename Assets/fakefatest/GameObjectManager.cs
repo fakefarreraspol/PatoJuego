@@ -61,30 +61,5 @@ public class GameObjectManager : MonoBehaviour
             return false;
         }
     }
-    private void Update()
-    {
-        //Debug.Log(gameObjectDictionary.Count);
-    }
-    // Example of how to use the GameObjectManager
-    //private void ExampleUsage()
-    //{
-    //    // Assuming you have GameObjects with unique IDs
-    //    int objectId1 = 1;
-    //    int objectId2 = 2;
-
-    //    // Adding GameObjects to the manager
-    //    GameObject object1 = /* Your GameObject */;
-    //    GameObject object2 = /* Your GameObject */;
-
-    //    AddGameObject(objectId1, object1);
-    //    AddGameObject(objectId2, object2);
-
-    //    // Retrieving GameObjects from the manager
-    //    GameObject retrievedObject1 = GetGameObject(objectId1);
-    //    GameObject retrievedObject2 = GetGameObject(objectId2);
-
-    //    // Removing GameObjects from the manager
-    //    RemoveGameObject(objectId1);
-    //    RemoveGameObject(objectId2);
-    //}
+   
 }
