@@ -26,7 +26,7 @@ public class fakeTestClient : MonoBehaviour
         fakeDeserealizer = FindObjectOfType<fakeDeserealizer>();
         ConnectToServer();
         InitializeClient();
-        //serverIP = FindObjectOfType<fakeDatos>().ip;
+        
        
     }
 
@@ -35,11 +35,11 @@ public class fakeTestClient : MonoBehaviour
         serverIP = FindObjectOfType<fakeDatos>().ip;
         if (serverIP == null)
         {
-            Debug.LogError("IP is null ");
+            Debug.Log("IP is null ");
         }
         else
         {
-            Debug.LogError("IP is: " + serverIP);
+            Debug.Log("IP is: " + serverIP);
         }
     }
 
