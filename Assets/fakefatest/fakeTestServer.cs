@@ -117,11 +117,11 @@ public class fakeTestServer : MonoBehaviour
         string welcomeMessage = $"Welcome! Your ID is {clientId}";
         SendServerMessage(clientId.ToString(), clientEndPoint);
 
-        fakePlayerData srvrUser = new fakePlayerData(transform.position, Vector2.right, false, 100, 0, true);
+        fakePlayerData srvrUser = new fakePlayerData(Vector3.zero, Vector2.right, false, 100, 0, true);
         string serverUSer = JsonUtility.ToJson(srvrUser);
         SendServerMessage(serverUSer, clientEndPoint);
 
-        fakePlayerData userNEw = new fakePlayerData(transform.position, Vector2.right, false, 100, clientId);
+        fakePlayerData userNEw = new fakePlayerData(Vector3.zero, Vector2.right, false, 100, clientId);
         string usernewww = JsonUtility.ToJson(userNEw);
         SendMessageToAllClients(usernewww);
     }
