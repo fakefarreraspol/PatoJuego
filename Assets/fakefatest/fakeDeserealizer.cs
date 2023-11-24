@@ -58,7 +58,11 @@ public class fakeDeserealizer : MonoBehaviour
             }
             else
             {
-                numID = int.Parse(msg);
+                int newNum = int.Parse(msg);
+                if (newNum == 112) { FindObjectOfType<fakeGameManager>().gState = fakeGameManager.GameState.InGame; }
+                else numID = newNum;
+
+
             }
         }
         
