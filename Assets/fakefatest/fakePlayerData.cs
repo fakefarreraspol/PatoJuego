@@ -10,17 +10,18 @@ public class fakePlayerData
     public int Health;
     public bool bulletShot = false;
 
-
+    public bool newUser = false;
     public fakePlayerData() 
     {
     }
-    public fakePlayerData(Vector3 pTrans, Vector2 pDir, bool isbShot, int health)
+    public fakePlayerData(Vector3 pTrans, Vector2 pDir, bool isbShot, int health, int id, bool newUser = false)
     {
         playerTransform = pTrans;
         playerDirection = pDir;
         bulletShot = isbShot;
         Health = health;
-
+        userId = id;
+        this.newUser = newUser;
     }
 
 }

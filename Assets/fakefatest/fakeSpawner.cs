@@ -27,5 +27,10 @@ public class fakeSpawner : MonoBehaviour
             FindObjectOfType<GameObjectManager>().AddGameObject(ip, newUser);
         }
     }
-
+    public void PlsSpawnPlayer(int id)
+    {
+        GameObject newuser = Instantiate(remoteCharacter, spawnPoints[Random.Range(0, spawnPoints.Length)].position, Quaternion.identity);
+        FindObjectOfType<GameObjectManager>().AddGameObject(id, newuser);
+        
+    }
 }

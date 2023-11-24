@@ -249,15 +249,18 @@ public class Character : MonoBehaviour
 
     private void OnActionPerformed()
     {
-        fakePlayerData pDatasa = new fakePlayerData(transform.position, GetPlayerDir(), DidPlayerShoot(), characterHP);
-        string message = JsonUtility.ToJson(pDatasa);
+        
         if(GetComponent<fakeTestClient>()!=null)
         {
+            fakePlayerData pDatasa = new fakePlayerData(transform.position, GetPlayerDir(), DidPlayerShoot(), characterHP, FindObjectOfType<fakefaID>().IDDDDDDDD);
+            string message = JsonUtility.ToJson(pDatasa);
             GetComponent<fakeTestClient>().SendData(message);
         }
-        if(GetComponent<fakeTestServer>()!=null)
+        if(GetComponent<fakeTestServer>() != null)
         {
-            GetComponent<fakeTestServer>().SendMessageToAllClients(message);
+            fakePlayerData pDatasa = new fakePlayerData(transform.position, GetPlayerDir(), DidPlayerShoot(), characterHP, 0);
+            string message = JsonUtility.ToJson(pDatasa);
+            FindObjectOfType<fakeTestServer>().SendMessageToAllClients(message);
         }
     }
 

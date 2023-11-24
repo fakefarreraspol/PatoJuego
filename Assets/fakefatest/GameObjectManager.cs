@@ -25,6 +25,7 @@ public class GameObjectManager : MonoBehaviour
     {
         if (gameObjectDictionary.ContainsKey(id))
         {
+            Debug.Log("success");
             return gameObjectDictionary[id];
         }
         else
@@ -47,6 +48,10 @@ public class GameObjectManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        //Debug.Log(gameObjectDictionary.Count);
+    }
     // Example of how to use the GameObjectManager
     //private void ExampleUsage()
     //{
