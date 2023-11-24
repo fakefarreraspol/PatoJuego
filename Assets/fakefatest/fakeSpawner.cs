@@ -40,8 +40,13 @@ public class fakeSpawner : MonoBehaviour
     }
     public void PlsSpawnPlayer(int id)
     {
-        GameObject newuser = Instantiate(remoteCharacter, spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)].position, Quaternion.identity);
-        FindObjectOfType<GameObjectManager>().AddGameObject(id, newuser);
+        if (!FindObjectOfType<GameObjectManager>().CheckIfItsAlreadyListed(id))
+        {
+
+
+            GameObject newuser = Instantiate(remoteCharacter, spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)].position, Quaternion.identity);
+            FindObjectOfType<GameObjectManager>().AddGameObject(id, newuser);
+        }
         
     }
     public void PlsQueueSpawnPlayer(int id)

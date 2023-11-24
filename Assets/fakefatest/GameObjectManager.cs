@@ -48,6 +48,17 @@ public class GameObjectManager : MonoBehaviour
         }
     }
 
+    public bool CheckIfItsAlreadyListed(int id)
+    {
+        if (gameObjectDictionary.ContainsKey(id))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
     private void Update()
     {
         //Debug.Log(gameObjectDictionary.Count);

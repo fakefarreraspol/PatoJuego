@@ -121,10 +121,15 @@ public class fakeTestServer : MonoBehaviour
         string serverUSer = JsonUtility.ToJson(srvrUser);
         SendServerMessage(serverUSer, clientEndPoint);
 
-        fakePlayerData userNEw = new fakePlayerData(Vector3.zero, Vector2.right, false, 100, clientId);
-        string usernewww = JsonUtility.ToJson(userNEw);
-        SendMessageToAllClients(usernewww);
-
+        //fakePlayerData userNEw = new fakePlayerData(Vector3.zero, Vector2.right, false, 100, clientId);
+        //string usernewww = JsonUtility.ToJson(userNEw);
+        //SendMessageToAllClients(usernewww);
+        foreach (var clienttst in connectedClients.Keys)
+        {
+            fakePlayerData userNEw = new fakePlayerData(Vector3.zero, Vector2.right, false, 100, connectedClients[clienttst].Id);
+            string usernewww = JsonUtility.ToJson(userNEw);
+            SendServerMessage(usernewww, clienttst);
+        }
 
         fakeSpawner.onNewUser(clientId);
     }

@@ -41,6 +41,7 @@ public class fakeDeserealizer : MonoBehaviour
         
         if (messages.Count > 0)
         {
+            Debug.Log("msg count: " + messages.Count);
             string msg = messages.Dequeue();
             if (IsValidJson(msg))
             {
@@ -51,7 +52,7 @@ public class fakeDeserealizer : MonoBehaviour
                     FindObjectOfType<fakeTestServer>().SendMessageToAllClients(msg);
                 }
                 
-                if (TryDeserialize<fakePlayerData>(msg)) EnqueuePlayerDataMessage(PlayerData(msg));
+                EnqueuePlayerDataMessage(PlayerData(msg));
                 
                 //PlayerData(Json);
             }
@@ -94,16 +95,5 @@ public class fakeDeserealizer : MonoBehaviour
     }
     
 
-    bool TryDeserialize<T>(string json)
-    {
-        try
-        {
-            JsonUtility.FromJson<T>(json);
-            return true;
-        }
-        catch (Exception)
-        {
-            return false;
-        }
-    }
+    
 }
