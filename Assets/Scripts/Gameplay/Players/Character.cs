@@ -14,7 +14,7 @@ public class Character : MonoBehaviour
     [SerializeField] private Transform shootPoint;
 
     
-    private float speed = 20;
+    private float speed = 10;
     [SerializeField] private float jumpForce = 100.0f;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
