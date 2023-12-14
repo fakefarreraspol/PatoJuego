@@ -7,7 +7,7 @@ using System.Text;
 using UnityEngine;
 using System.Linq;
 
-public class fakeTestServer : MonoBehaviour
+public class Server : MonoBehaviour
 {
     private UdpClient udpServer;
     private int port = 8080;
