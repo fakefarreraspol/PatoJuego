@@ -36,4 +36,18 @@ public static class SaveAndLoad
             return null;
         }
     }
+
+    public static void DeleteFile()
+    {
+        string filePath = Application.persistentDataPath + "/player.sigma";
+        if (File.Exists(filePath))
+        {
+            File.Delete(filePath);
+            Debug.Log("File deleted: " + filePath);
+        }
+        else
+        {
+            Debug.LogWarning("File not found: " + filePath);
+        }
+    }
 }
