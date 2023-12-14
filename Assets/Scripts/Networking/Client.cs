@@ -9,7 +9,7 @@ using UnityEngine;
 public class Client : MonoBehaviour
 {
     private UdpClient udpClient;
-    private string serverIP;
+    private string serverIP = "25.63.64.104";
     private int serverPort = 8080;
 
     //fakeDeserealizer fakeDeserealizer;            /////////////////////////////////////////

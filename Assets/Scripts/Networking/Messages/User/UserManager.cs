@@ -6,5 +6,5 @@ public class UserManager : MonoBehaviour
 {
     public string Username;
     public int maxScore;
-    
+    public int userID = 0;
 }

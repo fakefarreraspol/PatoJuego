@@ -69,6 +69,7 @@ public class fakeTestServer : MonoBehaviour
             {
                 string message = Encoding.ASCII.GetString(data);
 
+                Debug.Log("received: " + message);
                 //fakeDeserealizer.Deserealize(message);        ///////////////////////////////////////////////////////
 
                 lastReceivedTime[remoteEndPoint] = DateTime.Now;
@@ -110,18 +111,7 @@ public class fakeTestServer : MonoBehaviour
         SendServerMessage(clientId.ToString(), clientEndPoint);
 
 
-        //fakePlayerData srvrUser = new fakePlayerData(Vector3.zero, Vector2.right, false, 100, 0, true);    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //string serverUSer = JsonUtility.ToJson(srvrUser);
-        //SendServerMessage(serverUSer, clientEndPoint);
-
-        //foreach (var clienttst in connectedClients.Keys)
-        //{
-        //    fakePlayerData userNEw = new fakePlayerData(Vector3.zero, Vector2.right, false, 100, connectedClients[clienttst].Id);
-        //    string usernewww = JsonUtility.ToJson(userNEw);
-        //    SendServerMessage(usernewww, clienttst);
-        //}
-
-        //fakeSpawner.onNewUser(clientId);
+        
     }
 
     private void HandleClientDisconnect(IPEndPoint clientEndPoint)
