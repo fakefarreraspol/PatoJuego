@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4219100331561307836}
   - component: {fileID: 2932597899154842204}
   m_Layer: 9
-  m_Name: Character (1)
+  m_Name: RemoteCharacter
   m_TagString: malomalisimo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
