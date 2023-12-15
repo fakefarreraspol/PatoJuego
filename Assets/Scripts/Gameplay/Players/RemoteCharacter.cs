@@ -5,7 +5,7 @@ using UnityEngine;
 public class RemoteCharacter : MonoBehaviour
 {
     // Start is called before the first frame update
-    public void UpdateRemoteCharacterPos(PlayerActionData playerData)
+    public void UpdateRemoteCharacterPos(chInfo playerData)
     {
         transform.position = playerData.playerTransform;
     }

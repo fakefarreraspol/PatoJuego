@@ -1,18 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class chInfo : MonoBehaviour
+public class chInfo 
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public Vector3 playerTransform;
+    public Vector2 playerDirection;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public chActions characterActions;
+
+
+    public chInfo(Vector3 pos, Vector2 dir, chActions actions) 
+    { 
+        playerTransform = pos;
+        playerDirection = dir;
+        characterActions = actions;
     }
 }

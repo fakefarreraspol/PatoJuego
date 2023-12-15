@@ -45,11 +45,26 @@ public class Character : MonoBehaviour
 
 
     private int characterHP;
+
+
+    private chActions playerStatus;
+    // SERVER/Client Related
+    private Client client;
+    private Server server;
+    private UserManager ThisUser;
+
     private void Awake()
     {
         characterRb = GetComponent<Rigidbody2D>();
         userInput = new Controller();
         playerDir = Vector2.right;
+
+        client = FindObjectOfType<Client>();
+        server = FindObjectOfType<Server>();
+
+        ThisUser = FindObjectOfType<UserManager>();
+
+        playerStatus = new chActions();
     }
     private void Start()
     {
@@ -251,7 +266,15 @@ public class Character : MonoBehaviour
 
     private void OnActionPerformed()
     {
-        
+        chInfo characterInformation = new chInfo(transform.position, GetPlayerDir(), playerStatus);
+        MessageToSend userInformation = new MessageToSend(ThisUser.userID, ThisUser.Username, MessageType.CHARACTER_INFO, "quack", characterInformation);
+        string data = JsonUtility.ToJson(userInformation);
+        if (client != null) client.SendData(data);
+        else Debug.Log("client is null");
+
+        if (server != null) server.SendMessageToAllClients(data);
+        else Debug.Log("server is null");
+
     }
 
 

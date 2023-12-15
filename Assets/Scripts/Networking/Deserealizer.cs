@@ -28,6 +28,7 @@ public class Deserealizer : MonoBehaviour
                 case MessageType.GAME_START:
                     break;
                 case MessageType.CHARACTER_INFO:
+                    FindObjectOfType<RemoteCharacter>().UpdateRemoteCharacterPos(msg.UserCharacterInfo);
                     break;
                 case MessageType.GENERATE_PLAYERS:
                     break;

@@ -161,6 +161,7 @@ public class Server : MonoBehaviour
 
     public void SendMessageToAllClients(string message)
     {
+        Debug.Log("sending: " + message + " to all clients");
         foreach (var client in connectedClients.Keys)
         {
             SendServerMessage(message, client);
