@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
 
 public class Character : MonoBehaviour
@@ -45,7 +46,7 @@ public class Character : MonoBehaviour
 
 
     private int characterHP;
-
+    private Slider characterHPSlider;
 
     private chActions playerStatus;
     // SERVER/Client Related
@@ -65,6 +66,8 @@ public class Character : MonoBehaviour
         ThisUser = FindObjectOfType<UserManager>();
 
         playerStatus = new chActions();
+
+        characterHPSlider = GetComponentInChildren<Canvas>().gameObject.GetComponentInChildren<Slider>();
     }
     private void Start()
     {
@@ -282,6 +285,7 @@ public class Character : MonoBehaviour
     {
         characterHP -= dmg;
         OnActionPerformed();
+        characterHPSlider.value -= dmg*0.01f;
     }
 }
 
