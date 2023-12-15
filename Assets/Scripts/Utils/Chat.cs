@@ -86,8 +86,11 @@ public class Chat : MonoBehaviour
         messagePrefab.transform.Find("MsgText").GetComponent<TextMeshProUGUI>().color = Color.black;
 
         messagePrefab.transform.Find("MsgUserName").GetComponent<TextMeshProUGUI>().text = msg.UserName;
-        messagePrefab.transform.Find("MsgUserName").gameObject.GetComponent<TextMeshProUGUI>().color = UnityEngine.Random.ColorHSV();
-        Instantiate(messagePrefab, Vector3.zero, Quaternion.identity, content.transform);
+        messagePrefab.transform.Find("MsgUserName").gameObject.GetComponent<TextMeshProUGUI>().color = Color.red;
+
+        GameObject NewChatPrefabMessage = Instantiate(messagePrefab, Vector3.zero, Quaternion.identity, content.transform);
+        NewChatPrefabMessage.transform.SetAsFirstSibling();
+
     }
 
     private void SendChatMessage(MessageToSend msg)
