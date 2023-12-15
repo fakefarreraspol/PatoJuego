@@ -12,7 +12,7 @@ public class Client : MonoBehaviour
     private string serverIP = "25.63.64.104";
     private int serverPort = 8080;
 
-    //fakeDeserealizer fakeDeserealizer;            /////////////////////////////////////////
+    Deserealizer Deserealizer;            /////////////////////////////////////////
 
     private void Awake()
     {
@@ -20,7 +20,7 @@ public class Client : MonoBehaviour
     }
     void Start()
     {
-        //fakeDeserealizer = FindObjectOfType<fakeDeserealizer>(); ///////////////////////////////////
+        Deserealizer = FindObjectOfType<Deserealizer>(); ///////////////////////////////////
         ConnectToServer();
         InitializeClient();
 
@@ -53,8 +53,9 @@ public class Client : MonoBehaviour
         string message = Encoding.ASCII.GetString(data);
 
         Debug.Log("Received response from Goozy server: " + message);
+        
         //Only deserialize if the message is a json
-        //fakeDeserealizer.Deserealize(message);    /////////////////////////////////////////
+        //Deserealizer.Deserealize(message);    /////////////////////////////////////////
 
         BeginReceive();
 
