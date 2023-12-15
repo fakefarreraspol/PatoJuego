@@ -16,7 +16,7 @@ public class Server : MonoBehaviour
     private Dictionary<IPEndPoint, bool> isDisconnected = new Dictionary<IPEndPoint, bool>();
     private TimeSpan timeoutThreshold = TimeSpan.FromSeconds(50); // Adjust as needed
 
-    string serverIP = "25.63.64.104";
+    
 
     //public fakeDeserealizer fakeDeserealizer;    ///////////////////////////////////////////////////////
 

@@ -9,7 +9,8 @@ using UnityEngine;
 public class Client : MonoBehaviour
 {
     private UdpClient udpClient;
-    private string serverIP = "25.63.64.104";
+    //private string serverIP = "25.63.64.104";
+    private string serverIP = "192.168.206.20";
     private int serverPort = 8080;
 
     Deserealizer Deserealizer;            /////////////////////////////////////////
@@ -55,7 +56,7 @@ public class Client : MonoBehaviour
         Debug.Log("Received response from Goozy server: " + message);
         
         //Only deserialize if the message is a json
-        //Deserealizer.Deserealize(message);    /////////////////////////////////////////
+        //Deserealizer.AddToDeserealizeQueue(message);    /////////////////////////////////////////
 
         BeginReceive();
 

@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Deserealizer : MonoBehaviour
 {
-    public void Deserealize(string Message)
+    Queue<string> ReceivedMessages = new Queue<string>();
+    private void Deserealize(string Message)
     {
         Debug.Log("Deserealizing message:    " +Message);
         if(!IsValidJson(Message)) 
@@ -38,7 +39,21 @@ public class Deserealizer : MonoBehaviour
             }
         }
     }
-
+    private void Update()
+    {
+        if(ReceivedMessages.Count > 0) 
+        {
+            for(int i = 0; i < ReceivedMessages.Count; i++)
+            {
+                Deserealize(ReceivedMessages.Dequeue());
+            }
+            
+        }
+    }
+    public void AddToDeserealizeQueue(string receivedMSG)
+    {
+        ReceivedMessages.Enqueue(receivedMSG);
+    }
     private bool IsValidJson(string jsonString)
     {
         try
