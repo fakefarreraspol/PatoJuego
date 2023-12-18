@@ -22,10 +22,14 @@ public class Server : MonoBehaviour
 
 
     private int nextClientId = 1;
-
+    private Deserealizer deserealizer;
     private class ClientInfo
     {
         public int Id { get; set; }
+    }
+    private void Awake()
+    {
+        deserealizer = FindObjectOfType<Deserealizer>();
     }
     void Start()
     {
@@ -70,7 +74,7 @@ public class Server : MonoBehaviour
                 string message = Encoding.ASCII.GetString(data);
 
                 Debug.Log("received: " + message);
-                //fakeDeserealizer.Deserealize(message);        ///////////////////////////////////////////////////////
+                deserealizer.AddToDeserealizeQueue(message);        ///////////////////////////////////////////////////////
 
                 lastReceivedTime[remoteEndPoint] = DateTime.Now;
 
@@ -147,10 +151,9 @@ public class Server : MonoBehaviour
 
     protected void SendServerMessage(string message, IPEndPoint IPpoint)
     {
-        byte[] data = Encoding.ASCII.GetBytes(message);
         try
         {
-            byte[] messageData = Encoding.UTF8.GetBytes(message);
+            byte[] messageData = Encoding.ASCII.GetBytes(message);
             udpServer.Send(messageData, messageData.Length, IPpoint);
         }
         catch (Exception e)
