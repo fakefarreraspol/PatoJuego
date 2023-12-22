@@ -15,7 +15,7 @@ public class Deserealizer : MonoBehaviour
         else
         {
             MessageToSend msg = JsonUtility.FromJson<MessageToSend>(Message);
-
+            Debug.Log(msg.UserName);
             switch (msg.messageType)
             {
                 case MessageType.CONNECTION:
@@ -25,6 +25,7 @@ public class Deserealizer : MonoBehaviour
                 case MessageType.WAITING_ROOM:
                     break;
                 case MessageType.CHAT_MESSAGE:
+                    FindObjectOfType<Chat>().EnqueueMessage(msg);
                     break;
                 case MessageType.GAME_START:
                     break;

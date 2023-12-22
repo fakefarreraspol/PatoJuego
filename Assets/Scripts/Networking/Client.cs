@@ -10,8 +10,8 @@ public class Client : MonoBehaviour
 {
     private UdpClient udpClient;
     //private string serverIP = "25.63.64.104";
+    private string serverIP = "192.168.104.18";
     //private string serverIP = "192.168.204.18";
-    private string serverIP = "192.168.204.18";
     private int serverPort = 8080;
 
     Deserealizer Deserealizer;            /////////////////////////////////////////
