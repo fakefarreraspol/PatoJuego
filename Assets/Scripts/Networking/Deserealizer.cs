@@ -5,6 +5,15 @@ using UnityEngine;
 public class Deserealizer : MonoBehaviour
 {
     Queue<string> ReceivedMessages = new Queue<string>();
+
+    //Necessari objects to update
+    private ObjectManager remotePlayersManager;
+    private RemoteCharacter character;
+
+    private void Start()
+    {
+        character = FindObjectOfType<RemoteCharacter>();
+    }
     private void Deserealize(string Message)
     {
         Debug.Log("Deserealizing message:    " +Message);
@@ -19,23 +28,28 @@ public class Deserealizer : MonoBehaviour
             switch (msg.messageType)
             {
                 case MessageType.CONNECTION:
+                    HandleConnectionMessage(msg);
                     break;
                 case MessageType.CHECK_CONNECTION:
+                    HandleConnectionCheck(msg);
                     break;
                 case MessageType.WAITING_ROOM:
+                    HandleWaitingRoomMessage(msg);
                     break;
                 case MessageType.CHAT_MESSAGE:
-                    FindObjectOfType<Chat>().EnqueueMessage(msg);
+                    HandleChatMessage(msg);
                     break;
                 case MessageType.GAME_START:
+                    HandleGameStart(msg);
                     break;
                 case MessageType.CHARACTER_INFO:
-                    Debug.Log("hhhhhhhhhhhhh"+msg.UserCharacterInfo);
-                    FindObjectOfType<RemoteCharacter>().UpdateRemoteCharacterPos(msg.UserCharacterInfo);
+                    HandleCharacterInfo(msg);
                     break;
                 case MessageType.GENERATE_PLAYERS:
+                    HandleGeneratePlayers(msg);
                     break;
                 case MessageType.GAME_END:
+                    HandleGameEnd(msg);
                     break;
 
             }
@@ -67,6 +81,40 @@ public class Deserealizer : MonoBehaviour
         {
             return false;
         }
+    }
+
+
+    private void HandleConnectionMessage(MessageToSend msg)
+    {
+
+    }
+    private void HandleConnectionCheck(MessageToSend msg)
+    {
+
+    }
+    private void HandleWaitingRoomMessage(MessageToSend msg)
+    {
+
+    }
+    private void HandleChatMessage(MessageToSend msg)
+    {
+        FindObjectOfType<Chat>().EnqueueMessage(msg);
+    }
+    private void HandleGameStart(MessageToSend msg)
+    {
+
+    }
+    private void HandleCharacterInfo(MessageToSend msg)
+    {
+        character.UpdateRemoteCharacterPos(msg.UserCharacterInfo);
+    }
+    private void HandleGeneratePlayers(MessageToSend msg)
+    {
+
+    }
+    private void HandleGameEnd(MessageToSend msg)
+    {
+
     }
 }
 

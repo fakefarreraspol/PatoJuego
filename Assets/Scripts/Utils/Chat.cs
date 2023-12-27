@@ -36,7 +36,7 @@ public class Chat : MonoBehaviour
             MessageToSend incomingMessage = messageQueue.Dequeue();
             if (incomingMessage.UserName != ThisUser.Username)
             {
-                notificationSource.Play();
+                
                 DisplayMessage(incomingMessage);
             }
         }
