@@ -107,7 +107,7 @@ public class Character : MonoBehaviour
         HandleJump();
         CheckGrounded();
         HandleShootingCooldown();
-        HandleShooting();
+        //HandleShooting();
 
         //Debug.Log(playerDir);
         // Update the jump cooldown timer
@@ -228,6 +228,9 @@ public class Character : MonoBehaviour
             canShoot = false;
             isShooting = false;
             Debug.Log(value.ToString());
+
+            GameObject bullet = Instantiate(bulletPrefab, shootPoint.position, shootPoint.rotation);
+            bullet.GetComponent<Bullet2D>().dir = playerDir;
 
             // Start the jump cooldown timer
             shootCooldownTimer = shootCooldown;
