@@ -9,10 +9,12 @@ public class Deserealizer : MonoBehaviour
     //Necessari objects to update
     private ObjectManager remotePlayersManager;
     private RemoteCharacter character;
+    private UserManager myUser;
 
     private void Start()
     {
         character = FindObjectOfType<RemoteCharacter>();
+        myUser = FindObjectOfType<UserManager>();
     }
     private void Deserealize(string Message)
     {
@@ -86,7 +88,8 @@ public class Deserealizer : MonoBehaviour
 
     private void HandleConnectionMessage(MessageToSend msg)
     {
-
+        Debug.Log("Server changed your ID to: " + msg.ID);
+        myUser.userID = msg.ID;
     }
     private void HandleConnectionCheck(MessageToSend msg)
     {

@@ -111,8 +111,9 @@ public class Server : MonoBehaviour
         lastReceivedTime.Add(clientEndPoint, DateTime.Now);
         isDisconnected.Add(clientEndPoint, false);
 
-        string welcomeMessage = $"Welcome! Your ID is {clientId}";
-        SendServerMessage(clientId.ToString(), clientEndPoint);
+        MessageToSend welcomeMessage = new MessageToSend(clientId, "server", MessageType.CONNECTION, "This is your ID");
+        string welcomeMessageToSend = JsonUtility.ToJson(welcomeMessage);
+        SendServerMessage(welcomeMessageToSend, clientEndPoint);
 
 
         
