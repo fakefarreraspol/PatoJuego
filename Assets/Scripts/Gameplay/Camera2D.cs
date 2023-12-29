@@ -20,5 +20,9 @@ public class Camera2D : MonoBehaviour
             // Smoothly interpolate towards the target position
             transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
         }
+        else if (FindObjectOfType<Character>() != null) 
+        {
+            target = FindObjectOfType<Character>().transform;
+        }
     }
 }

@@ -126,6 +126,7 @@ public class Character : MonoBehaviour
         if (characterHP <= 0)
         {
             OnActionPerformed();
+
             Destroy(gameObject);
         }
     }

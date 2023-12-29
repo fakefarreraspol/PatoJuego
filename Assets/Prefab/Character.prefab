@@ -132,7 +132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 7788694702056113507, guid: 34554001d0343924c88a0f403aa50b4e, type: 3}
   shootPoint: {fileID: 3928411612678122182}
-  jumpForce: 2000
+  jumpForce: 600
   groundCheck: {fileID: 0}
   groundLayer:
     serializedVersion: 2
