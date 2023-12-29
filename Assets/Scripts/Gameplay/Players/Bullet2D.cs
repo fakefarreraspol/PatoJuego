@@ -14,7 +14,7 @@ public class Bullet2D : MonoBehaviour
         transform.Translate(dir * speed * Time.deltaTime);
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
         // Check if the bullet collided with an object on the "Ground" layer
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
@@ -22,14 +22,16 @@ public class Bullet2D : MonoBehaviour
             // Destroy the bullet when it hits the ground
             Destroy(gameObject);
         }
-        if(collision.gameObject.tag == "Player")
-        {
-            FindObjectOfType<Character>().TakeDamageCharacter(20);
-            Destroy(gameObject);
-        }
+        //if(collision.gameObject.tag == "Player")
+        //{
+        //    FindObjectOfType<Character>().TakeDamageCharacter(20);
+        //    Destroy(gameObject);
+        //}
         if (collision.gameObject.tag == "malomalisimo")
         {
             Destroy(gameObject);
         }
+
+        Destroy(gameObject);
     }
 }

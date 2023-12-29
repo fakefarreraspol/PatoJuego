@@ -299,6 +299,12 @@ public class Character : MonoBehaviour
             Debug.Log("Collided");
             TakeDamageCharacter(999);
         }
+        if (other.gameObject.layer == LayerMask.NameToLayer("EnemyBullet"))
+        {
+            FindObjectOfType<Character>().TakeDamageCharacter(20);
+        }
     }
+
+
 }
 
