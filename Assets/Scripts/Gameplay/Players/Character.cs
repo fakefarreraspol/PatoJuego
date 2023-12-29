@@ -290,5 +290,15 @@ public class Character : MonoBehaviour
         OnActionPerformed();
         characterHPSlider.value -= dmg*0.01f;
     }
+
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.gameObject.tag == "deathWall")
+        {
+            Debug.Log("Collided");
+            TakeDamageCharacter(999);
+        }
+    }
 }
 
