@@ -491,7 +491,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterRemoteMAXHP: 0
-  EnemyBullet: {fileID: 0}
+  EnemyBullet: {fileID: 7788694702056113507, guid: 22f62eb5d4c62524c9b47eb9c1282412, type: 3}
 --- !u!1 &7376234809687936065
 GameObject:
   m_ObjectHideFlags: 0
