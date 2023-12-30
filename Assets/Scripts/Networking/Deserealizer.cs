@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Deserealizer : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class Deserealizer : MonoBehaviour
 
     private void Start()
     {
+        DontDestroyOnLoad(transform.gameObject);
         character = FindObjectOfType<RemoteCharacter>();
         myUser = FindObjectOfType<UserManager>();
     }
@@ -105,10 +107,11 @@ public class Deserealizer : MonoBehaviour
     }
     private void HandleGameStart(MessageToSend msg)
     {
-
+        SceneManager.LoadScene("Scene02");
     }
     private void HandleCharacterInfo(MessageToSend msg)
     {
+        if(character == null) character = FindObjectOfType<RemoteCharacter>();
         character.UpdateRemoteCharacter(msg.UserCharacterInfo);
     }
     private void HandleGeneratePlayers(MessageToSend msg)

@@ -29,10 +29,12 @@ public class Server : MonoBehaviour
     }
     private void Awake()
     {
+        DontDestroyOnLoad(this);
         deserealizer = FindObjectOfType<Deserealizer>();
     }
     void Start()
     {
+        if (FindObjectOfType<ServerData>().ServerPort != "") port = int.Parse(FindObjectOfType<ServerData>().ServerPort);
         InitializeServer();
         //fakeDeserealizer = FindObjectOfType<fakeDeserealizer>(); ///////////////////////////////////////////////////////
     }

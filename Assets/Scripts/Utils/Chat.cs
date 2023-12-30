@@ -34,11 +34,12 @@ public class Chat : MonoBehaviour
         if (messageQueue.Count > 0)
         {
             MessageToSend incomingMessage = messageQueue.Dequeue();
-            if (incomingMessage.UserName != ThisUser.Username)
+            if (incomingMessage.ID != ThisUser.userID)
             {
                 
                 DisplayMessage(incomingMessage);
             }
+            Debug.Log("this is my own message");
         }
     }
 

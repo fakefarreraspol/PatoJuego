@@ -18,10 +18,11 @@ public class Client : MonoBehaviour
 
     private void Awake()
     {
-
+        DontDestroyOnLoad(this);
     }
     void Start()
     {
+        if (FindObjectOfType<ServerData>().ServerIP != "") serverIP = FindObjectOfType<ServerData>().ServerIP;
         Deserealizer = FindObjectOfType<Deserealizer>(); ///////////////////////////////////
         ConnectToServer();
         InitializeClient();
