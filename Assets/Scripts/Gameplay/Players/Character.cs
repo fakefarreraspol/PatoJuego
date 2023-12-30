@@ -48,11 +48,17 @@ public class Character : MonoBehaviour
     private int characterHP;
     private Slider characterHPSlider;
 
-    private chActions playerStatus;
+    
     // SERVER/Client Related
     private Client client;
     private Server server;
     private UserManager ThisUser;
+
+
+
+
+    //Bools to send
+    private chActions playerStatus;
 
     private void Awake()
     {
@@ -65,7 +71,7 @@ public class Character : MonoBehaviour
 
         ThisUser = FindObjectOfType<UserManager>();
 
-        playerStatus = new chActions();
+        //playerStatus = new chActions();
 
         characterHPSlider = GetComponentInChildren<Canvas>().gameObject.GetComponentInChildren<Slider>();
     }
@@ -242,6 +248,7 @@ public class Character : MonoBehaviour
 
     private void OnMovementPerformed(InputAction.CallbackContext value)
     {
+        playerStatus.moving = true;
         moveVector = value.ReadValue<Vector2>();
         // Debug.Log(moveVector);
         playerDir = value.ReadValue<Vector2>().normalized;
@@ -250,6 +257,7 @@ public class Character : MonoBehaviour
 
     private void OnMovementStopped(InputAction.CallbackContext value)
     {
+        playerStatus.moving = false;
         moveVector = Vector2.zero;
         OnActionPerformed();
     }

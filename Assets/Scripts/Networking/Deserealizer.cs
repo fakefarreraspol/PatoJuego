@@ -109,7 +109,7 @@ public class Deserealizer : MonoBehaviour
     }
     private void HandleCharacterInfo(MessageToSend msg)
     {
-        character.UpdateRemoteCharacterPos(msg.UserCharacterInfo);
+        character.UpdateRemoteCharacter(msg.UserCharacterInfo);
     }
     private void HandleGeneratePlayers(MessageToSend msg)
     {
