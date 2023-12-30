@@ -30,13 +30,25 @@ public class RemoteCharacter : MonoBehaviour
     {
         UpdatePos(playerData);
         UpdateAnimations(playerData);
+
+        if (playerData.characterActions.shoot) ShootBull(playerData.playerDirection);
+
+        HandleHealth(playerData.healthPoints);
+
+        
     }
-    private void ShootBull() 
+    private void ShootBull(Vector2 dir) 
     {
         GameObject bull = Instantiate(EnemyBullet, transform.position, Quaternion.identity);
-        bull.GetComponent<Bullet2D>().dir = new Vector2(-1,0);
+        bull.GetComponent<Bullet2D>().dir = dir;
     }
 
+    private void HandleHealth(int hp)
+    {
+        if (hp <= 0) DestroyRemotePlayer();
+
+        characterRemoteHpSlider.value = hp * 0.01f;
+    }
     private void UpdatePos(chInfo playerData)
     {
         transform.position = playerData.playerTransform;
@@ -61,5 +73,11 @@ public class RemoteCharacter : MonoBehaviour
             characterRemoteSpriteRenderer.flipX = false;
 
         else if (playerData.playerDirection.x < 0) characterRemoteSpriteRenderer.flipX = true;
+    }
+
+
+    private void DestroyRemotePlayer()
+    {
+        Destroy(gameObject);
     }
 }

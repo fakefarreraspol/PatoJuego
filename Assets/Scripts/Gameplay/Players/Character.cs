@@ -241,8 +241,9 @@ public class Character : MonoBehaviour
 
             // Start the jump cooldown timer
             shootCooldownTimer = shootCooldown;
-
+            playerStatus.shoot = true;
             OnActionPerformed();
+            playerStatus.shoot = false;
         }
     }
 
@@ -281,7 +282,7 @@ public class Character : MonoBehaviour
 
     private void OnActionPerformed()
     {
-        chInfo characterInformation = new chInfo(transform.position, GetPlayerDir(), playerStatus);
+        chInfo characterInformation = new chInfo(transform.position, GetPlayerDir(), characterHP, playerStatus);
         MessageToSend userInformation = new MessageToSend(ThisUser.userID, ThisUser.Username, MessageType.CHARACTER_INFO, "quack", characterInformation);
         string data = JsonUtility.ToJson(userInformation);
         if (client != null) client.SendData(data);

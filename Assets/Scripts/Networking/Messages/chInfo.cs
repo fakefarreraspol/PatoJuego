@@ -12,11 +12,12 @@ public class chInfo
 
     public chActions characterActions;
 
-
-    public chInfo(Vector3 pos, Vector2 dir, chActions actions) 
+    public int healthPoints;
+    public chInfo(Vector3 pos, Vector2 dir, int HP, chActions actions) 
     { 
         playerTransform = pos;
         playerDirection = dir;
         characterActions = actions;
+        healthPoints = HP;
     }
 }
