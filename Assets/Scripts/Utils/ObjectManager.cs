@@ -12,6 +12,7 @@ public class ObjectManager : MonoBehaviour
     {
         if (!objectDictionary.ContainsKey(id))
         {
+            Debug.Log("Object Added");
             objectDictionary.Add(id, gameObject);
         }
         else
@@ -25,6 +26,7 @@ public class ObjectManager : MonoBehaviour
     {
         if (objectDictionary.ContainsKey(id))
         {
+            Debug.Log("Object Received");
             return objectDictionary[id];
         }
         else

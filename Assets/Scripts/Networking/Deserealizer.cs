@@ -11,12 +11,15 @@ public class Deserealizer : MonoBehaviour
     private ObjectManager remotePlayersManager;
     private RemoteCharacter character;
     private UserManager myUser;
-
+    private Server server;
+    private ObjectManager GOManager;
     private void Start()
     {
         DontDestroyOnLoad(transform.gameObject);
         character = FindObjectOfType<RemoteCharacter>();
         myUser = FindObjectOfType<UserManager>();
+        server = FindObjectOfType<Server>();
+        GOManager = FindObjectOfType<ObjectManager>();
     }
     private void Deserealize(string Message)
     {
@@ -27,8 +30,9 @@ public class Deserealizer : MonoBehaviour
         }
         else
         {
+            if(server != null) { server.SendMessageToAllClients(Message); }
             MessageToSend msg = JsonUtility.FromJson<MessageToSend>(Message);
-            Debug.Log(msg.UserName);
+            //Debug.Log(msg.UserName);
             switch (msg.messageType)
             {
                 case MessageType.CONNECTION:
@@ -111,8 +115,11 @@ public class Deserealizer : MonoBehaviour
     }
     private void HandleCharacterInfo(MessageToSend msg)
     {
-        if(character == null) character = FindObjectOfType<RemoteCharacter>();
-        character.UpdateRemoteCharacter(msg.UserCharacterInfo);
+        if(msg.ID == myUser.userID) { return; }
+        if(GOManager == null) GOManager = FindObjectOfType<ObjectManager>();
+        Debug.Log("THIS IS THE OBJECT"+ GOManager.GetGameObject(msg.ID).transform);
+        GOManager.GetGameObject(msg.ID).GetComponent<RemoteCharacter>().UpdateRemoteCharacter(msg.UserCharacterInfo);
+
     }
     private void HandleGeneratePlayers(MessageToSend msg)
     {
