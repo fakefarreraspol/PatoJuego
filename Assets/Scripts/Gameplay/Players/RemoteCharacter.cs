@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
 public class RemoteCharacter : MonoBehaviour
@@ -12,19 +13,32 @@ public class RemoteCharacter : MonoBehaviour
     private Animator characterRemoteAnim;
     private SpriteRenderer characterRemoteSpriteRenderer;
     // Start is called before the first frame update
-
+    private float speed = 10;
+    Vector2 lastDir = Vector2.right;
 
     private bool isMoving;
+
+    private Rigidbody2D characterRemoteRigidbody;
     private void Awake()
     {
         characterRemoteHpSlider = GetComponentInChildren<Canvas>().gameObject.GetComponentInChildren<Slider>();
         characterRemoteAnim = GetComponent<Animator>();
         characterRemoteSpriteRenderer = GetComponent<SpriteRenderer>();
+        characterRemoteRigidbody = GetComponent<Rigidbody2D>();
     }
     private void Start()
     {
         characterRemoteHP = characterRemoteMAXHP;
 
+    }
+    private void FixedUpdate()
+    {
+        if (isMoving) 
+        {
+            Vector2 velocity = new Vector2(lastDir.x * speed, characterRemoteRigidbody.velocity.y);
+            characterRemoteRigidbody.velocity = velocity;
+        }
+        else characterRemoteRigidbody.velocity = new Vector2(0, characterRemoteRigidbody.velocity.y);
     }
     public void UpdateRemoteCharacter(chInfo playerData)
     {
