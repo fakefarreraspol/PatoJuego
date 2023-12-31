@@ -18,6 +18,9 @@ public class Client : MonoBehaviour
 
     private void Awake()
     {
+        Client[] checkClient = FindObjectsOfType<Client>();
+
+        if (checkClient.Length > 1) Destroy(gameObject);
         DontDestroyOnLoad(this);
     }
     void Start()

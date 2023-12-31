@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static GameManager;
 
 public class Deserealizer : MonoBehaviour
 {
@@ -13,6 +14,12 @@ public class Deserealizer : MonoBehaviour
     private UserManager myUser;
     private Server server;
     private ObjectManager GOManager;
+    private void Awake()
+    {
+        Deserealizer[] checkDeserealizer = FindObjectsOfType<Deserealizer>();
+
+        if (checkDeserealizer.Length > 1) Destroy(gameObject);
+    }
     private void Start()
     {
         DontDestroyOnLoad(transform.gameObject);
@@ -112,7 +119,9 @@ public class Deserealizer : MonoBehaviour
     private void HandleGameStart(MessageToSend msg)
     {
         FindObjectOfType<GameManager>().ChangeState(GameManager.GameState.Spawn);
-        SceneManager.LoadScene("Scene02");
+        int map = int.Parse(msg.Message);
+        if(map == 0 ) SceneManager.LoadScene("Scene02");
+        if (map == 1) SceneManager.LoadScene("Scene03");
     }
     private void HandleCharacterInfo(MessageToSend msg)
     {
@@ -129,7 +138,10 @@ public class Deserealizer : MonoBehaviour
     }
     private void HandleGameEnd(MessageToSend msg)
     {
+        FindObjectOfType<GameManager>().ChangeState(GameManager.GameState.Lobby);
+        
 
+        SceneManager.LoadScene("LobbyClient");
     }
 }
 

@@ -29,6 +29,10 @@ public class Server : MonoBehaviour
     }
     private void Awake()
     {
+        Server[] checkServer = FindObjectsOfType<Server>();
+
+        if (checkServer.Length > 1) Destroy(gameObject);
+
         DontDestroyOnLoad(this);
         deserealizer = FindObjectOfType<Deserealizer>();
     }

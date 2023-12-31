@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -54,9 +55,24 @@ public class GameManager : MonoBehaviour
                 }
 
                 gState = GameState.Gameplay;
+
+
+
+                
             }
         }
-        else if (gState == GameState.Spawn) gState = GameState.Gameplay;
+        
+
+        if (gState == GameState.Gameplay && Input.GetKeyDown(KeyCode.M))
+        {
+            MessageToSend othermsg = new MessageToSend(0, "LladosFitness", MessageType.GAME_END);
+            string othermsgToClient = JsonUtility.ToJson(othermsg);
+            FindObjectOfType<Server>().SendMessageToAllClients(othermsgToClient);
+
+            gState = GameState.Lobby;
+
+            SceneManager.LoadScene("Lobby");
+        }
 
     }
 
