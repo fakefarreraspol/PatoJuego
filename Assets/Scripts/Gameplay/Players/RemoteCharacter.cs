@@ -41,14 +41,15 @@ public class RemoteCharacter : MonoBehaviour
         }
         else characterRemoteRigidbody.velocity = new Vector2(0, characterRemoteRigidbody.velocity.y);
     }
-    public void UpdateRemoteCharacter(chInfo playerData)
+    public void UpdateRemoteCharacter(MessageToSend userData)
     {
+        chInfo playerData = userData.UserCharacterInfo;
         UpdatePos(playerData);
         UpdateAnimations(playerData);
 
         if (playerData.characterActions.shoot) ShootBull(playerData.playerDirection);
 
-        HandleHealth(playerData.healthPoints);
+        HandleHealth(playerData.healthPoints, userData.ID);
 
         jumped = playerData.characterActions.jump;
         if(jumped)
@@ -67,10 +68,14 @@ public class RemoteCharacter : MonoBehaviour
         characterRemoteRigidbody.AddForce(jumpVelocity);
         jumped = false;
     }
-    private void HandleHealth(int hp)
+    private void HandleHealth(int hp, int ID)
     {
-        if (hp <= 0) DestroyRemotePlayer();
-
+        if (hp <= 0)
+        {
+            FindObjectOfType<ObjectManager>().RemoveGameObject(ID);
+            DestroyRemotePlayer();
+        }
+        
         characterRemoteHpSlider.value = hp * 0.01f;
     }
     private void UpdatePos(chInfo playerData)

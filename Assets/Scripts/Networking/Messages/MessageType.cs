@@ -12,5 +12,6 @@ public enum MessageType
     GAME_START,
     CHARACTER_INFO,
     GENERATE_PLAYERS,
+    RESPAWN_PLAYER,
     GAME_END
 }

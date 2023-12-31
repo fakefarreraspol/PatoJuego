@@ -66,6 +66,9 @@ public class Deserealizer : MonoBehaviour
                 case MessageType.GAME_END:
                     HandleGameEnd(msg);
                     break;
+                case MessageType.RESPAWN_PLAYER:
+                    HandleRespawnPlayer(msg);
+                    break;
 
             }
         }
@@ -128,7 +131,7 @@ public class Deserealizer : MonoBehaviour
         if(msg.ID == myUser.userID) { return; }
         if(GOManager == null) GOManager = FindObjectOfType<ObjectManager>();
         Debug.Log("THIS IS THE OBJECT"+ GOManager.GetGameObject(msg.ID).transform);
-        GOManager.GetGameObject(msg.ID).GetComponent<RemoteCharacter>().UpdateRemoteCharacter(msg.UserCharacterInfo);
+        GOManager.GetGameObject(msg.ID).GetComponent<RemoteCharacter>().UpdateRemoteCharacter(msg);
 
     }
     private void HandleGeneratePlayers(MessageToSend msg)
@@ -142,6 +145,11 @@ public class Deserealizer : MonoBehaviour
         
 
         SceneManager.LoadScene("LobbyClient");
+    }
+    private void HandleRespawnPlayer(MessageToSend msg)
+    {
+        if (msg.ID != myUser.userID) FindObjectOfType<Respawner>().RespawnRemote(int.Parse(msg.Message), msg.ID);
+        
     }
 }
 
