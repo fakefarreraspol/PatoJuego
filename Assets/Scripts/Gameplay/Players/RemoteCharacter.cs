@@ -15,9 +15,10 @@ public class RemoteCharacter : MonoBehaviour
     // Start is called before the first frame update
     private float speed = 10;
     Vector2 lastDir = Vector2.right;
+    private float jumpForce = 100.0f;
 
     private bool isMoving;
-
+    private bool jumped = false;
     private Rigidbody2D characterRemoteRigidbody;
     private void Awake()
     {
@@ -49,14 +50,23 @@ public class RemoteCharacter : MonoBehaviour
 
         HandleHealth(playerData.healthPoints);
 
-        
+        jumped = playerData.characterActions.jump;
+        if(jumped)
+        {
+            HandleRemoteJump();
+        }
     }
     private void ShootBull(Vector2 dir) 
     {
         GameObject bull = Instantiate(EnemyBullet, transform.position, Quaternion.identity);
         bull.GetComponent<Bullet2D>().dir = dir;
     }
-
+    private void HandleRemoteJump()
+    {
+        Vector2 jumpVelocity = new Vector2(0, jumpForce);
+        characterRemoteRigidbody.AddForce(jumpVelocity);
+        jumped = false;
+    }
     private void HandleHealth(int hp)
     {
         if (hp <= 0) DestroyRemotePlayer();
@@ -67,6 +77,8 @@ public class RemoteCharacter : MonoBehaviour
     {
         transform.position = playerData.playerTransform;
         isMoving = playerData.characterActions.moving;
+
+
     }
     private void UpdateAnimations(chInfo playerData)
     {

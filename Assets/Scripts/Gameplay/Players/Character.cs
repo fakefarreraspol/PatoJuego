@@ -181,7 +181,12 @@ public class Character : MonoBehaviour
             PlayerAnimations.OnSpriteChanged(jumpVelocity);
             // Start the jump cooldown timer
             jumpCooldownTimer = jumpCooldown;
+
+            playerStatus.jump = true;
+            OnActionPerformed();
         }
+        if(playerStatus.jump) { playerStatus.jump = false; OnActionPerformed(); }
+        
     }
 
     private void HandleShootingCooldown()
@@ -223,7 +228,7 @@ public class Character : MonoBehaviour
             // Start the jump cooldown timer
             jumpCooldownTimer = jumpCooldown;
         }
-        OnActionPerformed();
+        
     }
     // Input System callback for shooting
     public void OnShoot(InputAction.CallbackContext value)
