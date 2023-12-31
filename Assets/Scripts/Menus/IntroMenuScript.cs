@@ -33,7 +33,7 @@ public class IntroMenuScript : MonoBehaviour
         ServerData.GetComponent<ServerData>().ServerPort = portNum;
 
         DontDestroyOnLoad(ServerData);
-
+        FindObjectOfType<GameManager>().ChangeState(GameManager.GameState.Lobby);
         SceneManager.LoadScene("LobbyClient");
     }
     public void HostGame()
@@ -44,7 +44,7 @@ public class IntroMenuScript : MonoBehaviour
         ServerData.AddComponent<ServerData>();
         ServerData.GetComponent<ServerData>().ServerIP = ipNum;
         ServerData.GetComponent<ServerData>().ServerPort = portNum;
-
+        FindObjectOfType<GameManager>().ChangeState(GameManager.GameState.Lobby);
         DontDestroyOnLoad(ServerData);
 
         SceneManager.LoadScene("Lobby");

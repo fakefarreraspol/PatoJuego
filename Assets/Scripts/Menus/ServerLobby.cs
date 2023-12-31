@@ -15,7 +15,7 @@ public class ServerLobby : MonoBehaviour
         if (MapSelected == 0 )
         {
             MessageToSend StartGameMsg = new MessageToSend(FindObjectOfType<UserManager>().userID, FindObjectOfType<UserManager>().Username, MessageType.GAME_START, MapSelected.ToString());
-
+            FindObjectOfType<GameManager>().ChangeState(GameManager.GameState.Spawn);
             string msg = JsonUtility.ToJson(StartGameMsg);
             FindObjectOfType<Server>().SendMessageToAllClients(msg);
             SceneManager.LoadScene("Scene01");

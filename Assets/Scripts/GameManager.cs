@@ -19,6 +19,9 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
+        GameManager[] checkManagers = FindObjectsOfType<GameManager>();
+
+        if (checkManagers.Length > 1) Destroy(gameObject);
     }
 
     private void Start()
@@ -29,31 +32,37 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.M)) 
-        { 
-            gState = GameState.Spawn; 
-        }
-        
-        if(gState == GameState.Spawn)
+        if(FindObjectOfType<Server>())
         {
-
-            MessageToSend msg = new MessageToSend(0, "SigmaMale", MessageType.GENERATE_PLAYERS, "0");
-            string msgToClient = JsonUtility.ToJson(msg);
-            FindObjectOfType<Server>().SendMessageToAllClients(msgToClient);
-
-            FindObjectOfType<Spawner>().SpawnControllableCharacter(0);
-
-            List<int> connectedClients = FindObjectOfType<Server>().GetConnectedClientIPs();
-            for(int i = 0; i < connectedClients.Count; i++)
+            if (gState == GameState.Spawn)
             {
-                FindObjectOfType<Spawner>().SpawnRemoteCharacter(i+1,connectedClients[i]);
-                
-                MessageToSend newMsg = new MessageToSend(connectedClients[i], "SigmaMale", MessageType.GENERATE_PLAYERS, (i+1).ToString());
-                string newmsgToClient = JsonUtility.ToJson(newMsg);
-                FindObjectOfType<Server>().SendMessageToAllClients(newmsgToClient);
-            }
 
-            gState = GameState.Gameplay;
+                MessageToSend msg = new MessageToSend(0, "SigmaMale", MessageType.GENERATE_PLAYERS, "0");
+                string msgToClient = JsonUtility.ToJson(msg);
+                FindObjectOfType<Server>().SendMessageToAllClients(msgToClient);
+
+                FindObjectOfType<Spawner>().SpawnControllableCharacter(0);
+
+                List<int> connectedClients = FindObjectOfType<Server>().GetConnectedClientIPs();
+                for (int i = 0; i < connectedClients.Count; i++)
+                {
+                    FindObjectOfType<Spawner>().SpawnRemoteCharacter(i + 1, connectedClients[i]);
+
+                    MessageToSend newMsg = new MessageToSend(connectedClients[i], "SigmaMale", MessageType.GENERATE_PLAYERS, (i + 1).ToString());
+                    string newmsgToClient = JsonUtility.ToJson(newMsg);
+                    FindObjectOfType<Server>().SendMessageToAllClients(newmsgToClient);
+                }
+
+                gState = GameState.Gameplay;
+            }
         }
+        else if (gState == GameState.Spawn) gState = GameState.Gameplay;
+
+    }
+
+
+    public void ChangeState(GameState state)
+    {
+        gState = state;
     }
 }

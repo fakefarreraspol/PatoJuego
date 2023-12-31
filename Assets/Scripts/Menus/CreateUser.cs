@@ -26,7 +26,9 @@ public class CreateUser : MonoBehaviour
         {
             GenerateUserObject(user);
             DontDestroyOnLoad(UserOBJ);
+            FindObjectOfType<GameManager>().ChangeState( GameManager.GameState.Intro);
             SceneManager.LoadScene("Intro");
+            
         }
     }
 
@@ -45,7 +47,11 @@ public class CreateUser : MonoBehaviour
         GenerateUserObject(newUser);
 
         DontDestroyOnLoad(UserOBJ);
+
+        FindObjectOfType<GameManager>().ChangeState(GameManager.GameState.Intro);
+
         SceneManager.LoadScene("Intro");
+        
     }
 
     private void GenerateUserObject(User userD)

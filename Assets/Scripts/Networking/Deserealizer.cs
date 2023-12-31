@@ -111,6 +111,7 @@ public class Deserealizer : MonoBehaviour
     }
     private void HandleGameStart(MessageToSend msg)
     {
+        FindObjectOfType<GameManager>().ChangeState(GameManager.GameState.Spawn);
         SceneManager.LoadScene("Scene02");
     }
     private void HandleCharacterInfo(MessageToSend msg)
