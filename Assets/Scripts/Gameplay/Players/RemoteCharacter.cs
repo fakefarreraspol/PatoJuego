@@ -46,7 +46,7 @@ public class RemoteCharacter : MonoBehaviour
         chInfo playerData = userData.UserCharacterInfo;
         UpdatePos(playerData);
         UpdateAnimations(playerData);
-
+        lastDir = playerData.playerDirection;
         if (playerData.characterActions.shoot) ShootBull(playerData.playerDirection);
 
         HandleHealth(playerData.healthPoints, userData.ID);

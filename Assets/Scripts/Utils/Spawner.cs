@@ -13,8 +13,12 @@ public class Spawner : MonoBehaviour
     public void SpawnRemoteCharacter(int spawnPos, int ID)
     {
         if (spawnPos >= 4) spawnPos = 3;
-        GameObject NewRemoteCharacter = Instantiate(characterRemotePrefab, spawners[spawnPos].position, Quaternion.identity);
-        FindObjectOfType<ObjectManager>().AddGameObject(ID, NewRemoteCharacter);
+        if(!FindObjectOfType<ObjectManager>().GetGameObject(ID))
+        {
+            GameObject NewRemoteCharacter = Instantiate(characterRemotePrefab, spawners[spawnPos].position, Quaternion.identity);
+            FindObjectOfType<ObjectManager>().AddGameObject(ID, NewRemoteCharacter);
+        }
+        
     }
     public void SpawnControllableCharacter(int spawnPos)
     { 
