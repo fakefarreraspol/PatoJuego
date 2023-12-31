@@ -9,11 +9,12 @@ public class GameManager : MonoBehaviour
         CreateUser,
         Intro,
         Lobby,
+        Spawn,
         Gameplay
     }
 
     //public GameState gState = GameState.CreateUser;
-    public GameState gState = GameState.Gameplay;
+    public GameState gState = GameState.CreateUser;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -22,22 +23,37 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        
+        gState = GameState.CreateUser;
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if(gState == GameState.Gameplay && Input.GetKeyDown(KeyCode.M))
+        if(Input.GetKeyDown(KeyCode.M)) 
+        { 
+            gState = GameState.Spawn; 
+        }
+        
+        if(gState == GameState.Spawn)
         {
+
             MessageToSend msg = new MessageToSend(0, "SigmaMale", MessageType.GENERATE_PLAYERS, "0");
             string msgToClient = JsonUtility.ToJson(msg);
             FindObjectOfType<Server>().SendMessageToAllClients(msgToClient);
+
+            FindObjectOfType<Spawner>().SpawnControllableCharacter(0);
+
             List<int> connectedClients = FindObjectOfType<Server>().GetConnectedClientIPs();
             for(int i = 0; i < connectedClients.Count; i++)
             {
                 FindObjectOfType<Spawner>().SpawnRemoteCharacter(i+1,connectedClients[i]);
+                
+                MessageToSend newMsg = new MessageToSend(connectedClients[i], "SigmaMale", MessageType.GENERATE_PLAYERS, (i+1).ToString());
+                string newmsgToClient = JsonUtility.ToJson(newMsg);
+                FindObjectOfType<Server>().SendMessageToAllClients(newmsgToClient);
             }
+
+            gState = GameState.Gameplay;
         }
     }
 }

@@ -123,7 +123,8 @@ public class Deserealizer : MonoBehaviour
     }
     private void HandleGeneratePlayers(MessageToSend msg)
     {
-        FindObjectOfType<Spawner>().SpawnRemoteCharacter(int.Parse(msg.Message), msg.ID);
+        if (msg.ID == myUser.userID) FindObjectOfType<Spawner>().SpawnControllableCharacter(int.Parse(msg.Message));
+        else FindObjectOfType<Spawner>().SpawnRemoteCharacter(int.Parse(msg.Message), msg.ID);
     }
     private void HandleGameEnd(MessageToSend msg)
     {
