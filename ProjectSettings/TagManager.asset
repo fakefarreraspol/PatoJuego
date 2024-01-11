@@ -9,6 +9,7 @@ TagManager:
   - bullet
   - deathWall
   - respawn
+  - weapon
   layers:
   - Default
   - TransparentFX

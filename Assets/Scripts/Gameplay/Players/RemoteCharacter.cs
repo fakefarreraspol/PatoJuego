@@ -20,6 +20,9 @@ public class RemoteCharacter : MonoBehaviour
     private bool isMoving;
     private bool jumped = false;
     private Rigidbody2D characterRemoteRigidbody;
+
+    public GameObject shootPoint;
+    public GameObject weapon;
     private void Awake()
     {
         characterRemoteHpSlider = GetComponentInChildren<Canvas>().gameObject.GetComponentInChildren<Slider>();
@@ -40,6 +43,23 @@ public class RemoteCharacter : MonoBehaviour
             characterRemoteRigidbody.velocity = velocity;
         }
         else characterRemoteRigidbody.velocity = new Vector2(0, characterRemoteRigidbody.velocity.y);
+
+        moveWeapon();
+    }
+    private void moveWeapon()
+    {
+        if (lastDir.x > 0)
+        {
+            weapon.GetComponent<SpriteRenderer>().flipX = false;
+            weapon.transform.localPosition = new Vector2(0.2f, weapon.transform.localPosition.y);
+            shootPoint.transform.localPosition = new Vector2(0.45f, shootPoint.transform.localPosition.y);
+        }
+        else
+        {
+            weapon.GetComponent<SpriteRenderer>().flipX = true;
+            weapon.transform.localPosition = new Vector2(-0.2f, weapon.transform.localPosition.y);
+            shootPoint.transform.localPosition = new Vector2(-0.45f, shootPoint.transform.localPosition.y);
+        }
     }
     public void UpdateRemoteCharacter(MessageToSend userData)
     {
@@ -59,7 +79,7 @@ public class RemoteCharacter : MonoBehaviour
     }
     private void ShootBull(Vector2 dir) 
     {
-        GameObject bull = Instantiate(EnemyBullet, transform.position, Quaternion.identity);
+        GameObject bull = Instantiate(EnemyBullet, shootPoint.transform.position, Quaternion.identity);
         bull.GetComponent<Bullet2D>().dir = dir;
     }
     private void HandleRemoteJump()

@@ -13,8 +13,8 @@ public class Character : MonoBehaviour
 
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform shootPoint;
-
-    
+    private bool hasWeapon = false;
+    [SerializeField] private GameObject weapon;
     private float speed = 10;
     [SerializeField] private float jumpForce = 100.0f;
     [SerializeField] private Transform groundCheck;
@@ -72,12 +72,13 @@ public class Character : MonoBehaviour
         ThisUser = FindObjectOfType<UserManager>();
 
         //playerStatus = new chActions();
-
+        weapon.SetActive(false);
         characterHPSlider = GetComponentInChildren<Canvas>().gameObject.GetComponentInChildren<Slider>();
     }
     private void Start()
     {
         characterHP = 100;
+        playerStatus.hasWeapon = false;
     }
 
     private void OnEnable()
@@ -114,7 +115,7 @@ public class Character : MonoBehaviour
         CheckGrounded();
         HandleShootingCooldown();
         //HandleShooting();
-
+        moveWeapon();
         //Debug.Log(playerDir);
         // Update the jump cooldown timer
         if (!canJump)
@@ -125,6 +126,21 @@ public class Character : MonoBehaviour
                 canJump = true;
                 jumpCooldownTimer = 0.0f;
             }
+        }
+    }
+    private void moveWeapon()
+    {
+        if (GetPlayerDir().x > 0)
+        {
+            weapon.GetComponent<SpriteRenderer>().flipX = false;
+            weapon.transform.localPosition = new Vector2(0.2f, weapon.transform.localPosition.y);
+            shootPoint.transform.localPosition = new Vector2(0.45f, shootPoint.transform.localPosition.y);
+        }
+        else
+        {
+            weapon.GetComponent<SpriteRenderer>().flipX = true;
+            weapon.transform.localPosition = new Vector2(-0.2f,weapon.transform.localPosition.y);
+            shootPoint.transform.localPosition = new Vector2(-0.45f, shootPoint.transform.localPosition.y);
         }
     }
     private void HandleHealth()
@@ -234,7 +250,7 @@ public class Character : MonoBehaviour
     public void OnShoot(InputAction.CallbackContext value)
     {
         Debug.Log(value.ToString());
-        if (canShoot)
+        if (canShoot && hasWeapon)
         {
             shoot = true;
             canShoot = false;
@@ -317,6 +333,17 @@ public class Character : MonoBehaviour
         if (other.gameObject.layer == LayerMask.NameToLayer("EnemyBullet"))
         {
             FindObjectOfType<Character>().TakeDamageCharacter(20);
+        }
+        if(other.gameObject.tag == "weapon")
+        {
+            if (hasWeapon == false)
+            {
+                hasWeapon = true;
+                playerStatus.hasWeapon = true;
+                weapon.SetActive(true);
+                OnActionPerformed();
+            }
+             
         }
     }
 
