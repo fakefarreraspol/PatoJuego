@@ -23,6 +23,7 @@ public class RemoteCharacter : MonoBehaviour
 
     public GameObject shootPoint;
     public GameObject weapon;
+    
     private void Awake()
     {
         characterRemoteHpSlider = GetComponentInChildren<Canvas>().gameObject.GetComponentInChildren<Slider>();
@@ -33,6 +34,7 @@ public class RemoteCharacter : MonoBehaviour
     private void Start()
     {
         characterRemoteHP = characterRemoteMAXHP;
+        weapon.SetActive(false);
 
     }
     private void FixedUpdate()
@@ -43,7 +45,7 @@ public class RemoteCharacter : MonoBehaviour
             characterRemoteRigidbody.velocity = velocity;
         }
         else characterRemoteRigidbody.velocity = new Vector2(0, characterRemoteRigidbody.velocity.y);
-
+        
         moveWeapon();
     }
     private void moveWeapon()
@@ -76,6 +78,8 @@ public class RemoteCharacter : MonoBehaviour
         {
             HandleRemoteJump();
         }
+
+        if(playerData.characterActions.hasWeapon) weapon.SetActive(true);
     }
     private void ShootBull(Vector2 dir) 
     {
