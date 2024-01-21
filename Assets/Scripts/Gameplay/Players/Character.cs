@@ -54,8 +54,10 @@ public class Character : MonoBehaviour
     private Server server;
     private UserManager ThisUser;
 
-
-
+    //raycast
+    public float raycastDistance = 0.1f;
+    public Transform RaycastPos01;
+    public Transform RaycastPos02;
 
     //Bools to send
     private chActions playerStatus;
@@ -127,6 +129,7 @@ public class Character : MonoBehaviour
                 jumpCooldownTimer = 0.0f;
             }
         }
+        CheckForObstacles();
     }
     private void moveWeapon()
     {
@@ -230,6 +233,34 @@ public class Character : MonoBehaviour
             shootCooldownTimer = shootCooldown;
             shoot = false; // Reset the shooting flag
             isShooting = true;
+        }
+    }
+    private void CheckForObstacles()
+    {
+        // Cast rays from the sides of the player
+        RaycastHit2D leftHit = Physics2D.Raycast(RaycastPos01.transform.position - new Vector3(0.5f, 0f, 0f), Vector2.left, raycastDistance);
+        RaycastHit2D rightHit = Physics2D.Raycast(RaycastPos01.transform.position + new Vector3(0.5f, 0f, 0f), Vector2.right, raycastDistance);
+
+        RaycastHit2D leftHit2 = Physics2D.Raycast(RaycastPos02.transform.position - new Vector3(0.5f, 0f, 0f), Vector2.left, raycastDistance);
+        RaycastHit2D rightHit2 = Physics2D.Raycast(RaycastPos02.transform.position + new Vector3(0.5f, 0f, 0f), Vector2.right, raycastDistance);
+
+        // Check if there are obstacles on the sides
+        bool leftObstacle = leftHit.collider != null && leftHit.collider.CompareTag("tile");
+        bool rightObstacle = rightHit.collider != null && rightHit.collider.CompareTag("tile");
+
+        bool leftObstacle2 = leftHit2.collider != null && leftHit2.collider.CompareTag("tile");
+        bool rightObstacle2 = rightHit2.collider != null && rightHit2.collider.CompareTag("tile");
+
+        // Adjust the player's behavior based on obstacles
+        if ((leftObstacle && !rightObstacle) || (leftObstacle2 && !rightObstacle2))
+        {
+            // Obstacle on the left side
+            characterRb.velocity = new Vector2(0f, characterRb.velocity.y);
+        }
+        else if ((rightObstacle && !leftObstacle) || (rightObstacle2 && !leftObstacle2))
+        {
+            // Obstacle on the right side
+            characterRb.velocity = new Vector2(0f, characterRb.velocity.y);
         }
     }
     private void OnJumpPerformed(InputAction.CallbackContext value)
