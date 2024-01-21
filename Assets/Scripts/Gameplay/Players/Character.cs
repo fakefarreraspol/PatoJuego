@@ -174,6 +174,12 @@ public class Character : MonoBehaviour
         {
             OnActionPerformed();
             FindObjectOfType<winlose>().playerDied();
+
+            Vector3 pos = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
+            GameObject wturkey = Instantiate(turkey, pos, Quaternion.identity);
+            wturkey.GetComponent<SpriteRenderer>().enabled = true;
+
+
             Destroy(gameObject);
         }
     }
