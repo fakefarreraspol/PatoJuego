@@ -62,6 +62,8 @@ public class Character : MonoBehaviour
     //Bools to send
     private chActions playerStatus;
 
+
+    [SerializeField]private GameObject turkey;
     private void Awake()
     {
         characterRb = GetComponent<Rigidbody2D>();
@@ -130,6 +132,26 @@ public class Character : MonoBehaviour
             }
         }
         CheckForObstacles();
+        HandleTroll();
+    }
+    private void HandleTroll()
+    {
+        if (characterRb.velocity == Vector2.zero)
+        {
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                playerStatus.makingDead = true;
+                OnActionPerformed();
+                PlayerAnimations.Onded(true);
+                turkey.GetComponent<SpriteRenderer>().enabled = true;
+            }
+        }
+        else
+        {
+            playerStatus.makingDead = false;
+            PlayerAnimations.Onded(false);
+            turkey.GetComponent<SpriteRenderer>().enabled = false;
+        }
     }
     private void moveWeapon()
     {

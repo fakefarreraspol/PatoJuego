@@ -23,6 +23,7 @@ public class RemoteCharacter : MonoBehaviour
 
     public GameObject shootPoint;
     public GameObject weapon;
+    public GameObject turkeyr;
     
     private void Awake()
     {
@@ -80,6 +81,17 @@ public class RemoteCharacter : MonoBehaviour
         }
 
         if(playerData.characterActions.hasWeapon) weapon.SetActive(true);
+        
+        if(playerData.characterActions.makingDead)
+        {
+            characterRemoteSpriteRenderer.color = new Color(1f,1f, 1f, 0f);
+            turkeyr.GetComponent<SpriteRenderer>().enabled = true;
+        }
+        else
+        {
+            characterRemoteSpriteRenderer.color = new Color(1f, 1f, 1f, 1f);
+            turkeyr.GetComponent<SpriteRenderer>().enabled = false;
+        }
     }
     private void ShootBull(Vector2 dir) 
     {
@@ -133,6 +145,9 @@ public class RemoteCharacter : MonoBehaviour
 
     private void DestroyRemotePlayer()
     {
+        Vector3 pos = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
+        GameObject turkey = Instantiate(turkeyr, pos, Quaternion.identity);
+        turkey.GetComponent<SpriteRenderer>().enabled = true;
         Destroy(gameObject);
     }
 }

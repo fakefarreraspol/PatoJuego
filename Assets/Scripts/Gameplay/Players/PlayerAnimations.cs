@@ -11,6 +11,7 @@ public class PlayerAnimations : MonoBehaviour
     private Animator animator;
 
     public static Action<Vector2> OnSpriteChanged;
+    public static Action<bool> Onded;
 
     private void Start()
     {
@@ -21,11 +22,13 @@ public class PlayerAnimations : MonoBehaviour
     {
         OnSpriteChanged += ChangeSpriteDirection;
         OnSpriteChanged += ChangeAnimation;
+        Onded += makingDead;
     }
     private void OnDisable()
     {
         OnSpriteChanged -= ChangeSpriteDirection;
         OnSpriteChanged -= ChangeAnimation;
+        Onded -= makingDead;
     }
 
 
@@ -53,4 +56,11 @@ public class PlayerAnimations : MonoBehaviour
         else if (dir.x < 0) sprRenderer.flipX = true;
     }
 
+
+    private void makingDead(bool isit)
+    {
+        if (isit) sprRenderer.color = new Color(1f, 1f, 1f, 0f);
+        else sprRenderer.color = new Color(1f, 1f, 1f, 1f);
+
+    }
 }

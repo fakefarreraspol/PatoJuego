@@ -10,4 +10,5 @@ public struct chActions
     public bool jump;
     public bool moving;
     public bool hasWeapon;
+    public bool makingDead;
 }
