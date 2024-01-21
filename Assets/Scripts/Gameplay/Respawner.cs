@@ -17,7 +17,12 @@ public class Respawner : MonoBehaviour
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.C)) {
-            if(FindObjectOfType<Character>()==null) RespawnCharacter(); }
+            if (FindObjectOfType<Character>() == null)
+            {
+                if (FindObjectOfType<winlose>().lifes > 0) 
+                    RespawnCharacter();
+            }
+        }
     }
     public void RespawnCharacter()
     {

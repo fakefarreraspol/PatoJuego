@@ -173,7 +173,7 @@ public class Character : MonoBehaviour
         if (characterHP <= 0)
         {
             OnActionPerformed();
-
+            FindObjectOfType<winlose>().playerDied();
             Destroy(gameObject);
         }
     }
