@@ -255,12 +255,19 @@ public class Character : MonoBehaviour
         if ((leftObstacle && !rightObstacle) || (leftObstacle2 && !rightObstacle2))
         {
             // Obstacle on the left side
-            characterRb.velocity = new Vector2(0f, characterRb.velocity.y);
+            if (characterRb.velocity.x < 0)
+            {
+                characterRb.velocity = new Vector2(0f, characterRb.velocity.y);
+            }
+            
         }
         else if ((rightObstacle && !leftObstacle) || (rightObstacle2 && !leftObstacle2))
         {
             // Obstacle on the right side
-            characterRb.velocity = new Vector2(0f, characterRb.velocity.y);
+            if (characterRb.velocity.x > 0)
+            {
+                characterRb.velocity = new Vector2(0f, characterRb.velocity.y);
+            }
         }
     }
     private void OnJumpPerformed(InputAction.CallbackContext value)

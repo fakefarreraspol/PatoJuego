@@ -10,7 +10,7 @@ public class Camera2D : MonoBehaviour
 
     private Vector3 velocity = Vector3.zero;
 
-    void LateUpdate()
+    void FixedUpdate()
     {
         if (target != null)
         {
