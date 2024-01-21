@@ -86,11 +86,13 @@ public class RemoteCharacter : MonoBehaviour
         {
             characterRemoteSpriteRenderer.color = new Color(1f,1f, 1f, 0f);
             turkeyr.GetComponent<SpriteRenderer>().enabled = true;
+            weapon.GetComponent<SpriteRenderer>().enabled = false;
         }
         else
         {
             characterRemoteSpriteRenderer.color = new Color(1f, 1f, 1f, 1f);
             turkeyr.GetComponent<SpriteRenderer>().enabled = false;
+            weapon.GetComponent<SpriteRenderer>().enabled = true;
         }
     }
     private void ShootBull(Vector2 dir) 
