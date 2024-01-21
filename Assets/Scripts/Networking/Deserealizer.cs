@@ -125,6 +125,7 @@ public class Deserealizer : MonoBehaviour
         int map = int.Parse(msg.Message);
         if(map == 0 ) SceneManager.LoadScene("Scene02");
         if (map == 1) SceneManager.LoadScene("Scene03");
+        if (map == 2) SceneManager.LoadScene("Scene04");
     }
     private void HandleCharacterInfo(MessageToSend msg)
     {

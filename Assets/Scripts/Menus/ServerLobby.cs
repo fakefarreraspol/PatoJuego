@@ -28,6 +28,14 @@ public class ServerLobby : MonoBehaviour
             FindObjectOfType<Server>().SendMessageToAllClients(msg);
             SceneManager.LoadScene("Scene03");
         }
+        if (MapSelected == 2)
+        {
+            MessageToSend StartGameMsg = new MessageToSend(FindObjectOfType<UserManager>().userID, FindObjectOfType<UserManager>().Username, MessageType.GAME_START, MapSelected.ToString());
+            FindObjectOfType<GameManager>().ChangeState(GameManager.GameState.Spawn);
+            string msg = JsonUtility.ToJson(StartGameMsg);
+            FindObjectOfType<Server>().SendMessageToAllClients(msg);
+            SceneManager.LoadScene("Scene04");
+        }
 
     }
   
